@@ -1,7 +1,7 @@
 # Fake news detection based on the induction of fuzzy sets
 This git repository shows the work of Giovanni Lagana's final thesis of his master's degree at Università degli Studi di Milano, about the extension of the algorithm described in [1], observing how the choice of input formatting techniques [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
-# Datasets (updated at 29/06/2020)
+# Datasets (updated on 29/06/2020)
 Currently, two main interesting datasets about web news have been found.
 1. Fake and real news dataset, 111 MB (https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv)
 2. All the News 2.0, 9.2 GB (https://components.one/datasets/all-the-news-2-news-articles-dataset/)
