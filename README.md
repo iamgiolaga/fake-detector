@@ -1,5 +1,5 @@
 # Fake news detection based on the induction of fuzzy sets
-This git repository shows the work of Giovanni Lagana's final thesis of his master's degree at Università degli Studi Milano, about the extension of the algorithm described in [1], observing how the choice of techniques of input formatting [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
+This git repository shows the work of Giovanni Lagana's final thesis of his master's degree at Università degli Studi di Milano, about the extension of the algorithm described in [1], observing how the choice of input formatting techniques [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
 References:
 
