@@ -2,6 +2,7 @@
 This git repository shows the work of Giovanni Lagana's final thesis of his master's degree at Università degli Studi Milano, about the extension of the algorithm described in [1], observing how the choice of techniques of input formatting [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
 References:
+
 [1] Learning Membership Functions for Fuzzy Sets through Modified Support Vector Clustering,
 in F. Masulli, G. Pasi e R. Yager (Eds.), Fuzzy Logic and Applications. 10th International Workshop,
 WILF 2013, Genoa, Italy, November 19–22, 2013. Proceedings., Vol. 8256, Springer International
