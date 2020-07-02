@@ -18,4 +18,5 @@ Currently, two main interesting datasets about web news have been found.
 2. All the News 2.0, 9.2 GB (https://components.one/datasets/all-the-news-2-news-articles-dataset/)
 
 # Note (please read this if you want to run the code)
-The python code currently assumes that you have a folder "datasets" containing the 2 datasets linked up and, inside this repository which, for space reasons, has been kept out from the versioning.
+Since the size of the datasets is relevant, they have been kept out from the versioning, hence, the Python code currently assumes that you have a folder named "datasets" inside this repository, containing the two downloadable datasets linked up. 
+
