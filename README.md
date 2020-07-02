@@ -16,3 +16,6 @@ Vol. 39, pp. 1041-4347). Cambridge: Cambridge University Press
 Currently, two main interesting datasets about web news have been found.
 1. Fake and real news dataset, 111 MB (https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv)
 2. All the News 2.0, 9.2 GB (https://components.one/datasets/all-the-news-2-news-articles-dataset/)
+
+# Note (please read this if you want to run the code)
+The python code currently assumes that you have a folder "datasets" containing the 2 datasets linked up and, inside this repository which, for space reasons, has been kept out from the versioning.
