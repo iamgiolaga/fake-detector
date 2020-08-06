@@ -30,5 +30,5 @@ Vol. 39, pp. 1041-4347). Cambridge: Cambridge University Press.
 [15] Kai Shu, Amy Sliva, Suhang  Wang, Jiliang  Tang, Huan Liu, Fake News Detection on Social Media: A Data Mining Perspective, ACM SIGKDD Explorations Newsletter September 2017.  
 [16] Alessandro Bondielli, Francesco Marcelloni, A survey on fake news and rumour detection techniques, Information Sciences
  Volume 497, September 2019, Pages 38-55   
-[17] Xinyi Zhou, Reza Zafarani, A Survey of Fake News: Fundamental Theories, Detection Methods, and Opportunities
+[17] Xinyi Zhou, Reza Zafarani, A Survey of Fake News: Fundamental Theories, Detection Methods, and Opportunities   
 [18] Jose Camacho-Collados, Mohammad Taher Pilehvar, On the Role of Text Preprocessing in Neural Network Architectures: An Evaluation Study on Text Categorization and Sentiment Analysis
