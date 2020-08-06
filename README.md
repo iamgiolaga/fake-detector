@@ -31,4 +31,4 @@ Vol. 39, pp. 1041-4347). Cambridge: Cambridge University Press.
 [16] Alessandro Bondielli, Francesco Marcelloni, A survey on fake news and rumour detection techniques, Information Sciences
  Volume 497, September 2019, Pages 38-55   
 [17] Xinyi Zhou, Reza Zafarani, A Survey of Fake News: Fundamental Theories, Detection Methods, and Opportunities
-
+[18] Jose Camacho-Collados, Mohammad Taher Pilehvar, On the Role of Text Preprocessing in Neural Network Architectures: An Evaluation Study on Text Categorization and Sentiment Analysis
