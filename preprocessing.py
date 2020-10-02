@@ -1,23 +1,30 @@
 import string
+import sys
+
+import spacy
+import numpy as np
+import pandas as pd
+
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 
 class preprocessing():
 
-    def __init__(self, news, duplicate_removal = True, lowercasing = True, tokenization = True, noise_removal = True, lemmatisation = True, stemming = False, stopword_removal = True, data_augmentation = False):
+    def __init__(self, news, duplicate_removal = True, lowercasing = True, tokenization = True, noise_removal = True, lemmatization = True, stemming = False, stopword_removal = True, data_augmentation = False):
         # currently, news is a vector of strings (titles or news bodies)
         self.news = news
         self.duplicate_removal = duplicate_removal
         self.lowercasing = lowercasing
         self.tokenization = tokenization
         self.noise_removal = noise_removal
-        self.lemmatisation = lemmatisation
+        self.lemmatization = lemmatization
         self.stemming = stemming
         self.stopword_removal = stopword_removal
         self.data_augmentation = data_augmentation
 
     def run_pipeline(self):
+        #TODO: check combinations of operations that need to be executed together and in which order
         print("Starting preprocessing...")
 
         if self.duplicate_removal == True:
@@ -26,14 +33,14 @@ class preprocessing():
         if self.lowercasing == True:
             self.lowercase()
 
-        if self.tokenization == True:
-            self.tokenize()
+        if self.lemmatization == True:
+            self.lemmatize()
+
+        #if self.tokenization == True:
+        #    self.tokenize()
 
         if self.noise_removal == True:
             self.remove_noise()
-
-        if self.lemmatisation == True:
-            self.lemmatise()
 
         if self.stemming == True:
             self.stem()
@@ -74,7 +81,7 @@ class preprocessing():
 
     def remove_noise(self):
         print("Removing noise...")
-        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–"
+        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–" + " "
         ## remove bad characters
         self.news = self.news.apply(
             lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
@@ -91,8 +98,11 @@ class preprocessing():
 
         print("...done.")
 
-    def lemmatise(self):
-        print("lem")
+    def lemmatize(self):
+        print("Lemmatization...")
+        nlp = spacy.load('en')
+        self.news = self.news.apply(lambda s: [token.lemma_ for token in nlp(s) if not token.lemma_ in "-PRON-"])
+        print("...done.")
 
     def stem(self):
         print("Stemming...")

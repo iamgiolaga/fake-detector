@@ -1,4 +1,5 @@
 import pandas as pd
+import spacy
 
 from preprocessing import preprocessing
 
@@ -11,10 +12,8 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 ## Preprocessing ##
-preprocesser = preprocessing(texts)
+preprocesser = preprocessing(titles)
 preprocesser.run_pipeline()
 
-print(preprocesser.get_news())
-
-
-
+news = preprocesser.get_news()
+print(news)
