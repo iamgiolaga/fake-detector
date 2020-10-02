@@ -51,6 +51,8 @@ class preprocessing():
 
         print("preprocessing finished.")
 
+        return self.news
+
     def get_news(self):
         return self.news
 

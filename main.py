@@ -12,11 +12,9 @@ texts = dataset_fake["text"]
 
 ## Preprocessing ##
 preprocesser = preprocessing(titles.head(10))
-preprocesser.run_pipeline()
+preprocessed = preprocesser.run_pipeline()
+print(preprocessed)
 
-news = preprocesser.get_news()
-print(news)
-
-document2vector = doc2vec(news)
+document2vector = doc2vec(preprocessed)
 vector = document2vector.run_doc2vec()
 print(vector)
