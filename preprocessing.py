@@ -1,9 +1,5 @@
 import string
-import sys
-
 import spacy
-import numpy as np
-import pandas as pd
 
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -47,6 +43,8 @@ class preprocessing():
 
         if self.stopword_removal == True:
             self.remove_stopword()
+
+        # TODO: Merge word pairs - Look at SpaCy's documentation
 
         if self.data_augmentation == True: # TODO: consider if necessary
             self.augment_data()
