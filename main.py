@@ -13,6 +13,7 @@ texts = dataset_fake["text"]
 ## Preprocessing ##
 preprocesser = preprocessing(titles.head(10), entity_recognition=True)
 preprocessed = preprocesser.run_pipeline()
+# print(preprocessed.configuration) # get configuration
 # print(preprocessed.entities) # extract entities from text
 print(preprocessed.news)
 

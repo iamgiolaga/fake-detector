@@ -28,6 +28,8 @@ class preprocessing():
         # TODO: check combinations of operations that need to be executed together and in which order
         print("Starting preprocessing...")
 
+        self.set_current_configuration() # stores which configuration is used
+
         if self.duplicate_removal == True:
             self.remove_duplicates()
 
@@ -146,3 +148,34 @@ class preprocessing():
 
     def augment_data(self):
         pass
+
+    def set_current_configuration(self):
+        configuration = []
+        if self.duplicate_removal == True:
+            configuration.append("Duplicate removal")
+
+        if self.lowercasing == True:
+            configuration.append("Lowercasing")
+
+        if self.entity_recognition == True:
+            configuration.append("Entity recognition")
+
+        if self.lemmatization == True:
+            configuration.append("Lemmatization")
+
+        # if self.tokenization == True:
+        #    configuration.append("Tokenization")
+
+        if self.noise_removal == True:
+            configuration.append("Noise removal")
+
+        if self.stemming == True:  # exclusive w.r.t. lemmatization
+            configuration.append("Stemming")
+
+        if self.stopword_removal == True:
+            configuration.append("Stop words removal")
+
+        if self.data_augmentation == True:  #
+            configuration.append("Data augmentation")
+
+        self.configuration = configuration
