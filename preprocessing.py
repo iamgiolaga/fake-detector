@@ -2,12 +2,16 @@ import string
 import spacy
 
 from nltk.tokenize import word_tokenize
+from spacy import displacy
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 
 class preprocessing():
 
-    def __init__(self, news, duplicate_removal = True, lowercasing = True, tokenization = True, noise_removal = True, lemmatization = True, stemming = False, stopword_removal = True, data_augmentation = False):
+    def __init__(self, news,
+                 duplicate_removal = True, lowercasing = True, tokenization = True,
+                 noise_removal = True, lemmatization = True, stemming = False,
+                 stopword_removal = True, entity_recognition = False, data_augmentation = False):
         # currently, news is a vector of strings (titles or news bodies)
         self.news = news
         self.duplicate_removal = duplicate_removal
@@ -17,6 +21,7 @@ class preprocessing():
         self.lemmatization = lemmatization
         self.stemming = stemming
         self.stopword_removal = stopword_removal
+        self.entity_recognition = entity_recognition
         self.data_augmentation = data_augmentation
 
     def run_pipeline(self):
@@ -28,6 +33,9 @@ class preprocessing():
 
         if self.lowercasing == True:
             self.lowercase()
+
+        if self.entity_recognition == True:
+            self.entities = self.recognize_entity()
 
         if self.lemmatization == True:
             self.lemmatize()
@@ -51,7 +59,7 @@ class preprocessing():
 
         print("preprocessing finished.")
 
-        return self.news
+        return self
 
     def get_news(self):
         return self.news
@@ -124,6 +132,17 @@ class preprocessing():
         self.news = self.news.apply(lambda x: [i for i in x if not i in spacy_stopwords])
         print("...done.")
         print("")
+
+    def recognize_entity(self):
+        print("Recognizing entities...")
+        nlp = spacy.load('en')
+        entities = self.news.apply(lambda s: [(i, i.label_, i.label) for i in nlp(s).ents])
+        print("...done.")
+        print("")
+        return entities
+
+    def get_entities(self):
+        return self.entities
 
     def augment_data(self):
         pass
