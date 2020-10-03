@@ -119,8 +119,9 @@ class preprocessing():
 
     def remove_stopword(self):
         print("Removing stop words...")
-        stop_words = set(stopwords.words('english'))
-        self.news = self.news.apply(lambda x: [i for i in x if not i in stop_words])
+        #stop_words = set(stopwords.words('english'))
+        spacy_stopwords = spacy.lang.en.stop_words.STOP_WORDS
+        self.news = self.news.apply(lambda x: [i for i in x if not i in spacy_stopwords])
         print("...done.")
         print("")
 
