@@ -11,12 +11,13 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 ## Preprocessing ##
-preprocesser = preprocessing(titles.head(10), entity_recognition=True)
-preprocessed = preprocesser.run_pipeline()
+preprocesser = preprocessing(titles.head(10), entity_recognition = True)
+data = preprocesser.run_pipeline()
 # print(preprocessed.configuration) # get configuration
 # print(preprocessed.entities) # extract entities from text
-print(preprocessed.news)
+print(data.preprocessed)
+print(data.vectors)
 
-document2vector = doc2vec(preprocessed.news)
+document2vector = doc2vec(data.preprocessed)
 vector = document2vector.run_doc2vec()
 print(vector)
