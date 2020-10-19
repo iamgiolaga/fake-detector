@@ -1,0 +1,9 @@
+__pycache__/
+datasets/
+images/
+venv/
+
+00_preprocessing.ipynb
+
+.idea/
+.ipynb_checkpoints
