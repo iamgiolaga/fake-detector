@@ -6,6 +6,8 @@ Currently, two main interesting datasets about web news have been found.
 1. Fake and real news dataset, 111 MB (https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv)
 2. All the News 2.0, 9.2 GB (https://components.one/datasets/all-the-news-2-news-articles-dataset/)
 
+It will be soon provided a module to load these datasets from Kaggle.
+
 # Bibliography
 [1] Learning Membership Functions for Fuzzy Sets through Modified Support Vector Clustering,
 in F. Masulli, G. Pasi e R. Yager (Eds.), Fuzzy Logic and Applications. 10th International Workshop,
