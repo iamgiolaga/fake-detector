@@ -36,7 +36,7 @@ class Preprocessing():
             self.lowercase()
 
         if self.entity_recognition == True:
-            self.entities = self.recognize_entity()
+            self.recognize_entity()
 
         if self.lemmatization == True:
             self.lemmatize()
@@ -59,7 +59,7 @@ class Preprocessing():
             self.augment_data()
 
         if self.word_vector == True:
-            self.vectors = self.vectorize()
+            self.vectorize()
 
         print("preprocessing finished.")
 
@@ -124,19 +124,17 @@ class Preprocessing():
         print("Recognizing entities...")
         e = EntityRecognition()
         e.fit(self.preprocessed)
-        entities = e.transform(self.preprocessed)
+        self.entities = e.transform(self.preprocessed)
         print("...done.")
         print("")
-        return entities
 
     def vectorize(self):
         print("Vectorizing...")
         v = Vectorization()
         v.fit(self.preprocessed)
-        vectors = v.transform(self.preprocessed)
+        self.vectors = v.transform(self.preprocessed)
         print("...done.")
         print("")
-        return vectors
 
     def augment_data(self):
         pass
@@ -174,9 +172,3 @@ class Preprocessing():
             configuration.append("Word vector")
 
         self.configuration = configuration
-
-    def get_preprocessed(self):
-        return self.preprocessed
-
-    def get_entities(self):
-        return self.entities
