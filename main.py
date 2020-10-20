@@ -1,5 +1,7 @@
 import pandas as pd
-from preprocessing import preprocessing
+
+import ppstep
+from preprocessing import Preprocessing
 from doc2vec import doc2vec
 
 ## Dataset loading ## (example)
@@ -11,13 +13,14 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 ## Preprocessing ##
-preprocesser = preprocessing(titles.head(10), entity_recognition = True)
+preprocesser = Preprocessing(titles.head(10), entity_recognition = True)
 data = preprocesser.run_pipeline()
 # print(preprocessed.configuration) # get configuration
 # print(preprocessed.entities) # extract entities from text
 print(data.preprocessed)
 print(data.vectors)
 
-document2vector = doc2vec(data.preprocessed)
-vector = document2vector.run_doc2vec()
-print(vector)
+
+#document2vector = doc2vec(data.preprocessed)
+#vector = document2vector.run_doc2vec()
+#print(vector)

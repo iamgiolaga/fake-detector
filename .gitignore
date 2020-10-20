@@ -5,5 +5,5 @@ venv/
 
 00_preprocessing.ipynb
 
-.idea/
+.idea/**/workspace.xml
 .ipynb_checkpoints

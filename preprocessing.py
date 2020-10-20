@@ -1,12 +1,9 @@
-import string
-import spacy
+from ppstep import DuplicateRemoval, Lowercasing, \
+Tokenization, NoiseRemoval, Lemmatization, Stemming, StopwordRemoval,\
+EntityRecognition, DataAugmentation, Vectorization
 
-from nltk.tokenize import word_tokenize
-from spacy import displacy
-from nltk.stem import PorterStemmer
-from nltk.corpus import stopwords
 
-class preprocessing():
+class Preprocessing():
 
     def __init__(self, text,
                  duplicate_removal = True, lowercasing = True, tokenization = True,
@@ -72,80 +69,71 @@ class preprocessing():
         # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
         print("Removing duplicates...")
         print("Items found: ", len(self.preprocessed), " rows")
-        self.preprocessed = self.preprocessed.drop_duplicates()
-        print("Removed items ", len(self.preprocessed), " rows")
+        d = DuplicateRemoval()
+        self.preprocessed = d.transform(self.preprocessed)
+        print("Remaining items: ", len(self.preprocessed), " rows")
         print("...done.")
         print("")
 
     def lowercase(self):
         print("Lowercasing...")
-        self.preprocessed = self.preprocessed.apply(lambda s: s.lower() if type(s) == str else s)
+        l = Lowercasing()
+        self.preprocessed = l.transform(self.preprocessed)
         print("...done.")
         print("")
 
     def tokenize(self):
         print("Tokenization...")
-        self.preprocessed = self.preprocessed.apply(lambda s: [w for w in word_tokenize(s)])
+        t = Tokenization()
+        self.preprocessed = t.transform(self.preprocessed)
         print("...done.")
         print("")
 
-    def hasNumbers(inputString):
-        return any(char.isdigit() for char in inputString)
-
     def remove_noise(self):
         print("Removing noise...")
-        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–" + " "
-        # remove bad characters
-        self.preprocessed = self.preprocessed.apply(
-            lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
-        )
-
-        # remove numbers
-        self.preprocessed = self.preprocessed.apply(lambda s: [w for w in s if w.isnumeric() != True])
-
-        # remove URLs and words that contain numbers
-        self.preprocessed = self.preprocessed.apply(lambda s: [w for w in s if preprocessing.hasNumbers(w) != True])
-
-        # remove words that contain '
-        self.preprocessed = self.preprocessed.apply(lambda s: [w.replace("'", "") for w in s])
-
+        n = NoiseRemoval()
+        self.preprocessed = n.transform(self.preprocessed)
         print("...done.")
         print("")
 
     def lemmatize(self):
         print("Lemmatization...")
-        nlp = spacy.load('en')
-        self.preprocessed = self.preprocessed.apply(lambda s: [token.lemma_ for token in nlp(s) if not token.lemma_ in "-PRON-"])
+        l = Lemmatization()
+        l.fit(self.preprocessed) # uses nlp from spacy
+        self.preprocessed = l.transform(self.preprocessed)
         print("...done.")
         print("")
 
     def stem(self):
         print("Stemming...")
-        porter = PorterStemmer()
-        self.preprocessed = self.preprocessed.apply(lambda s: [porter.stem(w) for w in s])
+        s = Stemming()
+        s.fit(self.preprocessed) # uses stemmer from porter
+        self.preprocessed = s.transform(self.preprocessed)
         print("...done.")
         print("")
 
     def remove_stopword(self):
         print("Removing stop words...")
-        #stop_words = set(stopwords.words('english'))
-        spacy_stopwords = spacy.lang.en.stop_words.STOP_WORDS
-        self.preprocessed = self.preprocessed.apply(lambda x: [i for i in x if not i in spacy_stopwords])
+        s = StopwordRemoval()
+        s.fit(self.preprocessed)
+        self.preprocessed = s.transform(self.preprocessed)
         print("...done.")
         print("")
 
     def recognize_entity(self):
         print("Recognizing entities...")
-        nlp = spacy.load('en')
-        entities = self.preprocessed.apply(lambda s: [(i, i.label_, i.label) for i in nlp(s).ents])
+        e = EntityRecognition()
+        e.fit(self.preprocessed)
+        entities = e.transform(self.preprocessed)
         print("...done.")
         print("")
         return entities
 
     def vectorize(self):
         print("Vectorizing...")
-        nlp = spacy.load('en_core_web_sm')
-        vectors = self.preprocessed.apply(lambda s: [[j.vector for j in nlp(i)] for i in s])
+        v = Vectorization()
+        v.fit(self.preprocessed)
+        vectors = v.transform(self.preprocessed)
         print("...done.")
         print("")
         return vectors
