@@ -1,6 +1,8 @@
 import pandas as pd
 from preprocessing import Preprocessing
-from doc2vec import doc2vec
+
+## DESCRIPTION ##
+# This is the file where experiments are launched
 
 ## Dataset loading ## (example)
 dataset_fake = pd.read_csv("datasets/fakeandreal/Fake.csv")
@@ -17,9 +19,4 @@ data = preprocesser.run_pipeline()
 # print(preprocessed.entities) # extract entities from text
 print(data.preprocessed)
 print("")
-print(data.vectors)
-
-
-#document2vector = doc2vec(data.preprocessed)
-#vector = document2vector.run_doc2vec()
-#print(vector)
+print(data.wordvectors)

@@ -1,7 +1,9 @@
 from ppsteps import DuplicateRemoval, Lowercasing, \
 Tokenization, NoiseRemoval, Lemmatization, Stemming, StopwordRemoval,\
-EntityRecognition, DataAugmentation, Vectorization
+EntityRecognition, DataAugmentation, WordVectorization, DocVectorization
 
+## DESCRIPTION ##
+# This class is responsible for the preprocessing pipeline execution
 
 class Preprocessing():
 
@@ -9,7 +11,7 @@ class Preprocessing():
                  duplicate_removal = True, lowercasing = True, tokenization = True,
                  noise_removal = True, lemmatization = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
-                 word_vector = True):
+                 word2vec = True, doc2vec = False):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.duplicate_removal = duplicate_removal
@@ -21,7 +23,8 @@ class Preprocessing():
         self.stopword_removal = stopword_removal
         self.entity_recognition = entity_recognition
         self.data_augmentation = data_augmentation
-        self.word_vector = word_vector
+        self.word2vec = word2vec
+        self.doc2vec = doc2vec
 
     def run_pipeline(self):
         # TODO: check combinations of operations that need to be executed together and in which order
@@ -58,8 +61,11 @@ class Preprocessing():
         if self.data_augmentation == True: # TODO: consider if necessary
             self.augment_data()
 
-        if self.word_vector == True:
-            self.vectorize()
+        if self.word2vec == True:
+            self.wordvectorizer()
+
+        if self.doc2vec == True:
+            self.docvectorizer()
 
         print("preprocessing finished.")
 
@@ -128,11 +134,19 @@ class Preprocessing():
         print("...done.")
         print("")
 
-    def vectorize(self): # creates a new object vectors
-        print("Vectorizing...")
-        v = Vectorization()
+    def wordvectorizer(self): # creates a new object vectors
+        print("Word to vec...")
+        v = WordVectorization()
         v.fit(self.preprocessed)
-        self.vectors = v.transform(self.preprocessed)
+        self.wordvectors = v.transform(self.preprocessed)
+        print("...done.")
+        print("")
+
+    def docvectorizer(self):
+        print("Doc to vec...")
+        d = DocVectorization()
+        d.fit()
+        self.docvectors = d.transform(self.preprocessed)
         print("...done.")
         print("")
 
@@ -168,7 +182,10 @@ class Preprocessing():
         if self.data_augmentation == True:  #
             configuration.append("Data augmentation")
 
-        if self.word_vector == True:
-            configuration.append("Word vector")
+        if self.word2vec == True:
+            configuration.append("Word to vec")
+
+        if self.doc2vec == True:
+            configuration.append("Doc to vec")
 
         self.configuration = configuration

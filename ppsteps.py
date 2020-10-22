@@ -4,8 +4,12 @@ import string
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
 from spacy import displacy
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+
+## DESCRIPTION ##
+# This file defines the set of classes that compose the preprocessing pipeline
 
 class DuplicateRemoval(BaseEstimator):
     def fit(self, data):
@@ -94,10 +98,30 @@ class DataAugmentation(BaseEstimator):
     def transform(self, data):
         return
 
-class Vectorization(BaseEstimator):
+class WordVectorization(BaseEstimator):
     def fit(self, data):
         self.nlp = spacy.load('en_core_web_sm')
 
     def transform(self, data):
         nlp = self.nlp
         return data.apply(lambda s: [[j.vector for j in nlp(i)] for i in s])
+
+class DocVectorization(BaseEstimator):
+    def __init__(self, text, vector_size=20, window=2, min_count=1, workers=4, epochs=100):
+        self.text = text
+        self.vector_size = vector_size
+        self.window = window
+        self.min_count = min_count
+        self.workers = workers
+        self.epochs = epochs
+
+    def fit(self, data):
+        self.tagged_data = [TaggedDocument(d, [i]) for i, d in enumerate(data)]
+        self.model = Doc2Vec(
+            self.tagged_data, vector_size=self.vector_size, window=self.window,
+            min_count=self.min_count, workers=self.workers, epochs=self.epochs
+        )
+
+    def transform(self, data):
+        model = self.model
+        return model.docvecs.most_similar(positive=[model.infer_vector(x) for x in data])
