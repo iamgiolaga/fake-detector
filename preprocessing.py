@@ -1,4 +1,4 @@
-from ppstep import DuplicateRemoval, Lowercasing, \
+from ppsteps import DuplicateRemoval, Lowercasing, \
 Tokenization, NoiseRemoval, Lemmatization, Stemming, StopwordRemoval,\
 EntityRecognition, DataAugmentation, Vectorization
 
@@ -120,7 +120,7 @@ class Preprocessing():
         print("...done.")
         print("")
 
-    def recognize_entity(self):
+    def recognize_entity(self): # creates a new object entities
         print("Recognizing entities...")
         e = EntityRecognition()
         e.fit(self.preprocessed)
@@ -128,7 +128,7 @@ class Preprocessing():
         print("...done.")
         print("")
 
-    def vectorize(self):
+    def vectorize(self): # creates a new object vectors
         print("Vectorizing...")
         v = Vectorization()
         v.fit(self.preprocessed)

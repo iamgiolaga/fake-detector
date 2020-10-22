@@ -1,6 +1,4 @@
 import pandas as pd
-
-import ppstep
 from preprocessing import Preprocessing
 from doc2vec import doc2vec
 
@@ -13,11 +11,12 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 ## Preprocessing ##
-preprocesser = Preprocessing(titles.head(10), entity_recognition = True)
+preprocesser = Preprocessing(titles.head(10), entity_recognition = True) # here you can set the configuration
 data = preprocesser.run_pipeline()
 # print(preprocessed.configuration) # get configuration
 # print(preprocessed.entities) # extract entities from text
 print(data.preprocessed)
+print("")
 print(data.vectors)
 
 
