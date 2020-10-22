@@ -44,8 +44,9 @@ class Preprocessing():
         if self.lemmatization == True:
             self.lemmatize()
 
-        #if self.tokenization == True:
-        #    self.tokenize()
+        # This is currently commented because there is a step that is also tokenizing
+        # if self.tokenization == True:
+        #     self.tokenize()
 
         if self.noise_removal == True:
             self.remove_noise()
@@ -145,7 +146,7 @@ class Preprocessing():
     def docvectorizer(self):
         print("Doc to vec...")
         d = DocVectorization()
-        d.fit()
+        d.fit(self.preprocessed)
         self.docvectors = d.transform(self.preprocessed)
         print("...done.")
         print("")
