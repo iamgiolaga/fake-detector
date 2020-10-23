@@ -1,6 +1,6 @@
 from ppsteps import DuplicateRemoval, Lowercasing, \
 Tokenization, NoiseRemoval, Lemmatization, Stemming, StopwordRemoval,\
-EntityRecognition, DataAugmentation, WordVectorization, DocVectorization
+EntityRecognition, DataAugmentation, WordVectorization, DocVectorization, Aggregation
 
 ## DESCRIPTION ##
 # This class is responsible for the preprocessing pipeline execution
@@ -11,7 +11,7 @@ class Preprocessing():
                  duplicate_removal = True, lowercasing = True, tokenization = True,
                  noise_removal = True, lemmatization = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
-                 word2vec = True, doc2vec = False):
+                 word2vec = True, doc2vec = False, aggregation = True):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.duplicate_removal = duplicate_removal
@@ -25,6 +25,7 @@ class Preprocessing():
         self.data_augmentation = data_augmentation
         self.word2vec = word2vec
         self.doc2vec = doc2vec
+        self.aggregation = aggregation
 
     def run_pipeline(self):
         # TODO: check combinations of operations that need to be executed together and in which order
@@ -33,125 +34,146 @@ class Preprocessing():
         self.set_current_configuration() # stores which configuration is used
 
         if self.duplicate_removal == True:
-            self.remove_duplicates()
+            self.preprocessed = self.remove_duplicates(self.preprocessed)
 
         if self.lowercasing == True:
-            self.lowercase()
+            self.preprocessed = self.lowercase(self.preprocessed)
 
         if self.entity_recognition == True:
-            self.recognize_entity()
+            self.entities = self.recognize_entity(self.preprocessed)
 
         if self.lemmatization == True:
-            self.lemmatize()
+            self.preprocessed = self.lemmatize(self.preprocessed)
 
         # This is currently commented because there is a step that is also tokenizing
         # if self.tokenization == True:
-        #     self.tokenize()
+        #     self.tokenize(self.preprocessed)
 
         if self.noise_removal == True:
-            self.remove_noise()
+            self.preprocessed = self.remove_noise(self.preprocessed)
 
         if self.stemming == True: # exclusive w.r.t. lemmatization
-            self.stem()
+            self.preprocessed = self.stem(self.preprocessed)
 
         if self.stopword_removal == True:
-            self.remove_stopword()
+            self.preprocessed = self.remove_stopword(self.preprocessed)
 
         # TODO: Merge word pairs - Look at SpaCy's documentation
 
         if self.data_augmentation == True: # TODO: consider if necessary
-            self.augment_data()
+            self.augment_data(self.preprocessed)
 
         if self.word2vec == True:
-            self.wordvectorizer()
+            self.wordvectors = self.wordvectorizer(self.preprocessed)
 
         if self.doc2vec == True:
-            self.docvectorizer()
+            self.docvectors = self.docvectorizer(self.preprocessed)
+
+        if self.aggregation == True:
+            self.aggregated = self.aggregate(self.wordvectors)
 
         print("preprocessing finished.")
 
         return self
 
-    def remove_duplicates(self):
+    def remove_duplicates(self, data):
         # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
         print("Removing duplicates...")
-        print("Items found: ", len(self.preprocessed), " rows")
+        print("Items found: ", len(data), " rows")
         d = DuplicateRemoval()
-        self.preprocessed = d.transform(self.preprocessed)
-        print("Remaining items: ", len(self.preprocessed), " rows")
+        data = d.transform(data)
+        print("Remaining items: ", len(data), " rows")
         print("...done.")
         print("")
+        return data
 
-    def lowercase(self):
+    def lowercase(self, data):
         print("Lowercasing...")
         l = Lowercasing()
-        self.preprocessed = l.transform(self.preprocessed)
+        data = l.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def tokenize(self):
+    def tokenize(self, data):
         print("Tokenization...")
         t = Tokenization()
-        self.preprocessed = t.transform(self.preprocessed)
+        data = t.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def remove_noise(self):
+    def remove_noise(self, data):
         print("Removing noise...")
         n = NoiseRemoval()
-        self.preprocessed = n.transform(self.preprocessed)
+        data = n.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def lemmatize(self):
+    def lemmatize(self, data):
         print("Lemmatization...")
         l = Lemmatization()
-        l.fit(self.preprocessed) # uses nlp from spacy
-        self.preprocessed = l.transform(self.preprocessed)
+        l.fit(data) # uses nlp from spacy
+        data = l.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def stem(self):
+    def stem(self, data):
         print("Stemming...")
         s = Stemming()
-        s.fit(self.preprocessed) # uses stemmer from porter
-        self.preprocessed = s.transform(self.preprocessed)
+        s.fit(data) # uses stemmer from porter
+        data = s.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def remove_stopword(self):
+    def remove_stopword(self, data):
         print("Removing stop words...")
         s = StopwordRemoval()
-        s.fit(self.preprocessed)
-        self.preprocessed = s.transform(self.preprocessed)
+        s.fit(data)
+        data = s.transform(data)
         print("...done.")
         print("")
+        return data
 
-    def recognize_entity(self): # creates a new object entities
+    def recognize_entity(self, data): # creates a new object entities
         print("Recognizing entities...")
         e = EntityRecognition()
-        e.fit(self.preprocessed)
-        self.entities = e.transform(self.preprocessed)
+        e.fit(data)
+        entities = e.transform(data)
         print("...done.")
         print("")
+        return entities
 
-    def wordvectorizer(self): # creates a new object vectors
+    def wordvectorizer(self, data): # creates a new object vectors
         print("Word to vec...")
         v = WordVectorization()
-        v.fit(self.preprocessed)
-        self.wordvectors = v.transform(self.preprocessed)
+        v.fit(data)
+        wordvectors = v.transform(data)
         print("...done.")
         print("")
+        return wordvectors
 
-    def docvectorizer(self):
+    def docvectorizer(self, data):
         print("Doc to vec...")
         d = DocVectorization()
-        d.fit(self.preprocessed)
-        self.docvectors = d.transform(self.preprocessed)
+        d.fit(data)
+        docvectors = d.transform(data)
         print("...done.")
         print("")
+        return docvectors
 
-    def augment_data(self):
+    def aggregate(self, data):
+        print("Aggregating...")
+        a = Aggregation()
+        aggregated = a.transform(data)
+        print("...done")
+        print("")
+        return aggregated
+
+    def augment_data(self, data):
         pass
 
     def set_current_configuration(self):
@@ -188,5 +210,8 @@ class Preprocessing():
 
         if self.doc2vec == True:
             configuration.append("Doc to vec")
+
+        if self.aggregation == True:
+            configuration.append("Aggregation")
 
         self.configuration = configuration

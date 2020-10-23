@@ -13,15 +13,28 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 ## Preprocessing ##
-preprocesser = Preprocessing(titles.head(10), entity_recognition = True, doc2vec = True, word2vec=False) # here you can set the configuration
+preprocesser = Preprocessing(titles.head(10), entity_recognition = True) # here you can set the configuration
 data = preprocesser.run_pipeline()
 # print(preprocessed.configuration) # get configuration
 # print(preprocessed.entities) # extract entities from text
-print(data.preprocessed)
+processed_result = pd.DataFrame(data.preprocessed)
+result = pd.DataFrame(data.wordvectors)
+aggregated_result = pd.DataFrame(data.aggregated)
 print("")
+processed_result.to_csv("results/preprocessed.csv")
+result.to_csv("results/result.csv")
+aggregated_result.to_csv("results/aggregated.csv")
 
-# Doc2Vec takes in input a n x m matrix and outputs a n-length vector of tuples (x,y)
+# for each document of the corpus
+# Word2Vec takes in input a m-length vector of words and outputs m vectors of fixed k length
+# where m is the number of words in the document and k is the number of features
+# a further step here is to aggregate the m vectors into one of length m
+print(data.aggregated)
+
+# for each document of the corpus
+# Doc2Vec takes in input a m-length vector of words and outputs (x,y)
 # where x is the tagged document and y is the similarity of the document with respect to the others
+# so each document is represented by a 2-length vector
 # ----------------------------------
 # preprocesser = Preprocessing(titles.head(10), entity_recognition = True, doc2vec = True, word2vec=False) # here you can set the configuration
 # data = preprocesser.run_pipeline()

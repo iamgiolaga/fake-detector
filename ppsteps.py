@@ -1,5 +1,6 @@
 import spacy
 import string
+import numpy as np
 
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
@@ -124,3 +125,9 @@ class DocVectorization(BaseEstimator):
     def transform(self, data):
         model = self.model
         return model.docvecs.most_similar(positive=[model.infer_vector(x) for x in data])
+
+class Aggregation(BaseEstimator):
+    def fit(self, data):
+        return
+    def transform(self, data): ## TODO: Fisher kernel aggregation
+        return data.apply(lambda s: [np.mean(i) for i in s])
