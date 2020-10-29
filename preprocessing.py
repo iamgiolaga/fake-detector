@@ -51,6 +51,7 @@ class Preprocessing():
         if self.entity_recognition == True:
             print("(TYPE: ", type(self.preprocessed), ")")
             self.entities = self.recognize_entity(self.preprocessed)
+            print(self.entities)
             print("")
 
         if self.lemmatization == True:
@@ -89,14 +90,17 @@ class Preprocessing():
         if self.word2vec == True:
             print("(TYPE: ", type(self.preprocessed), ")")
             self.wordvectors = self.wordvectorizer(self.preprocessed)
+            print(self.wordvectors)
 
         if self.doc2vec == True:
             print("(TYPE: ", type(self.preprocessed), ")")
             self.docvectors = self.docvectorizer(self.preprocessed)
+            print(self.docvectors)
 
         if self.aggregation == True:
             print("(TYPE: ", type(self.preprocessed), ")")
             self.aggregated = self.aggregate(self.wordvectors)
+            print(self.aggregated)
 
         print("preprocessing finished.")
 
