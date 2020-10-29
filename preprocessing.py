@@ -9,14 +9,14 @@ EntityRecognition, WordVectorization, DocVectorization, Aggregation
 class Preprocessing():
 
     def __init__(self, text,
-                 duplicate_removal = True, lowercasing = True, tokenization = True,
+                 duplicate_rows_removal = True, lowercasing = True, tokenization = True,
                  noise_removal = True, lemmatization = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
                  word2vec = True, doc2vec = False, aggregation = True):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.lowercasing = lowercasing
-        self.duplicate_removal = duplicate_removal
+        self.duplicate_rows_removal = duplicate_rows_removal
         self.tokenization = tokenization
         self.noise_removal = noise_removal
         self.lemmatization = lemmatization
@@ -37,20 +37,24 @@ class Preprocessing():
         self.set_current_configuration() # stores which configuration is used
 
         if self.lowercasing == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.lowercase(self.preprocessed)
             print(self.preprocessed)
             print("")
 
-        if self.duplicate_removal == True:
+        if self.duplicate_rows_removal == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_rows_duplicates(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.entity_recognition == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.entities = self.recognize_entity(self.preprocessed)
             print("")
 
         if self.lemmatization == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.lemmatize(self.preprocessed)
             print(self.preprocessed)
             print("")
@@ -60,16 +64,19 @@ class Preprocessing():
         #     self.tokenize(self.preprocessed)
 
         if self.noise_removal == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_noise(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.stemming == True: # exclusive w.r.t. lemmatization
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.stem(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.stopword_removal == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_stopword(self.preprocessed)
             print(self.preprocessed)
             print("")
@@ -80,12 +87,15 @@ class Preprocessing():
             self.augment_data(self.preprocessed)
 
         if self.word2vec == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.wordvectors = self.wordvectorizer(self.preprocessed)
 
         if self.doc2vec == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.docvectors = self.docvectorizer(self.preprocessed)
 
         if self.aggregation == True:
+            print("(TYPE: ", type(self.preprocessed), ")")
             self.aggregated = self.aggregate(self.wordvectors)
 
         print("preprocessing finished.")
@@ -207,8 +217,8 @@ class Preprocessing():
 
     def set_current_configuration(self):
         configuration = []
-        if self.duplicate_removal == True:
-            configuration.append("Duplicate removal")
+        if self.duplicate_rows_removal == True:
+            configuration.append("Duplicate rows removal")
 
         if self.lowercasing == True:
             configuration.append("Lowercasing")

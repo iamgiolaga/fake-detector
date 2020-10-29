@@ -15,7 +15,7 @@ titles = dataset_fake["title"]
 texts = dataset_fake["text"]
 
 print("INPUT:")
-print(titles.head(10))
+print("(TYPE: ", type(titles.head(10)), ")")
 
 ## Preprocessing ##
 preprocesser = Preprocessing(titles.head(10), entity_recognition = True) # here you can set the configuration
@@ -35,8 +35,12 @@ aggregated_result.to_csv("results/aggregated.csv")
 # where m is the number of words in the document and k is the number of features
 # a further step here is to aggregate the m vectors into one of length m
 print("FINAL OUTPUT:")
+print("(TYPE: ", type(data.aggregated), ")")
 print(data.aggregated)
 
+# prova = pd.DataFrame(["donald", "donald", "trump"], ["ciao", "ciao"])
+# prova = prova.apply(lambda s: s)
+# print(prova)
 # for each document of the corpus
 # Doc2Vec takes in input a m-length vector of words and outputs (x,y)
 # where x is the tagged document and y is the similarity of the document with respect to the others

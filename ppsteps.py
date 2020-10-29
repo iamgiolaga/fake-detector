@@ -1,7 +1,7 @@
 import spacy
 import string
 import numpy as np
-import re
+import pandas as pd
 
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
