@@ -1,6 +1,7 @@
-from ppsteps import DuplicateRemoval, Lowercasing, \
-Tokenization, NoiseRemoval, Lemmatization, Stemming, StopwordRemoval,\
-EntityRecognition, DataAugmentation, WordVectorization, DocVectorization, Aggregation
+from ppsteps import DuplicateRowsRemoval, Lowercasing, \
+Tokenization, BadCharRemoval, NumbersRemoval, UrlRemoval, ApostropheRemoval, \
+DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval,\
+EntityRecognition, WordVectorization, DocVectorization, Aggregation
 
 ## DESCRIPTION ##
 # This class is responsible for the preprocessing pipeline execution
@@ -14,8 +15,8 @@ class Preprocessing():
                  word2vec = True, doc2vec = False, aggregation = True):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
-        self.duplicate_removal = duplicate_removal
         self.lowercasing = lowercasing
+        self.duplicate_removal = duplicate_removal
         self.tokenization = tokenization
         self.noise_removal = noise_removal
         self.lemmatization = lemmatization
@@ -29,21 +30,30 @@ class Preprocessing():
 
     def run_pipeline(self):
         # TODO: check combinations of operations that need to be executed together and in which order
+        print("")
         print("Starting preprocessing...")
+        print("")
 
         self.set_current_configuration() # stores which configuration is used
 
-        if self.duplicate_removal == True:
-            self.preprocessed = self.remove_duplicates(self.preprocessed)
-
         if self.lowercasing == True:
             self.preprocessed = self.lowercase(self.preprocessed)
+            print(self.preprocessed)
+            print("")
+
+        if self.duplicate_removal == True:
+            self.preprocessed = self.remove_rows_duplicates(self.preprocessed)
+            print(self.preprocessed)
+            print("")
 
         if self.entity_recognition == True:
             self.entities = self.recognize_entity(self.preprocessed)
+            print("")
 
         if self.lemmatization == True:
             self.preprocessed = self.lemmatize(self.preprocessed)
+            print(self.preprocessed)
+            print("")
 
         # This is currently commented because there is a step that is also tokenizing
         # if self.tokenization == True:
@@ -51,12 +61,18 @@ class Preprocessing():
 
         if self.noise_removal == True:
             self.preprocessed = self.remove_noise(self.preprocessed)
+            print(self.preprocessed)
+            print("")
 
         if self.stemming == True: # exclusive w.r.t. lemmatization
             self.preprocessed = self.stem(self.preprocessed)
+            print(self.preprocessed)
+            print("")
 
         if self.stopword_removal == True:
             self.preprocessed = self.remove_stopword(self.preprocessed)
+            print(self.preprocessed)
+            print("")
 
         # TODO: Merge word pairs - Look at SpaCy's documentation
 
@@ -76,21 +92,21 @@ class Preprocessing():
 
         return self
 
-    def remove_duplicates(self, data):
-        # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
-        print("Removing duplicates...")
-        print("Items found: ", len(data), " rows")
-        d = DuplicateRemoval()
-        data = d.transform(data)
-        print("Remaining items: ", len(data), " rows")
-        print("...done.")
-        print("")
-        return data
-
     def lowercase(self, data):
         print("Lowercasing...")
         l = Lowercasing()
         data = l.transform(data)
+        print("...done.")
+        print("")
+        return data
+
+    def remove_rows_duplicates(self, data):
+        # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
+        print("Removing duplicates...")
+        print("Items found: ", len(data), " rows")
+        d = DuplicateRowsRemoval()
+        data = d.transform(data)
+        print("Remaining items: ", len(data), " rows")
         print("...done.")
         print("")
         return data
@@ -105,8 +121,21 @@ class Preprocessing():
 
     def remove_noise(self, data):
         print("Removing noise...")
-        n = NoiseRemoval()
+        print("\t Bad characters...")
+        b = BadCharRemoval()
+        data = b.transform(data)
+        print("\t Numbers...")
+        n = NumbersRemoval()
         data = n.transform(data)
+        print("\t URLs...")
+        u = UrlRemoval()
+        data = u.transform(data)
+        print("\t Apostrophes...")
+        a = ApostropheRemoval()
+        data = a.transform(data)
+        print("\t Duplicate words...")
+        d = DuplicateWordsRemoval()
+        data = d.transform(data)
         print("...done.")
         print("")
         return data

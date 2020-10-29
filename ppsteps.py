@@ -1,6 +1,7 @@
 import spacy
 import string
 import numpy as np
+import re
 
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
@@ -12,20 +13,20 @@ from nltk.corpus import stopwords
 ## DESCRIPTION ##
 # This file defines the set of classes that compose the preprocessing pipeline
 
-class DuplicateRemoval(BaseEstimator):
-    def fit(self, data):
-        return
-
-    def transform(self, data):
-        # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
-        return data.drop_duplicates()
-
 class Lowercasing(BaseEstimator):
     def fit(self, data):
         return
 
     def transform(self, data):
         return data.apply(lambda s: s.lower() if type(s) == str else s)
+
+class DuplicateRowsRemoval(BaseEstimator): # removes duplicate rows
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
+        return data.drop_duplicates()
 
 class Tokenization(BaseEstimator):
     def fit(self, data):
@@ -34,7 +35,7 @@ class Tokenization(BaseEstimator):
     def transform(self, data):
         return data.apply(lambda s: [w for w in word_tokenize(s)])
 
-class NoiseRemoval(BaseEstimator):
+class BadCharRemoval(BaseEstimator):
     def fit(self, data):
         return
 
@@ -46,19 +47,42 @@ class NoiseRemoval(BaseEstimator):
             lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
         )
 
-        # remove numbers
-        data = data.apply(lambda s: [w for w in s if w.isnumeric() != True])
-
-        # remove URLs and words that contain numbers
-        data = data.apply(lambda s: [w for w in s if NoiseRemoval.hasNumbers(w) != True])
-
-        # remove words that contain '
-        data = data.apply(lambda s: [w.replace("'", "") for w in s])
-
         return data
+
+class NumbersRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        # remove numbers
+        return data.apply(lambda s: [w for w in s if w.isnumeric() != True])
+
+class UrlRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        # remove URLs and words that contain numbers
+        return data.apply(lambda s: [w for w in s if UrlRemoval.hasNumbers(w) != True])
 
     def hasNumbers(inputString):
         return any(char.isdigit() for char in inputString)
+
+class ApostropheRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        # remove words that contain '
+        return data.apply(lambda s: [w.replace("'", "") for w in s])
+
+class DuplicateWordsRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        # remove duplicate words
+        return data.apply(lambda s: list(dict.fromkeys(s)))
 
 class Lemmatization(BaseEstimator):
     def fit(self, data):

@@ -7,6 +7,9 @@
     <orderEntry type="jdk" jdkName="Python 3.8 (fakedetector)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="" />
+  </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
     <option name="myDocStringFormat" value="Plain" />
@@ -17,8 +20,5 @@
         <option value="$MODULE_DIR$/venv/lib/python3.8/site-packages/pandas/io/formats/templates" />
       </list>
     </option>
-  </component>
-  <component name="TestRunnerService">
-    <option name="PROJECT_TEST_RUNNER" value="pytest" />
   </component>
 </module>
