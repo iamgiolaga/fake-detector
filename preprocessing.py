@@ -1,5 +1,5 @@
 from ppsteps import DuplicateRowsRemoval, Lowercasing, \
-Tokenization, BadCharRemoval, NumbersRemoval, UrlRemoval, ApostropheRemoval, \
+Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
 DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval,\
 EntityRecognition, WordVectorization, DocVectorization, Aggregation
 
@@ -10,7 +10,7 @@ class Preprocessing():
 
     def __init__(self, text,
                  duplicate_rows_removal = True, lowercasing = True, tokenization = True,
-                 noise_removal = True, lemmatization = True, stemming = False,
+                    lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
                  word2vec = True, doc2vec = False, aggregation = True):
         # currently, text is a vector of strings (titles or news bodies)
@@ -18,8 +18,8 @@ class Preprocessing():
         self.lowercasing = lowercasing
         self.duplicate_rows_removal = duplicate_rows_removal
         self.tokenization = tokenization
-        self.noise_removal = noise_removal
         self.lemmatization = lemmatization
+        self.noise_removal = noise_removal
         self.stemming = stemming
         self.stopword_removal = stopword_removal
         self.entity_recognition = entity_recognition
@@ -129,6 +129,15 @@ class Preprocessing():
         print("")
         return data
 
+    def lemmatize(self, data):
+        print("Lemmatization...")
+        l = Lemmatization()
+        l.fit(data) # uses nlp from spacy
+        data = l.transform(data)
+        print("...done.")
+        print("")
+        return data
+
     def remove_noise(self, data):
         print("Removing noise...")
         print("\t Bad characters...")
@@ -137,24 +146,15 @@ class Preprocessing():
         print("\t Numbers...")
         n = NumbersRemoval()
         data = n.transform(data)
-        print("\t URLs...")
-        u = UrlRemoval()
+        print("\t Removing words with numbers...")
+        u = RemoveWordsWithNumbers()
         data = u.transform(data)
-        print("\t Apostrophes...")
-        a = ApostropheRemoval()
+        print("\t Cleaning words...")
+        a = CleaningWords()
         data = a.transform(data)
         print("\t Duplicate words...")
         d = DuplicateWordsRemoval()
         data = d.transform(data)
-        print("...done.")
-        print("")
-        return data
-
-    def lemmatize(self, data):
-        print("Lemmatization...")
-        l = Lemmatization()
-        l.fit(data) # uses nlp from spacy
-        data = l.transform(data)
         print("...done.")
         print("")
         return data

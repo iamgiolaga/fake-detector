@@ -2,6 +2,7 @@ import spacy
 import string
 import numpy as np
 import pandas as pd
+import re
 
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
@@ -26,7 +27,10 @@ class DuplicateRowsRemoval(BaseEstimator): # removes duplicate rows
 
     def transform(self, data):
         # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
-        return data.drop_duplicates()
+        try:
+            return data.drop_duplicates().reset_index(drop=True)
+        except:
+            raise TypeError # drop_duplicates() doesn't work with lists
 
 class Tokenization(BaseEstimator):
     def fit(self, data):
@@ -57,24 +61,32 @@ class NumbersRemoval(BaseEstimator):
         # remove numbers
         return data.apply(lambda s: [w for w in s if w.isnumeric() != True])
 
-class UrlRemoval(BaseEstimator):
+class RemoveWordsWithNumbers(BaseEstimator):
     def fit(self, data):
         return
 
     def transform(self, data):
         # remove URLs and words that contain numbers
-        return data.apply(lambda s: [w for w in s if UrlRemoval.hasNumbers(w) != True])
+        return data.apply(lambda s: [w for w in s if RemoveWordsWithNumbers.hasNumbers(w) != True])
 
     def hasNumbers(inputString):
         return any(char.isdigit() for char in inputString)
 
-class ApostropheRemoval(BaseEstimator):
+class CleaningWords(BaseEstimator):
     def fit(self, data):
         return
 
     def transform(self, data):
-        # remove words that contain '
-        return data.apply(lambda s: [w.replace("'", "") for w in s])
+        # remove symbols attached to words
+        data = data.apply(lambda s: [re.sub(r'[^\w]', '', w) for w in s])
+        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–" + " "
+        data = data.apply(
+            lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
+        )
+        return data
+
+    def hasSymbol(inputString):
+        return any(char for char in inputString)
 
 class DuplicateWordsRemoval(BaseEstimator):
     def fit(self, data):
