@@ -16,6 +16,7 @@ texts = dataset_fake["text"]
 
 print("INPUT:")
 print("(TYPE: ", type(titles.head(10)), ")")
+print(titles.head(10))
 
 ## Preprocessing ##
 preprocesser = Preprocessing(titles.head(10), entity_recognition = True) # here you can set the configuration
@@ -38,9 +39,6 @@ print("FINAL OUTPUT:")
 print("(TYPE: ", type(data.aggregated), ")")
 print(data.aggregated)
 
-# prova = pd.DataFrame(["donald", "donald", "trump"], ["ciao", "ciao"])
-# prova = prova.apply(lambda s: s)
-# print(prova)
 # for each document of the corpus
 # Doc2Vec takes in input a m-length vector of words and outputs (x,y)
 # where x is the tagged document and y is the similarity of the document with respect to the others

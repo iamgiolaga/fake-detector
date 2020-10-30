@@ -1,15 +1,12 @@
 import spacy
 import string
 import numpy as np
-import pandas as pd
 import re
 
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
-from spacy import displacy
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from nltk.stem import PorterStemmer
-from nltk.corpus import stopwords
 
 ## DESCRIPTION ##
 # This file defines the set of classes that compose the preprocessing pipeline
@@ -44,7 +41,7 @@ class BadCharRemoval(BaseEstimator):
         return
 
     def transform(self, data):
-        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–" + " "
+        bad_characters = string.punctuation + "’" + "“" + "”" + "–" + " "
 
         # remove bad characters
         data = data.apply(
@@ -62,31 +59,32 @@ class NumbersRemoval(BaseEstimator):
         return data.apply(lambda s: [w for w in s if w.isnumeric() != True])
 
 class RemoveWordsWithNumbers(BaseEstimator):
+    def __init__(self):
+        pass
+
     def fit(self, data):
         return
 
     def transform(self, data):
         # remove URLs and words that contain numbers
-        return data.apply(lambda s: [w for w in s if RemoveWordsWithNumbers.hasNumbers(w) != True])
+        return data.apply(lambda s: [w for w in s if self.has_numbers(w) != True])
 
-    def hasNumbers(inputString):
-        return any(char.isdigit() for char in inputString)
+    def has_numbers(self, input_string):
+        return any(char.isdigit() for char in input_string)
 
 class CleaningWords(BaseEstimator):
+
     def fit(self, data):
         return
 
     def transform(self, data):
         # remove symbols attached to words
         data = data.apply(lambda s: [re.sub(r'[^\w]', '', w) for w in s])
-        bad_characters = string.punctuation + "’" + "“" + "”" + "‘" + "–" + " "
+        bad_characters = string.punctuation + "’" + "“" + "”" + "–" + " "
         data = data.apply(
             lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
         )
         return data
-
-    def hasSymbol(inputString):
-        return any(char for char in inputString)
 
 class DuplicateWordsRemoval(BaseEstimator):
     def fit(self, data):
@@ -113,6 +111,8 @@ class Stemming(BaseEstimator):
         return data.apply(lambda s: [porter.stem(w) for w in s])
 
 class StopwordRemoval(BaseEstimator):
+    
+    # noinspection PyUnresolvedReferences
     def fit(self, data):
         self.stopwords = spacy.lang.en.stop_words.STOP_WORDS
 

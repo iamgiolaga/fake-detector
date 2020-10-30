@@ -1,6 +1,5 @@
 import unittest
 import pandas as pd
-import pandas.testing as pdt
 
 from ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
     NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval
