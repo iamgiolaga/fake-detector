@@ -111,7 +111,7 @@ class Stemming(BaseEstimator):
         return data.apply(lambda s: [porter.stem(w) for w in s])
 
 class StopwordRemoval(BaseEstimator):
-    
+
     # noinspection PyUnresolvedReferences
     def fit(self, data):
         self.stopwords = spacy.lang.en.stop_words.STOP_WORDS
