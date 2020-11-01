@@ -1,10 +1,12 @@
+import pandas as pd
+
 from ppsteps import DuplicateRowsRemoval, Lowercasing, \
 Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
 DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval,\
 EntityRecognition, WordVectorization, DocVectorization, Aggregation
 
-## DESCRIPTION ##
-# This class is responsible for the preprocessing pipeline execution
+''' DESCRIPTION '''
+''' This class is responsible for the preprocessing pipeline execution '''
 
 class Preprocessing():
 
@@ -218,6 +220,14 @@ class Preprocessing():
 
     def augment_data(self, data):
         pass
+
+    def prepare_dataset(self, X, Y):
+        dataset = pd.concat([X,Y])
+        dataset = self.shuffle(dataset).reset_index(drop=True)
+        return dataset
+
+    def shuffle(self, dataset):
+        return dataset.sample(frac=1, random_state=42)
 
     def set_current_configuration(self):
         configuration = []

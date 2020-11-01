@@ -8,8 +8,8 @@ from nltk.tokenize import word_tokenize
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from nltk.stem import PorterStemmer
 
-## DESCRIPTION ##
-# This file defines the set of classes that compose the preprocessing pipeline
+''' DESCRIPTION '''
+''' This file defines the set of classes that compose the preprocessing pipeline '''
 
 class Lowercasing(BaseEstimator):
     def fit(self, data):

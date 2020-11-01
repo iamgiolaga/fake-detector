@@ -9,8 +9,8 @@ import logging
 import warnings
 import pickle
 
-## DESCRIPTION ##
-# This file reproduces experiments of mulearn with IRIS dataset
+''' DESCRIPTION '''
+''' This file reproduces experiments of mulearn with IRIS dataset '''
 
 source = 'https://archive.ics.uci.edu/ml/'\
          'machine-learning-databases/iris/iris.data'

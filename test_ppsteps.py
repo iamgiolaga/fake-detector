@@ -5,8 +5,8 @@ from ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval,
     NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval
 
 
-## DESCRIPTION ##
-# This file defines the unit testing
+''' DESCRIPTION '''
+''' This file defines the unit testing'''
 
 class TestLowercasing(unittest.TestCase): # for LOWERCASING
     # input should be a string
@@ -219,6 +219,28 @@ class TestStopWordRemoval(unittest.TestCase): # for STOP WORD REMOVAL
         pd.testing.assert_series_equal(expected_result, result)
 
 ## HOW CAN I TEST WORD2VEC, DOC2VEC? ##
+
+class TestDatasetPreparation(unittest.TestCase):
+
+    def test_series_concatenation(self):
+        X = pd.Series([[0.1, 0.2, 0.3], [0.01, 0.1], [0.7, 0.5, 0.9, 0.6]]) # fake news
+        Y = pd.Series([[0.9, 0.5], [0.1, 0.2, 0.4, 0.6]]) # real news
+
+        result = pd.concat([X,Y]).reset_index(drop=True)
+        expected_result = pd.Series([[0.1, 0.2, 0.3], [0.01, 0.1], [0.7, 0.5, 0.9, 0.6],
+                                     [0.9, 0.5], [0.1, 0.2, 0.4, 0.6]])
+
+        pd.testing.assert_series_equal(expected_result, result)
+
+    def test_dataframe_concatenation(self):
+        X = pd.DataFrame([[0.1, 0.2, 0.3], [0.01, 0.1], [0.7, 0.5, 0.9, 0.6]])  # fake news
+        Y = pd.DataFrame([[0.9, 0.5], [0.1, 0.2, 0.4, 0.6]])  # real news
+
+        result = pd.concat([X, Y]).reset_index(drop=True)
+        expected_result = pd.DataFrame([[0.1, 0.2, 0.3], [0.01, 0.1], [0.7, 0.5, 0.9, 0.6],
+                                     [0.9, 0.5], [0.1, 0.2, 0.4, 0.6]])
+
+        pd.testing.assert_frame_equal(expected_result, result)
 
 if __name__ == '__main__':
     unittest.main()
