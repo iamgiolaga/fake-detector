@@ -166,4 +166,5 @@ class Aggregation(BaseEstimator):
     def fit(self, data):
         return
     def transform(self, data): ## TODO: Fisher kernel aggregation
-        return data.apply(lambda s : np.mean(s, axis=0))
+        data = data.apply(lambda s: np.mean(s, axis=0))
+        return data.apply(lambda s: list(s))

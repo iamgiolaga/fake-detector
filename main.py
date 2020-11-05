@@ -1,5 +1,4 @@
 import pandas as pd
-
 from ppsteps import DuplicateRowsRemoval
 from preprocessing import Preprocessing
 
@@ -62,7 +61,6 @@ dataset_true = pd.DataFrame(data_true.aggregated)
 dataset_fake["label"] = 1
 dataset_true["label"] = 0
 dataset = preprocesser_true.prepare_dataset(dataset_fake, dataset_true)
-
 print("DATASET IS READY")
 print(dataset.head(10))
 dataset.to_csv("results/final_dataset.csv", index=False)
