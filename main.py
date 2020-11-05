@@ -3,7 +3,7 @@ from ppsteps import DuplicateRowsRemoval
 from preprocessing import Preprocessing
 
 ''' DESCRIPTION '''
-''' This is the file where experiments are launched '''
+''' This is the file where the entire preprocessing phase is performed '''
 
 ''' FIRST SECTION: LOADING AND PREPROCESSING '''
 
@@ -78,7 +78,3 @@ dataset.to_csv("results/final_dataset.csv", index=False)
 # preprocesser = Preprocessing(titles.head(10), entity_recognition = True, doc2vec = True, word2vec=False) # here you can set the configuration
 # data = preprocesser.run_pipeline()
 # print(data.docvectors)
-
-''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
-print("")
-print("LEARNING")

@@ -6,5 +6,9 @@ results/
 
 00_preprocessing.ipynb
 
+logs
+experiments.txt
+main_mulearn.py
+
 .idea/**/workspace.xml
 .ipynb_checkpoints
