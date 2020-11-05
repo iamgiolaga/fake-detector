@@ -141,7 +141,7 @@ class WordVectorization(BaseEstimator):
 
     def transform(self, data):
         nlp = self.nlp
-        return data.apply(lambda s: [[j.vector for j in nlp(i)] for i in s])
+        return data.apply(lambda s: [nlp(i).vector for i in s])
 
 class DocVectorization(BaseEstimator):
     def __init__(self, vector_size=20, window=2, min_count=1, workers=4, epochs=100):
