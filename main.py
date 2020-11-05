@@ -65,8 +65,7 @@ dataset = preprocesser_true.prepare_dataset(dataset_fake, dataset_true)
 
 print("DATASET IS READY")
 print(dataset.head(10))
-print("")
-dataset.to_csv("results/final_dataset.csv")
+dataset.to_csv("results/final_dataset.csv", index=False)
 
 # for each document of the corpus
 # Word2Vec takes in input a m-length vector of words and outputs m vectors of fixed k length
@@ -83,5 +82,5 @@ dataset.to_csv("results/final_dataset.csv")
 # print(data.docvectors)
 
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
-
+print("")
 print("LEARNING")

@@ -1,9 +1,9 @@
 import unittest
 import pandas as pd
+import numpy as np
 
 from ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
-    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval
-
+    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, WordVectorization, Aggregation
 
 ''' DESCRIPTION '''
 ''' This file defines the unit testing'''
@@ -219,6 +219,37 @@ class TestStopWordRemoval(unittest.TestCase): # for STOP WORD REMOVAL
         pd.testing.assert_series_equal(expected_result, result)
 
 ## HOW CAN I TEST WORD2VEC, DOC2VEC? ##
+
+class TestAggregation(unittest.TestCase):
+    '''  two solutions: '''
+    '''
+    method 1: aggregate m vectors from word2vec and compute for each vector its mean w.r.t. k features, 
+    with this method we obtain a vector of m means, so a vector of m length (variable for each document)
+    method 2: (the one we want) aggregate m vectors in one vector of k length computing the mean w.r.t m vectors,
+    with this method we obtain a vector of k means, so a vector of k length (fixed for each document)
+    '''
+
+    def test_single_row_aggregation(self):
+        w = pd.Series([[[2,4,6],
+                        [1,2,3],
+                        [3,3,3]]])
+
+        a = Aggregation()
+        result = a.transform(w)
+        expected_result = pd.Series([[2, 3, 4]])
+        pd.testing.assert_series_equal(expected_result, result)
+
+    def test_multiple_row_aggregation(self):
+        w = pd.Series([[[2, 4, 6],
+                        [1, 2, 3],
+                        [3, 3, 3]],[
+                       [1, 1, 1],
+                       [3, 1, 5]]])
+
+        a = Aggregation()
+        result = a.transform(w)
+        expected_result = pd.Series([[2, 3, 4], [2, 1, 3]])
+        pd.testing.assert_series_equal(expected_result, result)
 
 class TestDatasetPreparation(unittest.TestCase):
 
