@@ -1,4 +1,9 @@
-from datetime import date, datetime
+from datetime import datetime
+
+''' DESCRIPTION '''
+''' This is the class that defines the class Experiment, a class
+ that we use to better handle the experiments that we launch '''
+
 
 class Experiment():
 
