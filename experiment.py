@@ -1,3 +1,4 @@
+import numpy as np
 from datetime import datetime
 
 ''' DESCRIPTION '''
@@ -16,12 +17,19 @@ class Experiment():
         self.k = self.params["k"]
         self.solve_strategy = self.params["solve_strategy"][0]
 
+    def square_loss(self, prediction, y):
+        return (y - prediction) ** 2
+
+    def RMSE(self, prediction, y):
+        loss = self.square_loss(prediction, y)
+        return np.sqrt(1 / len(loss) * sum(loss))
+
     def write_experiment(self):
         message = "Sample = " + str(len(self.sample)) \
-                  , " c = " + str(self.c) \
-                  , " " + str(self.fuzzifier) \
-                  , " " + str(self.k) \
-                  , " solver = " + str(self.solve_strategy)
+                  + ", c = " + str(self.c) \
+                  + ", Fuzzifier = " + str(self.fuzzifier) \
+                  + ", Kernel = " + str(self.k) \
+                  + ", Solver = " + str(self.solve_strategy)
         now = datetime.now().strftime('%d/%m/%Y - %H:%M')
         f = open("experiments.txt", "a")
         f.write(now + " - " + str(message) + "\n")
