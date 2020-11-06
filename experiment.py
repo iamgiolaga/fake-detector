@@ -10,18 +10,17 @@ class Experiment():
     def __init__(self, sample, params = None):
         self.sample = sample
         self.params = params
+        self.datatype = sample.columns[0] # news title or body
 
-        self.c = self.params["c"]
-        self.fuzzifier = self.params["fuzzifier"][0]
-        self.k = self.params["k"]
-        self.solve_strategy = self.params["solve_strategy"][0]
+        if params is not None:
+            self.params = params
 
     def simple_split(self, dataset):
         X = dataset.iloc[:, 0].values # x-component
         y = dataset.iloc[:, 1].values # labels
         return X, y
 
-    def shuffle(dataset):
+    def shuffle(self, dataset):
         return dataset.sample(frac=1, random_state=42)
 
     def square_loss(self, prediction, y):
@@ -29,18 +28,38 @@ class Experiment():
 
     def RMSE(self, prediction, y):
         loss = self.square_loss(prediction, y)
-        return np.sqrt(1 / len(loss) * sum(loss))
+        self.score = np.sqrt(1 / len(loss) * sum(loss))
+        return self.score
 
-    def write_experiment(self):
-        message = "Sample = " + str(len(self.sample)) \
-                  + ", c = " + str(self.c) \
-                  + ", Fuzzifier = " + str(self.fuzzifier) \
-                  + ", Kernel = " + str(self.k) \
-                  + ", Solver = " + str(self.solve_strategy)
+    def write_experiment(self, experiment_mode = "training"):
+        self.extract_params()
+
+        configuration = "Sample = " + str(len(self.sample)) \
+                        + " (" + self.datatype + ")" \
+                        + ", c = " + str(self.c) \
+                        + ", Fuzzifier = " + str(self.fuzzifier) \
+                        + ", Kernel = " + str(self.k) \
+                        + ", Solver = " + str(self.solve_strategy)
+
         now = datetime.now().strftime('%d/%m/%Y - %H:%M')
         f = open("experiments.txt", "a")
-        f.write(now + " - " + str(message) + "\n")
+
+        message = ""
+
+        if experiment_mode == "training":
+            message = now + " | " + str(configuration) + " | Training error = " + str(self.score)
+
+        if experiment_mode == "test":
+            message = now + " | " + str(configuration) + " | Test error = " + str(self.score)
+
+        f.write(message + "\n")
         f.close()
 
     def set_params(self, params):
         self.params = params
+
+    def extract_params(self):
+        self.c = self.params["c"]
+        self.fuzzifier = self.params["fuzzifier"][0].__name__
+        self.k = self.params["k"]
+        self.solve_strategy = self.params["solve_strategy"][0].__name__
