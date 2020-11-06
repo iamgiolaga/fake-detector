@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
 from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.exceptions import FitFailedWarning
 import logging
 import warnings
@@ -16,31 +16,19 @@ from experiment import Experiment
 
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
 print("LEARNING")
+
+# logging configuration
 logging.getLogger().setLevel(logging.INFO)
-
-dataset = pd.read_csv("results/final_dataset.csv")
-
-news_values = dataset.iloc[:,0].values
-news_labels = dataset.iloc[:,1].values
-
-news_values = [ast.literal_eval(i) for i in news_values]
-
-#apply PCA, to reduce to 2 components
-pca_2d = PCA(n_components=2)
-news_values_2d = pca_2d.fit_transform(news_values)
-
 logging.basicConfig(filename='logs', filemode='w', format='%(message)s')
 
+# plot functions
 def gr_dataset():
     for lab, col in zip((0, 1),
                         ('blue', 'red')):
-        plt.scatter(news_values_2d[news_labels==lab, 0],
-                    news_values_2d[news_labels==lab, 1],
+        plt.scatter(X_2d[y == lab, 0],
+                    X_2d[y == lab, 1],
                     label=lab,
                     c=col)
-
-gr_dataset()
-plt.show()
 
 def gr_membership_contour(estimated_membership):
     x = np.linspace(-4, 4, 50)
@@ -53,15 +41,33 @@ def gr_membership_contour(estimated_membership):
                                      levels=(.1, .3, .5, .95), colors='k')
     plt.clabel(membership_contour, inline=1)
 
+# data loading
+dataset = pd.read_csv("results/final_dataset.csv")
+
+# start experiment
+e = Experiment(dataset)
+X, y = e.simple_split(dataset)
+X = [ast.literal_eval(i) for i in X]
+
+# reduce to 2d in order to plot
+pca_2d = PCA(n_components=2)
+X_2d = pca_2d.fit_transform(X)
+
+# plot data
+gr_dataset()
+plt.show()
+
+# try a basic model, fitted with X in 2d and see how the kernel works
 f = FuzzyInductor()
-f.fit(news_values_2d, news_labels)
+f.fit(X_2d, y)
 gr_dataset()
 gr_membership_contour(f.estimated_membership_)
 plt.show()
 
-#TODO: tuning c and k hyperparameters (with CV)
-e = Experiment(news_values, f.get_params())
-e.write_experiment()
+# split in train and test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 42)
 
-#write_experiment("Sample = "+str(len(news_values))+", Exponential fuzzifier, Gaussian kernel - Sigma = 1")
+# TODO: tuning c and k hyperparameters (with CV)
+e.set_params(f.get_params()) # set the configuration that has been used
+e.write_experiment()
 

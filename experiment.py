@@ -5,10 +5,9 @@ from datetime import datetime
 ''' This is the class that defines the class Experiment, a class
  that we use to better handle the experiments that we launch '''
 
-
 class Experiment():
 
-    def __init__(self, sample, params):
+    def __init__(self, sample, params = None):
         self.sample = sample
         self.params = params
 
@@ -16,6 +15,14 @@ class Experiment():
         self.fuzzifier = self.params["fuzzifier"][0]
         self.k = self.params["k"]
         self.solve_strategy = self.params["solve_strategy"][0]
+
+    def simple_split(self, dataset):
+        X = dataset.iloc[:, 0].values # x-component
+        y = dataset.iloc[:, 1].values # labels
+        return X, y
+
+    def shuffle(dataset):
+        return dataset.sample(frac=1, random_state=42)
 
     def square_loss(self, prediction, y):
         return (y - prediction) ** 2
@@ -34,3 +41,6 @@ class Experiment():
         f = open("experiments.txt", "a")
         f.write(now + " - " + str(message) + "\n")
         f.close()
+
+    def set_params(self, params):
+        self.params = params
