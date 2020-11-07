@@ -11,6 +11,7 @@ class Experiment():
         self.sample = sample
         self.params = params
         self.datatype = sample.columns[0] # news title or body
+        self.blankline = True
 
         if params is not None:
             self.params = params
@@ -31,7 +32,7 @@ class Experiment():
         self.score = np.sqrt(1 / len(loss) * sum(loss))
         return self.score
 
-    def write_experiment(self, experiment_mode = "training"):
+    def write_experiment(self, experiment_mode = "training", aggregation_mode = "w"):
         self.extract_params()
 
         configuration = "Sample = " + str(len(self.sample)) \
@@ -42,18 +43,32 @@ class Experiment():
                         + ", Solver = " + str(self.solve_strategy)
 
         now = datetime.now().strftime('%d/%m/%Y - %H:%M')
-        f = open("experiments.txt", "a")
 
+        f = ""
         message = ""
+
+        if aggregation_mode == "w":
+            f = open("w2vec_experiments.txt", "a")
+
+        else:
+            if aggregation_mode == "d":
+                f = open("d2vec_experiments.txt", "a")
 
         if experiment_mode == "training":
             message = now + " | " + str(configuration) + " | Training error = " + str(self.score)
 
-        if experiment_mode == "test":
-            message = now + " | " + str(configuration) + " | Test error = " + str(self.score)
+        else:
+            if experiment_mode == "test":
+                message = now + " | " + str(configuration) + " | Test error = " + str(self.score)
 
-        f.write(message + "\n")
+        if self.blankline == True:
+            f.write("\n" + message + "\n")
+
+        else:
+            f.write(message + "\n")
+
         f.close()
+        self.blankline = not self.blankline
 
     def set_params(self, params):
         self.params = params
