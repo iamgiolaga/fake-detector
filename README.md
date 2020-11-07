@@ -6,7 +6,18 @@ Currently, two main interesting datasets about web news have been found.
 1. Fake and real news dataset, 111 MB (https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv)
 2. All the News 2.0, 9.2 GB (https://components.one/datasets/all-the-news-2-news-articles-dataset/)
 
-It will be soon provided a module to load these datasets from Kaggle.
+# Datasets loading
+The two datasets presented in the section above are not included in this repository to avoid inefficiency.
+The module ```main_kaggle``` automatically downloads data from Kaggle (currently this is done for dataset 1). 
+Before executing the code, please configure the Kaggle's API by the following steps:
+
+* make sure to have Python 3 installed and correctly configured
+* install the Kaggle's API by typing in console ```pip3 install kaggle```
+* register to the Kaggle website
+* go to ```https://www.kaggle.com/<username>/account``` and click the button "Create New API Token"
+* the file downloaded in the previous step (```kaggle.json```) contains the credentials to login to the kaggle website: do not share with anyone
+* Move this file to ```~/.kaggle/``` folder in Mac (if not present just create it) and Linux or to ```C:\Users\.kaggle\``` on windows.
+Alternatively, you can populate KAGGLE_USERNAME and KAGGLE_KEY environment variables with values from kaggle.json to get the api to authenticate.
 
 # Bibliography
 [1] Learning Membership Functions for Fuzzy Sets through Modified Support Vector Clustering,
