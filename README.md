@@ -1,6 +1,22 @@
 # Fake news detection based on the induction of fuzzy sets
 This git repository shows the work of Giovanni Laganà's final thesis of his master's degree at Università degli Studi di Milano, about the extension of the algorithm described in [1], observing how the choice of input formatting techniques [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
+# Repository structure
+This repository is structured as follows:
+- modules:
+    * ```main_kaggle.py```: the module which downloads the dataset from Kaggle
+    * ```main_preprocessing.py```: the module that runs a preprocessing pipeline
+    * ```main_learning.py```: the module that is responsible for creating, fitting and using a predicitive model through the [mulearn](https://github.com/dariomalchiodi/mulearn) package
+
+- classes:
+    * ```experiment.py```: the class to better handle the launch of all experiments
+    * ```ppsteps.py```: the class that implements fit and transform functions, according to scikit-learn's [convention](https://scikit-learn.org/stable/developers/develop.html)
+    * ```preprocessing.py```: the class to configure the preprocessing pipeline with the operations that we want 
+
+- test:
+    * ```test_ppsteps.py```: the file where unitary tests are executed
+
+
 # Datasets (updated on 29/06/2020)
 Currently, two main interesting datasets about web news have been found.
 1. [Fake and real news dataset](https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv), 111 MB
@@ -18,7 +34,7 @@ Before executing the code, please configure the Kaggle's API by the following st
 * Move this file to ```~/.kaggle/``` folder in Mac and Linux (if not present just create it) or to ```C:\Users\.kaggle\``` on windows.
 Alternatively, you can populate KAGGLE_USERNAME and KAGGLE_KEY environment variables with values from kaggle.json to get the api to authenticate.
 
-For any doubt, i recommend to read this very good [guide](https://technowhisp.com/kaggle-api-python-documentation/).
+For any doubts, i recommend to read this very good [guide](https://technowhisp.com/kaggle-api-python-documentation/).
 
 # Bibliography
 * [1] Learning Membership Functions for Fuzzy Sets through Modified Support Vector Clustering,
