@@ -7,7 +7,7 @@ results/
 00_preprocessing.ipynb
 
 logs
-experiments.txt
+w2vec_experiments.txt
 main_mulearn.py
 
 .idea/**/workspace.xml

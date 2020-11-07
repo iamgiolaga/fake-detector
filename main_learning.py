@@ -21,7 +21,8 @@ print("LEARNING")
 logging.getLogger().setLevel(logging.INFO)
 logging.basicConfig(filename='logs', filemode='w', format='%(message)s')
 
-# plot functions
+'''
+#plot functions
 def gr_dataset():
     for lab, col in zip((0, 1),
                         ('blue', 'red')):
@@ -40,16 +41,20 @@ def gr_membership_contour(estimated_membership):
     membership_contour = plt.contour(X, Y, Z,
                                      levels=(.1, .3, .5, .95), colors='k')
     plt.clabel(membership_contour, inline=1)
+'''
 
 # data loading
-dataset = pd.read_csv("results/final_dataset.csv")
+dataset = pd.read_csv("results/final_text_dataset.csv")
+
+dataset = dataset.head(400)
 
 # start experiment
 e = Experiment(dataset)
 X, y = e.simple_split(dataset)
 X = [ast.literal_eval(i) for i in X]
 
-# reduce to 2d in order to plot
+'''
+#reduce to 2d in order to plot
 pca_2d = PCA(n_components=2)
 X_2d = pca_2d.fit_transform(X)
 
@@ -58,17 +63,20 @@ gr_dataset()
 plt.show()
 
 # try a basic model, fitted with X in 2d and see how the kernel works
+
 f = FuzzyInductor()
 f.fit(X_2d, y)
 gr_dataset()
 gr_membership_contour(f.estimated_membership_)
 plt.show()
+'''
 
-# split in train and test set
+#split in train and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 42)
 
 # fit with training set
 f = FuzzyInductor()
+
 f.fit(X_train, y_train)
 
 # predict with training set
@@ -81,7 +89,7 @@ print(training_error)
 
 # set the configuration that has been used
 e.set_params(f.get_params())
-e.write_experiment("training")
+e.write_experiment("training", "w")
 
 # predict with test set
 predictions = f.predict(X_test)
@@ -93,7 +101,23 @@ print(test_error)
 
 # set the configuration that has been used
 e.set_params(f.get_params())
-e.write_experiment("test")
+e.write_experiment("test", "w")
 
-# TODO: tuning c and k hyperparameters (with CV)
 
+''' Cross Validation - tuning of c and k'''
+'''
+sigmas = [.225,.5]
+parameters = {'c': [1,10,100],
+              'k': [kernel.GaussianKernel(s) for s in sigmas]}
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', FitFailedWarning)
+
+    crossval = GridSearchCV(f, param_grid=parameters)
+    crossval.fit(X_train, y_train)
+
+predictions = crossval.predict(X_test)
+e.set_params(crossval.get_params())
+print("Cross Validated error")
+print(e.RMSE(predictions, y_test))
+'''
