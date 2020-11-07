@@ -1,5 +1,4 @@
 import pandas as pd
-from ppsteps import DuplicateRowsRemoval
 from preprocessing import Preprocessing
 
 ''' DESCRIPTION '''
@@ -12,27 +11,30 @@ dataset_fake = pd.read_csv("datasets/fakeandreal/Fake.csv")
 dataset_true = pd.read_csv("datasets/fakeandreal/True.csv")
 
 ## Detect text (news title or body) to use as input ##
-titles_fake = dataset_fake["title"]
-titles_true = dataset_true["title"]
+analysis = "text"
+fake = dataset_fake[analysis]
+true = dataset_true[analysis]
+
+path = "results/final_other_dataset.csv"
+
+if analysis == "text":
+    path = "results/final_text_dataset.csv"
+else:
+    if analysis == "title":
+        path = "results/final_title_dataset.csv"
 
 print("")
 print("PREPROCESSING:")
 print("")
 
 print("INPUT:")
-print("(TYPE: ", type(titles_fake.head(200)), ")")
+print("(TYPE: ", type(fake), ")")
 
 ''' FAKE NEWS DATASET '''
 
-preprocesser_fake = Preprocessing(titles_fake.head(200)) # here you can set the configuration
+preprocesser_fake = Preprocessing(fake.head(1000)) # here you can set the configuration
 data_fake = preprocesser_fake.run_pipeline()
-processed_result = pd.DataFrame(data_fake.preprocessed)
-result = pd.DataFrame(data_fake.wordvectors)
-aggregated_result = pd.DataFrame(data_fake.aggregated)
 print("")
-processed_result.to_csv("results/preprocessed_fake.csv")
-result.to_csv("results/result_fake.csv")
-aggregated_result.to_csv("results/aggregated_fake.csv")
 print("FINAL OUTPUT:")
 print("(TYPE: ", type(data_fake.aggregated), ")")
 print(data_fake.aggregated)
@@ -40,16 +42,10 @@ print(data_fake.aggregated)
 ''' REAL NEWS DATASET '''
 
 print("INPUT:")
-print("(TYPE: ", type(titles_true.head(200)), ")")
-preprocesser_true = Preprocessing(titles_true.head(200))
+print("(TYPE: ", type(true), ")")
+preprocesser_true = Preprocessing(true.head(1000))
 data_true = preprocesser_true.run_pipeline()
-processed_result = pd.DataFrame(data_true.preprocessed)
-result = pd.DataFrame(data_true.wordvectors)
-aggregated_result = pd.DataFrame(data_true.aggregated)
 print("")
-processed_result.to_csv("results/preprocessed_true.csv")
-result.to_csv("results/result_true.csv")
-aggregated_result.to_csv("results/aggregated_true.csv")
 print("FINAL OUTPUT:")
 print("(TYPE: ", type(data_true.aggregated), ")")
 print(data_true.aggregated)
@@ -63,7 +59,7 @@ dataset_true["label"] = 0
 dataset = preprocesser_true.prepare_dataset(dataset_fake, dataset_true)
 print("DATASET IS READY")
 print(dataset.head(10))
-dataset.to_csv("results/final_dataset.csv", index=False)
+dataset.to_csv(path, index=False)
 
 # for each document of the corpus
 # Word2Vec takes in input a m-length vector of words and outputs m vectors of fixed k length
