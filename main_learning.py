@@ -1,116 +1,54 @@
-import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
-from sklearn.decomposition import PCA
-from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
-from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.exceptions import FitFailedWarning
+import matplotlib.pyplot as plt
 import logging
-import warnings
-import pickle
-import ast
 from experiment import Experiment
 
 ''' DESCRIPTION '''
 ''' This is the file where experiments are launched '''
 
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
-print("LEARNING")
+
+# ALL POSSIBLE VALUES FOR MY EXPERIMENTS #
+PATH_TEXTS = "results/final_text_dataset.csv"
+PATH_TITLES = "results/final_title_dataset.csv"
+AGGREGATION_W = "word2vec"
+AGGREGATION_D = "doc2vec"
+LIN_FUZZIFIER = "linear"
+EXP_FUZZIFIER = "exponential"
+SOLVER_TENSORFLOW = "tensorflow"
+SOLVER_GUROBI = "gurobi"
 
 # logging configuration
 logging.getLogger().setLevel(logging.INFO)
 logging.basicConfig(filename='logs', filemode='w', format='%(message)s')
 
-
-#plot functions
-def gr_dataset():
-    for lab, col, text in zip((0, 1),
-                        ('blue', 'red'),
-                              ('real news', 'fake news')):
-        plt.scatter(X_2d[y == lab, 0],
-                    X_2d[y == lab, 1],
-                    label=text,
-                    c=col,
-                    alpha=0.5)
-        plt.legend(loc="best")
-        plt.title("Scatterplot")
-
-def gr_membership_contour(estimated_membership):
-    x = np.linspace(-4, 4, 50)
-    y = np.linspace(-4, 4, 50)
-    X, Y = np.meshgrid(x, y)
-    zs = np.array([estimated_membership((x, y))
-                   for x, y in zip(np.ravel(X), np.ravel(Y))])
-    Z = zs.reshape(X.shape)
-    membership_contour = plt.contour(X, Y, Z,
-                                     levels=(.1, .3, .5, .95), colors='k')
-    plt.clabel(membership_contour, inline=1)
-
+print("LEARNING")
 
 # data loading
-dataset = pd.read_csv("results/final_text_dataset.csv")
+dataset = pd.read_csv(PATH_TEXTS)
 
-#dataset = dataset.head(400)
+# extract sample
+dataset = dataset.head(400)
 
-# start experiment
-e = Experiment(dataset)
-X, y = e.simple_split(dataset)
-X = [ast.literal_eval(i) for i in X]
+'''
+Note that when plotting a scatterplot we are dealing with 2 dimensions.
+This means that a PCA with 2 components is needed whenever X has more than 2 features.
+Moreover, we can consider the plotting as a special case of Experiment, since it takes the same
+arguments, included the 2-components PCA.
+'''
 
-
-#reduce to 2d in order to plot
-pca_2d = PCA(n_components=2)
-X_2d = pca_2d.fit_transform(X)
-
-# plot data
-fig = plt.figure(figsize=(10, 10))
-gr_dataset()
-plt.show()
-fig.savefig("images/scatterplot.png")
-
-# try a basic model, fitted with X in 2d and see how the kernel works
-f = FuzzyInductor()
-f.fit(X_2d, y)
-
-fig = plt.figure(figsize=(10, 10))
-gr_dataset()
-gr_membership_contour(f.estimated_membership_)
-plt.show()
-fig.savefig("images/scatterplot_contour.png")
-
-
-#split in train and test set
-X_train, X_test, y_train, y_test = train_test_split(X_2d, y, test_size=0.2, random_state = 42)
-
-# fit with training set
-f = FuzzyInductor()
-
-f.fit(X_train, y_train)
-
-# predict with training set
-predictions = f.predict(X_train)
-
-# compute the root mean squared error
-print("TRAINING ERROR:")
-training_error = e.RMSE(predictions, y_train)
-print(training_error)
-
-# set the configuration that has been used
-e.set_params(f.get_params())
-e.write_experiment("training", "w")
-
-# predict with test set
-predictions = f.predict(X_test)
-
-# compute the root mean squared error
-print("TEST ERROR:")
-test_error = e.RMSE(predictions, y_test)
-print(test_error)
-
-# set the configuration that has been used
-e.set_params(f.get_params())
-e.write_experiment("test", "w")
-
+# start experiment on dataset
+e = Experiment(sample = dataset,
+               aggregation_mode = AGGREGATION_W,
+               c = 1,
+               sigma = 1,
+               alpha = 0.15,
+                fuzzifier = EXP_FUZZIFIER,
+               test_size = 0.2,
+               solver = SOLVER_TENSORFLOW,
+               pca = 9,
+               plot = True)
+e.run_experiment()
 
 ''' Cross Validation - tuning of c and k'''
 '''
