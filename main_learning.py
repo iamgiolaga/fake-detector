@@ -1,7 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import logging
-from experiment import Experiment
+from classes.experiment import Experiment
 
 ''' DESCRIPTION '''
 ''' This is the file where experiments are launched '''
@@ -9,8 +8,8 @@ from experiment import Experiment
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
 
 # ALL POSSIBLE VALUES FOR MY EXPERIMENTS #
-PATH_TEXTS = "results/final_text_dataset.csv"
-PATH_TITLES = "results/final_title_dataset.csv"
+PATH_TEXTS = "preprocessed_datasets/final_text_dataset.csv"
+PATH_TITLES = "preprocessed_datasets/final_title_dataset.csv"
 AGGREGATION_W = "word2vec"
 AGGREGATION_D = "doc2vec"
 GAUSSIAN_KERNEL = "gaussian"
@@ -26,7 +25,7 @@ logging.basicConfig(filename='logs', filemode='w', format='%(message)s')
 print("LEARNING")
 
 # data loading
-dataset = pd.read_csv(PATH_TEXTS)
+dataset = pd.read_csv(PATH_TITLES)
 
 # extract sample
 dataset = dataset.head(400)
@@ -44,12 +43,9 @@ e = Experiment(sample = dataset,
                c = 1,
                kernel = GAUSSIAN_KERNEL,
                sigma = 1,
-               alpha = 0.15,
                 fuzzifier = EXP_FUZZIFIER,
                test_size = 0.2,
                solver = SOLVER_TENSORFLOW,
-               pca = 9,
-               plot = True,
                write=True)
 e.run_experiment()
 

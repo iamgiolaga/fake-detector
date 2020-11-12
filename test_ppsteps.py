@@ -1,9 +1,8 @@
 import unittest
 import pandas as pd
-import numpy as np
 
-from ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
-    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, WordVectorization, Aggregation
+from classes.ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
+    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, Aggregation
 
 ''' DESCRIPTION '''
 ''' This file defines the unit testing'''

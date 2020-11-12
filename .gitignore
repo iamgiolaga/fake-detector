@@ -2,13 +2,13 @@ __pycache__/
 datasets/
 images/
 venv/
-results/
+preprocessed_datasets/
 
 00_preprocessing.ipynb
 
 logs
 w2vec_experiments.txt
-experiments.csv
+results/experiments.csv
 main_mulearn.py
 
 .idea/**/workspace.xml

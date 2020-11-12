@@ -173,7 +173,7 @@ class Experiment():
         # 3. if not, create it and fill it
 
         try:
-            experiments = pd.read_csv("experiments.csv")
+            experiments = pd.read_csv("../results/experiments.csv")
         except:
             column_names = ["Date", "Time", "Sample", "Data Type", "Aggregation Mode",
                             "PCA", "Components", "c", "Fuzzifier", "Alpha", "Kernel",

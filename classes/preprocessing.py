@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ppsteps import DuplicateRowsRemoval, Lowercasing, \
+from classes.ppsteps import DuplicateRowsRemoval, Lowercasing, \
 Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
 DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval,\
 EntityRecognition, WordVectorization, DocVectorization, Aggregation

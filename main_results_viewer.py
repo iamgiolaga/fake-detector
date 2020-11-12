@@ -5,8 +5,10 @@ import pandas as pd
 # 3. if not, raise an exception
 
 try:
-    experiments = pd.read_csv("experiments.csv")
+    experiments = pd.read_csv("results/experiments.csv")
 except:
     raise FileNotFoundError
 
+print(experiments.columns)
 print(experiments.head(10))
+print(experiments.iloc[0])

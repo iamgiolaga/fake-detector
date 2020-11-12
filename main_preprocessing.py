@@ -1,5 +1,5 @@
 import pandas as pd
-from preprocessing import Preprocessing
+from classes.preprocessing import Preprocessing
 
 ''' DESCRIPTION '''
 ''' This is the file where the entire preprocessing phase is performed '''
@@ -15,13 +15,13 @@ analysis = "text"
 fake = dataset_fake[analysis]
 true = dataset_true[analysis]
 
-path = "results/final_other_dataset.csv"
+path = "preprocessed_datasets/final_other_dataset.csv"
 
 if analysis == "text":
-    path = "results/final_text_dataset.csv"
+    path = "preprocessed_datasets/final_text_dataset.csv"
 else:
     if analysis == "title":
-        path = "results/final_title_dataset.csv"
+        path = "preprocessed_datasets/final_title_dataset.csv"
 
 print("")
 print("PREPROCESSING:")
