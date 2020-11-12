@@ -185,7 +185,7 @@ class Experiment():
         experiments = experiments.append({"Date": date, "Time": time, "Sample": len(self.sample), "Data Type": self.datatype,
                             "PCA": self.boolpca, "Components": self.pca, "c": self.c, "Fuzzifier": self.fuzzifier,
                             "Alpha": self.alpha, "Kernel": self.kernel, "Sigma": self.sigma, "Solver": self.solver,
-                            "Iterations": self.n_iter, "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
+                            "Iterations": self.n_iter, "Test Size": self.test_size, "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
 
         experiments.to_csv("experiments.csv", index = False)
 
