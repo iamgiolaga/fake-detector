@@ -57,7 +57,7 @@ This experiment is directly stored in ```experiments.csv``` file.
 Whenever the plot flag is enabled, scatterplots are saved in ```images``` folder.
 
 # Display of Results
-When you want to display final results, you can run ```main_results_viewer``` to show the experiments outcome. 
+When you want to display final results, you can run ```main_results_viewer.py``` to show the experiments outcome. 
 It assumes you have at least one experiment in ```experiment.csv``` file.
 
 # Bibliography
