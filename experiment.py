@@ -175,17 +175,22 @@ class Experiment():
         try:
             experiments = pd.read_csv("experiments.csv")
         except:
-            column_names = ["Date", "Time", "Sample", "Data Type", "PCA", "Components",
-                            "c", "Fuzzifier", "Alpha", "Kernel", "Sigma", "Solver", "Iterations", "RMSE", "Error"]
+            column_names = ["Date", "Time", "Sample", "Data Type", "Aggregation Mode",
+                            "PCA", "Components", "c", "Fuzzifier", "Alpha", "Kernel",
+                            "Sigma", "Solver", "Iterations", "Test Size", "RMSE", "Error"]
             experiments = pd.DataFrame(columns = column_names)
 
         date = datetime.now().strftime('%d/%m/%Y')
         time = datetime.now().strftime('%H:%M')
 
-        experiments = experiments.append({"Date": date, "Time": time, "Sample": len(self.sample), "Data Type": self.datatype,
-                            "PCA": self.boolpca, "Components": self.pca, "c": self.c, "Fuzzifier": self.fuzzifier,
-                            "Alpha": self.alpha, "Kernel": self.kernel, "Sigma": self.sigma, "Solver": self.solver,
-                            "Iterations": self.n_iter, "Test Size": self.test_size, "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
+        experiments = experiments.append({"Date": date, "Time": time, "Sample": len(self.sample),
+                                          "Data Type": self.datatype, "Aggregation Mode": self.aggregation_mode,
+                                          "PCA": self.boolpca, "Components": self.pca,
+                                          "c": self.c, "Fuzzifier": self.fuzzifier,
+                                          "Alpha": self.alpha, "Kernel": self.kernel,
+                                          "Sigma": self.sigma, "Solver": self.solver,
+                                          "Iterations": self.n_iter, "Test Size": self.test_size,
+                                          "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
 
         experiments.to_csv("experiments.csv", index = False)
 
