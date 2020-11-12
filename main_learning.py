@@ -13,6 +13,7 @@ PATH_TEXTS = "results/final_text_dataset.csv"
 PATH_TITLES = "results/final_title_dataset.csv"
 AGGREGATION_W = "word2vec"
 AGGREGATION_D = "doc2vec"
+GAUSSIAN_KERNEL = "gaussian"
 LIN_FUZZIFIER = "linear"
 EXP_FUZZIFIER = "exponential"
 SOLVER_TENSORFLOW = "tensorflow"
@@ -41,13 +42,15 @@ arguments, included the 2-components PCA.
 e = Experiment(sample = dataset,
                aggregation_mode = AGGREGATION_W,
                c = 1,
+               kernel = GAUSSIAN_KERNEL,
                sigma = 1,
                alpha = 0.15,
                 fuzzifier = EXP_FUZZIFIER,
                test_size = 0.2,
                solver = SOLVER_TENSORFLOW,
                pca = 9,
-               plot = True)
+               plot = True,
+               write=True)
 e.run_experiment()
 
 ''' Cross Validation - tuning of c and k'''

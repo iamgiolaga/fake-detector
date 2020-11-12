@@ -8,6 +8,7 @@ results/
 
 logs
 w2vec_experiments.txt
+experiments.csv
 main_mulearn.py
 
 .idea/**/workspace.xml

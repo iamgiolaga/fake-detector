@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
 import ast
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -12,12 +13,13 @@ from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
 
 class Experiment():
 
-    def __init__(self, sample, aggregation_mode = "word2vec", c = 1, sigma = 1, alpha = None,
+    def __init__(self, sample, aggregation_mode = "word2vec", c = 1, kernel = "gaussian", sigma = 1, alpha = None,
                  fuzzifier = "exponential", test_size = 0.2, solver = "tensorflow",
                  n_iter = None, pca = None, plot = False, write = False):
         self.sample = sample
         self.aggregation_mode = aggregation_mode  # word2vec or doc2vec
         self.c = c  # value for SVM
+        self.kernel = kernel
         self.sigma = sigma  # value for gaussian kernel
         self.fuzzifier = fuzzifier  # linear or exponential
 
@@ -28,11 +30,16 @@ class Experiment():
         self.solver = solver  # tensorflow or gurobi
         self.n_iter = n_iter  # number of iterations for the solver
         self.pca = pca  # number of components for PCA
+
+        if pca is not None:
+            self.boolpca = True
+        else:
+            self.boolpca = False
+
         self.plot = plot  # boolean value for plotting
         self.write = write  # boolean value for writing the experiment on file
 
         self.datatype = sample.columns[0]  # news title or body
-        self.blankline = True  # a boolean value used to format pairwise training and test error
 
     def run_experiment(self):
         self.X, self.y = self.simple_split(self.sample)
@@ -160,40 +167,27 @@ class Experiment():
         return self.score
 
     def write_experiment(self, experiment_mode):
-        configuration = "Sample = " + str(len(self.sample)) \
-                        + " (" + self.datatype + ")" \
-                        + ", c = " + str(self.c) \
-                        + ", Fuzzifier = " + str(self.fuzzifier) \
-                        + ", Kernel = " + str(self.k) \
-                        + ", Solver = " + str(self.solver)
 
-        now = datetime.now().strftime('%d/%m/%Y - %H:%M')
+        # 1. read to see if any dataframe is already available
+        # 2. if yes, read it and update it
+        # 3. if not, create it and fill it
 
-        f = ""
-        message = ""
+        try:
+            experiments = pd.read_csv("experiments.csv")
+        except:
+            column_names = ["Date", "Time", "Sample", "Data Type", "PCA", "Components",
+                            "c", "Fuzzifier", "Alpha", "Kernel", "Sigma", "Solver", "Iterations", "RMSE", "Error"]
+            experiments = pd.DataFrame(columns = column_names)
 
-        if self.aggregation_mode == "word2vec":
-            f = open("w2vec_experiments.txt", "a")
+        date = datetime.now().strftime('%d/%m/%Y')
+        time = datetime.now().strftime('%H:%M')
 
-        else:
-            if self.aggregation_mode == "doc2vec":
-                f = open("d2vec_experiments.txt", "a")
+        experiments = experiments.append({"Date": date, "Time": time, "Sample": len(self.sample), "Data Type": self.datatype,
+                            "PCA": self.boolpca, "Components": self.pca, "c": self.c, "Fuzzifier": self.fuzzifier,
+                            "Alpha": self.alpha, "Kernel": self.kernel, "Sigma": self.sigma, "Solver": self.solver,
+                            "Iterations": self.n_iter, "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
 
-        if experiment_mode == "training":
-            message = now + " | " + str(configuration) + " | Training error = " + str(self.score)
-
-        else:
-            if experiment_mode == "test":
-                message = now + " | " + str(configuration) + " | Test error = " + str(self.score)
-
-        if self.blankline == True:
-            f.write("\n" + message + "\n")
-
-        else:
-            f.write(message + "\n")
-
-        f.close()
-        self.blankline = not self.blankline
+        experiments.to_csv("experiments.csv", index = False)
 
     # plot functions
     def gr_dataset(self, X, y, cardinality):
