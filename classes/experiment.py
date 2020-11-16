@@ -173,9 +173,8 @@ class Experiment():
         # 1. read to see if any dataframe is already available
         # 2. if yes, read it and update it
         # 3. if not, create it and fill it
-
         try:
-            experiments = pd.read_csv("../results/experiments.csv")
+            experiments = pd.read_csv("results/experiments.csv")
         except:
             column_names = ["Date", "Time", "Sample", "Data Type", "Aggregation Mode",
                             "PCA", "Components", "c", "Fuzzifier", "Alpha", "Kernel",
