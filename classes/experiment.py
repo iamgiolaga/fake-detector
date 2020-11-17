@@ -124,6 +124,7 @@ class Experiment():
 
         # predict with training set (training error)
         self.predictions = self.f.predict(self.X_train)
+        self.cardinality = len(self.X_train)
 
         # compute the root mean squared error
         print("TRAINING ERROR:")
@@ -135,6 +136,7 @@ class Experiment():
 
         # predict with test set (test error)
         self.predictions = self.f.predict(self.X_test)
+        self.cardinality = len(self.X_test)
 
         # compute the root mean squared error
         print("TEST ERROR:")
@@ -173,7 +175,7 @@ class Experiment():
                             "Sigma", "Solver", "Iterations", "Test Size", "RMSE", "Error"]
             experiments = pd.DataFrame(columns = column_names)
 
-        experiments = experiments.append({"Date": self.date, "Time": self.time, "Sample": len(self.sample),
+        experiments = experiments.append({"Date": self.date, "Time": self.time, "Sample": self.cardinality,
                                           "Data Type": self.datatype, "Aggregation Mode": self.aggregation_mode,
                                           "PCA": self.boolpca, "Components": self.pca,
                                           "c": self.c, "Fuzzifier": self.fuzzifier,
