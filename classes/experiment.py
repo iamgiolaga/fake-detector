@@ -16,6 +16,7 @@ class Experiment():
     def __init__(self, sample, aggregation_mode = "word2vec", c = 1, kernel = "gaussian", sigma = 1, alpha = None,
                  fuzzifier = "exponential", test_size = 0.2, solver = "tensorflow",
                  n_iter = None, pca = None, plot = False, write = False):
+
         self.sample = sample
         self.aggregation_mode = aggregation_mode  # word2vec or doc2vec
         self.c = c  # value for SVM
@@ -36,6 +37,8 @@ class Experiment():
         else:
             self.boolpca = False
 
+        self.date = datetime.now().strftime('%d.%m.%Y')
+        self.time = datetime.now().strftime('%H:%M')
         self.plot = plot  # boolean value for plotting
         self.write = write  # boolean value for writing the experiment on file
 
@@ -96,16 +99,14 @@ class Experiment():
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             plt.show()
-            date = datetime.now().strftime('%d.%m.%Y')
-            time = datetime.now().strftime('%H:%M')
-            fig.savefig("images/scatterplot_" + date + "_" + time + ".png")
+            fig.savefig("images/scatterplot_" + self.date + "_" + self.time + ".png")
 
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             self.gr_membership_contour(self.f_PCA.estimated_membership_)
             plt.show()
 
-            fig.savefig("images/scatterplot_countour_" + date + "_" + time + ".png")
+            fig.savefig("images/scatterplot_countour_" + self.date + "_" + self.time + ".png")
 
         if self.pca is not None:
             # extract n features
@@ -172,10 +173,7 @@ class Experiment():
                             "Sigma", "Solver", "Iterations", "Test Size", "RMSE", "Error"]
             experiments = pd.DataFrame(columns = column_names)
 
-        date = datetime.now().strftime('%d/%m/%Y')
-        time = datetime.now().strftime('%H:%M')
-
-        experiments = experiments.append({"Date": date, "Time": time, "Sample": len(self.sample),
+        experiments = experiments.append({"Date": self.date, "Time": self.time, "Sample": len(self.sample),
                                           "Data Type": self.datatype, "Aggregation Mode": self.aggregation_mode,
                                           "PCA": self.boolpca, "Components": self.pca,
                                           "c": self.c, "Fuzzifier": self.fuzzifier,
