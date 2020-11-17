@@ -1,0 +1,14 @@
+.idea/
+.ipynb_checkpoints/
+__pycache__/
+datasets/
+images/
+venv/
+preprocessed_datasets/
+
+00_preprocessing.ipynb
+
+logs
+w2vec_experiments.txt
+results/experiments.csv
+main_mulearn.py

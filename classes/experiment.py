@@ -96,25 +96,16 @@ class Experiment():
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             plt.show()
-
-            fig.savefig("images/scatterplot_"
-                        + str(len(self.X_train_PCA))
-                        + "_c=" + str(self.c)
-                        + "_" + self.fuzzifier
-                        + "_" + str(self.k)
-                        + "_" + self.solver + ".png")
+            date = datetime.now().strftime('%d.%m.%Y')
+            time = datetime.now().strftime('%H:%M')
+            fig.savefig("images/scatterplot_" + date + "_" + time + ".png")
 
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             self.gr_membership_contour(self.f_PCA.estimated_membership_)
             plt.show()
 
-            fig.savefig("images/scatterplot_countour_"
-                        + str(len(self.X_train_PCA))
-                        + "_c=" + str(self.c)
-                        + "_" + self.fuzzifier + "fuzzy"
-                        + "_" + str(self.k)
-                        + "_" + self.solver + ".png")
+            fig.savefig("images/scatterplot_countour_" + date + "_" + time + ".png")
 
         if self.pca is not None:
             # extract n features
@@ -193,7 +184,7 @@ class Experiment():
                                           "Iterations": self.n_iter, "Test Size": self.test_size,
                                           "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
 
-        experiments.to_csv("results/experiments.csv", index = False)
+        experiments.to_csv("results/experiments.csv", index=False)
 
     # plot functions
     def gr_dataset(self, X, y, cardinality):
