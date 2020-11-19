@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 from classes.experiment import Experiment
 
-# TEST
+# EXPERIMENT
 
 ''' DESCRIPTION '''
 ''' This is the file where experiments are launched on test set with the selected model '''
@@ -10,8 +10,8 @@ from classes.experiment import Experiment
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
 
 # ALL POSSIBLE VALUES FOR MY EXPERIMENTS #
-PATH_TEXTS = "preprocessed_datasets/train/final_text_dataset_1594.csv"
-PATH_TITLES = "preprocessed_datasets/test/final_title_dataset_1000.csv"
+PATH_TEXTS = "preprocessed_datasets/test/final_text_dataset_399.csv"
+# PATH_TITLES = "preprocessed_datasets/test/final_title_dataset_1000.csv"
 AGGREGATION_W = "word2vec"
 AGGREGATION_D = "doc2vec"
 GAUSSIAN_KERNEL = "gaussian"
@@ -24,13 +24,11 @@ SOLVER_GUROBI = "gurobi"
 #logging.getLogger().setLevel(logging.INFO)
 #logging.basicConfig(filename='logs', filemode='w', format='%(message)s')
 
-print("LEARNING")
-
 # data loading
 dataset = pd.read_csv(PATH_TEXTS)
 
 # extract sample
-dataset = dataset.head(10)
+# dataset = dataset.head(100)
 
 '''
 Note that when plotting a scatterplot we are dealing with 2 dimensions.
@@ -51,21 +49,3 @@ e = Experiment(sample = dataset,
                write = True,
                plot = False)
 e.run_experiment()
-
-''' Cross Validation - tuning of c and k'''
-'''
-sigmas = [.225,.5]
-parameters = {'c': [1,10,100],
-              'k': [kernel.GaussianKernel(s) for s in sigmas]}
-
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore', FitFailedWarning)
-
-    crossval = GridSearchCV(f, param_grid=parameters)
-    crossval.fit(X_train, y_train)
-
-predictions = crossval.predict(X_test)
-e.set_params(crossval.get_params())
-print("Cross Validated error")
-print(e.RMSE(predictions, y_test))
-'''

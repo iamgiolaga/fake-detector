@@ -3,10 +3,11 @@
 __pycache__/
 datasets/
 images/
+selected_models/
 venv/
 preprocessed_datasets/
+results/
 
 00_preprocessing.ipynb
 
-results/experiments.csv
 main_mulearn.py

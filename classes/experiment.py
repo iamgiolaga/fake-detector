@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import ast
 import os
-from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.model_selection import train_test_split
 from datetime import datetime
 from sklearn.decomposition import PCA
 from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt

@@ -2,7 +2,7 @@ import pandas as pd
 from classes.preprocessing import Preprocessing
 import os
 
-# DATA CLEANING
+# PREPROCESSING
 
 ''' DESCRIPTION '''
 ''' This is the file where the entire preprocessing phase is performed '''
