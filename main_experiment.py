@@ -2,14 +2,16 @@ import pandas as pd
 import logging
 from classes.experiment import Experiment
 
+# TEST
+
 ''' DESCRIPTION '''
-''' This is the file where experiments are launched '''
+''' This is the file where experiments are launched on test set with the selected model '''
 
 ''' THIRD SECTION: LEARNING A MODEL TO RECOGNIZE FAKE NEWS '''
 
 # ALL POSSIBLE VALUES FOR MY EXPERIMENTS #
-PATH_TEXTS = "preprocessed_datasets/final_text_dataset.csv"
-PATH_TITLES = "preprocessed_datasets/final_title_dataset.csv"
+PATH_TEXTS = "preprocessed_datasets/train/final_text_dataset_1594.csv"
+PATH_TITLES = "preprocessed_datasets/test/final_title_dataset_1000.csv"
 AGGREGATION_W = "word2vec"
 AGGREGATION_D = "doc2vec"
 GAUSSIAN_KERNEL = "gaussian"
@@ -28,7 +30,7 @@ print("LEARNING")
 dataset = pd.read_csv(PATH_TEXTS)
 
 # extract sample
-dataset = dataset.head(1000)
+dataset = dataset.head(10)
 
 '''
 Note that when plotting a scatterplot we are dealing with 2 dimensions.
@@ -47,7 +49,7 @@ e = Experiment(sample = dataset,
                test_size = 0.2,
                solver = SOLVER_TENSORFLOW,
                write = True,
-               plot = True)
+               plot = False)
 e.run_experiment()
 
 ''' Cross Validation - tuning of c and k'''
