@@ -7,7 +7,6 @@ venv/
 preprocessed_datasets/
 
 00_preprocessing.ipynb
-architecture.png
 
 results/experiments.csv
 main_mulearn.py

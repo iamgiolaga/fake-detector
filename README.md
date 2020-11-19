@@ -2,7 +2,7 @@
 This git repository shows the work of Giovanni Laganà's final thesis of his master's degree at Università degli Studi di Milano, about the extension of the algorithm described in [1], observing how the choice of input formatting techniques [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
 # Architecture
-![alt text](architecture.png)
+![architecture](architecture.png)
 
 # Repository structure
 This repository is structured as follows:
