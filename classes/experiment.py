@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import ast
+import os
 from sklearn.model_selection import GridSearchCV, train_test_split
 from datetime import datetime
 from sklearn.decomposition import PCA
@@ -11,7 +12,7 @@ from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
 ''' This is the class that defines the class Experiment, a class
  that we use to better handle the experiments that we launch '''
 
-class Experiment():
+class Experiment:
 
     def __init__(self, sample, aggregation_mode = "word2vec", c = 1, kernel = "gaussian", sigma = 1, alpha = None,
                  fuzzifier = "exponential", test_size = 0.2, solver = "tensorflow",
@@ -45,8 +46,8 @@ class Experiment():
         self.datatype = sample.columns[0]  # news title or body
 
     def run_experiment(self):
-        self.X, self.y = self.simple_split(self.sample)
-        self.X = [ast.literal_eval(i) for i in self.X]
+        self.X, self.y = self.simple_split(self.sample) # extract X component and labels
+        self.X = [ast.literal_eval(i) for i in self.X] # this is needed to parse strings
 
         ''' CONFIGURE FUZZY INDUCTOR '''
         # solver strategy
@@ -99,14 +100,27 @@ class Experiment():
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             plt.show()
-            fig.savefig("images/scatterplot_" + self.date + "_" + self.time + ".png")
+
+            outdir = "images/"
+            if not os.path.exists(outdir):
+                os.mkdir(outdir)
+
+            outname = "scatterplot_" + self.date + "_" + self.time + ".png"
+            fullname = os.path.join(outdir, outname)
+            fig.savefig(fullname)
 
             fig = plt.figure(figsize=(10, 10))
             self.gr_dataset(self.X_train_PCA, self.y_train_PCA, len(self.X_train_PCA))
             self.gr_membership_contour(self.f_PCA.estimated_membership_)
             plt.show()
 
-            fig.savefig("images/scatterplot_countour_" + self.date + "_" + self.time + ".png")
+            outdir = "images/"
+            if not os.path.exists(outdir):
+                os.mkdir(outdir)
+
+            outname = "scatterplot_countour_" + self.date + "_" + self.time + ".png"
+            fullname = os.path.join(outdir, outname)
+            fig.savefig(fullname)
 
         if self.pca is not None:
             # extract n features
@@ -167,8 +181,17 @@ class Experiment():
         # 1. read to see if any dataframe is already available
         # 2. if yes, read it and update it
         # 3. if not, create it and fill it
+
+        outdir = "results/"
+        outname = "experiments.csv"
+
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        fullname = os.path.join(outdir, outname)
+
         try:
-            experiments = pd.read_csv("results/experiments.csv")
+            experiments = pd.read_csv(fullname)
         except:
             column_names = ["Date", "Time", "Sample", "Data Type", "Aggregation Mode",
                             "PCA", "Components", "c", "Fuzzifier", "Alpha", "Kernel",
@@ -184,10 +207,10 @@ class Experiment():
                                           "Iterations": self.n_iter, "Test Size": self.test_size,
                                           "RMSE": self.score, "Error": experiment_mode}, ignore_index = True)
 
-        experiments.to_csv("results/experiments.csv", index=False)
+        experiments.to_csv(fullname, index=False)
 
     # plot functions
-    def gr_dataset(self, X, y, cardinality):
+    def gr_dataset(self, X, y, cardinality): # currently all plots are using training sets
         for lab, col, text in zip((0, 1),
                                   ('blue', 'red'),
                                   ('real news', 'fake news')):

@@ -1,6 +1,11 @@
 from kaggle.api.kaggle_api_extended import KaggleApi
 from termcolor import colored
 
+# GET DATA
+
+''' DESCRIPTION '''
+''' This is the file where datasets are obtained '''
+
 '''Authenticating With API Server'''
 api = KaggleApi()
 api.authenticate()
