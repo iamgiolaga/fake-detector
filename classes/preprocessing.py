@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 from classes.ppsteps import DuplicateRowsRemoval, Lowercasing, \
 Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
@@ -8,13 +9,13 @@ EntityRecognition, WordVectorization, DocVectorization, Aggregation
 ''' DESCRIPTION '''
 ''' This class is responsible for the preprocessing pipeline execution '''
 
-class Preprocessing():
+class Preprocessing:
 
     def __init__(self, text,
                  duplicate_rows_removal = True, lowercasing = True, tokenization = True,
                     lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
-                 word2vec = True, doc2vec = False, aggregation = True):
+                 word2vec = True, doc2vec = False, aggregation = True, test_size = 0.2):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.lowercasing = lowercasing
@@ -29,6 +30,10 @@ class Preprocessing():
         self.word2vec = word2vec
         self.doc2vec = doc2vec
         self.aggregation = aggregation
+        self.test_size = test_size
+
+        if self.doc2vec:
+            self.aggregation = False
 
     def run_pipeline(self):
         # TODO: check combinations of operations that need to be executed together and in which order
@@ -84,25 +89,37 @@ class Preprocessing():
             print(self.preprocessed)
             print("")
 
+        # Split in training and test here because the following operations
+        # depend on the dataset (possible data leakage)
+        self.train, self.test = train_test_split(
+            self.preprocessed, test_size=self.test_size, random_state=42
+        )
+
         # TODO: Merge word pairs - Look at SpaCy's documentation
 
-        if self.data_augmentation == True: # TODO: consider if necessary
-            self.augment_data(self.preprocessed)
+        # if self.data_augmentation == True: # TODO: consider if necessary
+        #     self.augment_data(self.preprocessed)
 
         if self.word2vec == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
-            self.wordvectors = self.wordvectorizer(self.preprocessed)
-            print(self.wordvectors)
+            print("(TYPE: ", type(self.train), ")")
+            self.wordvectors_train = self.wordvectorizer(self.train)
+            print(self.wordvectors_train)
+            self.wordvectors_test = self.wordvectorizer(self.test)
+            print(self.wordvectors_test)
 
         if self.doc2vec == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
-            self.docvectors = self.docvectorizer(self.preprocessed)
-            print(self.docvectors)
+            print("(TYPE: ", type(self.train), ")")
+            self.docvectors_train = self.docvectorizer(self.train)
+            print(self.docvectors_train)
+            self.docvectors_test = self.docvectorizer(self.test)
+            print(self.docvectors_test)
 
         if self.aggregation == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
-            self.aggregated = self.aggregate(self.wordvectors)
-            print(self.aggregated)
+            print("(TYPE: ", type(self.wordvectors_test), ")")
+            self.aggregated_train = self.aggregate(self.wordvectors_train)
+            print(self.aggregated_train)
+            self.aggregated_test = self.aggregate(self.wordvectors_test)
+            print(self.aggregated_test)
 
         print("preprocessing finished.")
 
