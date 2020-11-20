@@ -2,10 +2,10 @@
 This git repository shows the work of Giovanni Laganà's final thesis of his master's degree at Università degli Studi di Milano, about the extension of the algorithm described in [1], observing how the choice of input formatting techniques [2] will affect the learning results, focusing on the problem of detecting the reliability score of news published on online newspapers.
 
 # Data Flow Diagram
-![main_kaggle.py](images/repository_images/main_kaggle.jpg)
-![main_kaggle.py](images/repository_images/main_preprocessing.jpg)
-![main_kaggle.py](images/repository_images/main_model_selection.jpg)
-![main_kaggle.py](images/repository_images/main_results_viewer.jpg)
+![main_kaggle.py](repository_images/main_kaggle.jpg)
+![main_kaggle.py](repository_images/main_preprocessing.jpg)
+![main_kaggle.py](repository_images/main_model_selection.jpg)
+![main_kaggle.py](repository_images/main_results_viewer.jpg)
 
 # Repository structure
 This repository is structured as follows:
