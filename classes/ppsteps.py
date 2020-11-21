@@ -73,7 +73,6 @@ class RemoveWordsWithNumbers(BaseEstimator):
         return any(char.isdigit() for char in input_string)
 
 class CleaningWords(BaseEstimator):
-
     def fit(self, data):
         return
 

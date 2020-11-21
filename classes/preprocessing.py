@@ -1,5 +1,6 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import pickle
+import os
 
 from classes.ppsteps import DuplicateRowsRemoval, Lowercasing, \
 Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
@@ -11,13 +12,15 @@ EntityRecognition, WordVectorization, DocVectorization, Aggregation
 
 class Preprocessing:
 
-    def __init__(self, text,
+    def __init__(self, text, date, time, analysis = "text", news_type = "fake",
                  duplicate_rows_removal = True, lowercasing = True, tokenization = True,
-                    lemmatization = True, noise_removal = True, stemming = False,
+                lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
                  word2vec = True, doc2vec = False, aggregation = True, test_size = 0.2):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
+        self.analysis = analysis
+        self.news_type = news_type
         self.lowercasing = lowercasing
         self.duplicate_rows_removal = duplicate_rows_removal
         self.tokenization = tokenization
@@ -35,6 +38,9 @@ class Preprocessing:
         if self.doc2vec:
             self.aggregation = False
 
+        self.date = date
+        self.time = time
+
     def run_pipeline(self):
         # TODO: check combinations of operations that need to be executed together and in which order
         print("")
@@ -44,25 +50,25 @@ class Preprocessing:
         self.set_current_configuration() # stores which configuration is used
 
         if self.lowercasing == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.lowercase(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.duplicate_rows_removal == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_rows_duplicates(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.entity_recognition == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.entities = self.recognize_entity(self.preprocessed)
             print(self.entities)
             print("")
 
         if self.lemmatization == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.lemmatize(self.preprocessed)
             print(self.preprocessed)
             print("")
@@ -72,28 +78,22 @@ class Preprocessing:
         #     self.tokenize(self.preprocessed)
 
         if self.noise_removal == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_noise(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.stemming == True: # exclusive w.r.t. lemmatization
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.stem(self.preprocessed)
             print(self.preprocessed)
             print("")
 
         if self.stopword_removal == True:
-            print("(TYPE: ", type(self.preprocessed), ")")
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_stopword(self.preprocessed)
             print(self.preprocessed)
             print("")
-
-        # Split in training and test here because the following operations
-        # depend on the dataset (possible data leakage)
-        self.train, self.test = train_test_split(
-            self.preprocessed, test_size=self.test_size, random_state=42
-        )
 
         # TODO: Merge word pairs - Look at SpaCy's documentation
 
@@ -101,25 +101,19 @@ class Preprocessing:
         #     self.augment_data(self.preprocessed)
 
         if self.word2vec == True:
-            print("(TYPE: ", type(self.train), ")")
-            self.wordvectors_train = self.wordvectorizer(self.train)
-            print(self.wordvectors_train)
-            self.wordvectors_test = self.wordvectorizer(self.test)
-            print(self.wordvectors_test)
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
+            self.wordvectors = self.wordvectorizer(self.preprocessed)
+            print(self.wordvectors)
 
         if self.doc2vec == True:
-            print("(TYPE: ", type(self.train), ")")
-            self.docvectors_train = self.docvectorizer(self.train)
-            print(self.docvectors_train)
-            self.docvectors_test = self.docvectorizer(self.test)
-            print(self.docvectors_test)
+            print("(INPUT TYPE: ", type(self.preprocessed), ")")
+            self.docvectors = self.docvectorizer(self.preprocessed)
+            print(self.docvectors)
 
         if self.aggregation == True:
-            print("(TYPE: ", type(self.wordvectors_test), ")")
-            self.aggregated_train = self.aggregate(self.wordvectors_train)
-            print(self.aggregated_train)
-            self.aggregated_test = self.aggregate(self.wordvectors_test)
-            print(self.aggregated_test)
+            print("(INPUT TYPE: ", type(self.wordvectors), ")")
+            self.aggregated = self.aggregate(self.wordvectors)
+            print(self.aggregated)
 
         print("preprocessing finished.")
 
@@ -285,3 +279,24 @@ class Preprocessing:
             configuration.append("Aggregation")
 
         self.configuration = configuration
+
+    def write_preprocessed_dataset(self):
+        outdir = "preprocessed_datasets/"
+        outname = "other"
+
+        if self.analysis == "text":
+            outdir = "preprocessed_datasets/text/" + self.date + "_" + self.time + "/"
+            outname = "dataset_" + self.news_type + ".pickle"
+        else:
+            if self.analysis == "title":
+                outdir = "preprocessed_datasets/title/" + self.date + "_" + self.time + "/"
+                outname = "dataset_" + self.news_type + ".pickle"
+
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        fullname = os.path.join(outdir, outname)
+
+        file = open(fullname, "wb")
+        pickle.dump(self, file)
+        file.close()
