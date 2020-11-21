@@ -154,6 +154,15 @@ class TestWordsCleaning(unittest.TestCase): # for NOISE REMOVAL
                                      ["Mms", "is", "a", "known", "brand"]])
         pd.testing.assert_series_equal(expected_result, result)
 
+    def test_multiple_spaces(self):
+        example = pd.Series([["“", "100%", " ", "can", "     ", "do", "  ", "”", "-", "this", "were", "the",
+                              "words", "of", "Mr.", "Brown..."]])
+        c = CleaningWords()
+        result = c.transform(example)
+        expected_result = pd.Series([["100", "can", "do", "this", "were", "the",
+                                      "words", "of", "Mr", "Brown"]])
+        pd.testing.assert_series_equal(expected_result, result)
+
 class TestDuplicateWordsRemoval(unittest.TestCase): # for NOISE REMOVAL
     # input should be a list of strings
 
