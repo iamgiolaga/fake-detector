@@ -1,6 +1,8 @@
 import pandas as pd
-from classes.preprocessing import Preprocessing
 import os
+
+from classes.preprocessing import Preprocessing
+from datetime import datetime
 
 # PREPROCESSING
 
@@ -8,13 +10,15 @@ import os
 ''' This is the file where the entire preprocessing phase is performed '''
 
 ''' FIRST SECTION: LOADING AND PREPROCESSING '''
+date = datetime.now().strftime('%d.%m.%Y')
+time = datetime.now().strftime('%H:%M')
 
 ## Dataset loading ## (example)
 dataset_fake = pd.read_csv("datasets/fakeandreal/Fake.csv")
 dataset_true = pd.read_csv("datasets/fakeandreal/True.csv")
 
 ## Detect text (news title or body) to use as input ##
-analysis = "text"
+analysis = "text" # let's focus on the corpus of news
 fake = dataset_fake[analysis]
 true = dataset_true[analysis]
 
@@ -30,18 +34,24 @@ print("INPUT:")
 print("(TYPE: ", type(fake), ")")
 print(fake.head(10))
 
-preprocesser_fake = Preprocessing(fake.head(1000)) # here you can set the configuration
+preprocesser_fake = Preprocessing(
+    fake.head(50),
+    date,
+    time,
+    analysis = analysis,
+    news_type = "fake"
+) # here you can set the configuration
 data_fake = preprocesser_fake.run_pipeline()
 print("")
 print("FINAL OUTPUT:")
 
 if preprocesser_fake.aggregation:
-    print("(TYPE: ", type(data_fake.aggregated_test), ")")
-    print(data_fake.aggregated_test)
+    print("(TYPE: ", type(data_fake.aggregated), ")")
+    print(data_fake.aggregated)
 
 else:
-    print("(TYPE: ", type(data_fake.docvectors_test), ")")
-    print(data_fake.docvectors_test)
+    print("(TYPE: ", type(data_fake.docvectors), ")")
+    print(data_fake.docvectors)
 
 ''' REAL NEWS DATASET '''
 
@@ -49,67 +59,56 @@ print("INPUT:")
 print("(TYPE: ", type(true), ")")
 print(true.head(10))
 
-preprocesser_true = Preprocessing(true.head(1000))
+preprocesser_true = Preprocessing(
+    true.head(50),
+    date,
+    time,
+    analysis = analysis,
+    news_type = "true"
+)
 data_true = preprocesser_true.run_pipeline()
 print("")
 
 if preprocesser_true.aggregation:
-    print("(TYPE: ", type(data_true.aggregated_test), ")")
-    print(data_true.aggregated_test)
+    print("(TYPE: ", type(data_true.aggregated), ")")
+    print(data_true.aggregated)
 
 else:
-    print("(TYPE: ", type(data_true.docvectors_test), ")")
-    print(data_true.docvectors_test)
+    print("(TYPE: ", type(data_true.docvectors), ")")
+    print(data_true.docvectors)
 
 ''' SECOND SECTION: PUT TOGETHER FAKE AND REAL NEWS WITH LABEL '''
 
-dataset_fake_train = pd.DataFrame(data_fake.aggregated_train)
-dataset_true_train = pd.DataFrame(data_true.aggregated_train)
-dataset_fake_test = pd.DataFrame(data_fake.aggregated_test)
-dataset_true_test = pd.DataFrame(data_true.aggregated_test)
+dataset_fake = pd.DataFrame(data_fake.aggregated)
+dataset_true = pd.DataFrame(data_true.aggregated)
 
-dataset_fake_train["label"] = 1
-dataset_true_train["label"] = 0
-dataset_fake_test["label"] = 1
-dataset_true_test["label"] = 0
+dataset_fake["label"] = 1
+dataset_true["label"] = 0
 
-dataset_train = preprocesser_true.prepare_dataset(dataset_fake_train, dataset_true_train)
-dataset_test = preprocesser_true.prepare_dataset(dataset_fake_test, dataset_true_test)
+dataset = preprocesser_true.prepare_dataset(dataset_fake, dataset_true)
 print("DATASET IS READY")
-print(dataset_test.head(10))
+print(dataset.head(10))
 
-cardinality_train = len(dataset_true_train) + len(dataset_fake_train)
-cardinality_test =  len(dataset_true_test) + len(dataset_fake_test)
+cardinality = len(dataset_true) + len(dataset_fake)
 
-outdir = 'preprocessed_datasets/train/'
+outdir = 'preprocessed_datasets/'
 outname = "other"
 
 if analysis == "text":
-    outname = "final_text_dataset_" + str(cardinality_train) + ".csv"
+    outdir = "preprocessed_datasets/text/" + date + "_" + time
+    outname = "final_text_dataset_" + str(cardinality) + ".csv"
 else:
     if analysis == "title":
-        outname = "final_title_dataset_" + str(cardinality_train) + ".csv"
+        outname = "final_title_dataset_" + str(cardinality) + ".csv"
 
 if not os.path.exists(outdir):
     os.makedirs(outdir)
 
 fullname = os.path.join(outdir, outname)
-dataset_train.to_csv(fullname, index=False)
+dataset.to_csv(fullname, index=False)
 
-outdir = 'preprocessed_datasets/test/'
-outname = "other"
-
-if analysis == "text":
-    outname = "final_text_dataset_" + str(cardinality_test) + ".csv"
-else:
-    if analysis == "title":
-        outname = "final_title_dataset_" + str(cardinality_test) + ".csv"
-
-if not os.path.exists(outdir):
-    os.makedirs(outdir)
-
-fullname = os.path.join(outdir, outname)
-dataset_test.to_csv(fullname, index=False)
+preprocesser_true.write_preprocessed_dataset()
+preprocesser_fake.write_preprocessed_dataset()
 
 # for each document of the corpus
 # Word2Vec takes in input a m-length vector of words and outputs m vectors of fixed k length
