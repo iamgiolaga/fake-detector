@@ -146,7 +146,7 @@ class URLRemoval(BaseEstimator):
         return
 
     def transform(self, data):
-        return data.apply(lambda s : [w for w in s if not "http" in w])
+        return data.apply(lambda s : [w for w in s if not "http" in w and not "www" in w])
 
 class WordVectorization(BaseEstimator):
     def fit(self, data):
