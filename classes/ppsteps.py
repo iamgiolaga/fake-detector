@@ -11,6 +11,13 @@ from nltk.stem import PorterStemmer
 ''' DESCRIPTION '''
 ''' This file defines the set of classes that compose the preprocessing pipeline '''
 
+class BlankRowsRemoval(BaseEstimator):
+    def fit(self):
+        return
+
+    def transform(self, data):
+        return data[data.map(lambda s: len(s)) > 0].reset_index(drop=True)
+
 class Lowercasing(BaseEstimator):
     def fit(self, data):
         return
@@ -134,6 +141,13 @@ class DataAugmentation(BaseEstimator):
     def transform(self, data):
         return
 
+class URLRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+        return data.apply(lambda s : [w for w in s if not "http" in w])
+
 class WordVectorization(BaseEstimator):
     def fit(self, data):
         self.nlp = spacy.load('en_core_web_sm')
@@ -164,6 +178,9 @@ class DocVectorization(BaseEstimator):
 class Aggregation(BaseEstimator):
     def fit(self, data):
         return
+
     def transform(self, data): ## TODO: Fisher kernel aggregation
-        data = data.apply(lambda s: np.mean(s, axis=0))
+        data = data.apply(lambda s: np.nanmean(s, axis=0))
         return data.apply(lambda s: list(s))
+
+

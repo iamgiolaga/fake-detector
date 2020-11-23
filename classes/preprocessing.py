@@ -2,18 +2,19 @@ import pandas as pd
 import pickle
 import os
 
-from classes.ppsteps import DuplicateRowsRemoval, Lowercasing, \
-Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
-DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval,\
-EntityRecognition, WordVectorization, DocVectorization, Aggregation
+from classes.ppsteps import BlankRowsRemoval, DuplicateRowsRemoval, Lowercasing, \
+    Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
+    DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval, \
+    EntityRecognition, WordVectorization, DocVectorization, Aggregation, URLRemoval
 
 ''' DESCRIPTION '''
 ''' This class is responsible for the preprocessing pipeline execution '''
 
+
 class Preprocessing:
 
     def __init__(self, text, date, time, analysis = "text", news_type = "fake",
-                 duplicate_rows_removal = True, lowercasing = True, tokenization = True,
+                duplicate_rows_removal = True, lowercasing = True, tokenization = True,
                 lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
                  word2vec = True, doc2vec = False, aggregation = True, test_size = 0.2):
@@ -156,22 +157,42 @@ class Preprocessing:
         return data
 
     def remove_noise(self, data):
+        print("\t Removing URLs...")
+        u = URLRemoval()
+        data = u.transform(data)
+        print(data)
+        print("")
         print("Removing noise...")
         print("\t Bad characters...")
         b = BadCharRemoval()
         data = b.transform(data)
+        print(data)
+        print("")
         print("\t Numbers...")
         n = NumbersRemoval()
         data = n.transform(data)
+        print(data)
+        print("")
         print("\t Removing words with numbers...")
         u = RemoveWordsWithNumbers()
         data = u.transform(data)
+        print(data)
+        print("")
         print("\t Cleaning words...")
         a = CleaningWords()
         data = a.transform(data)
+        print(data)
+        print("")
         print("\t Duplicate words...")
         d = DuplicateWordsRemoval()
         data = d.transform(data)
+        print(data)
+        print("")
+        print("\t Removing blank rows...")
+        print("\t Items found: " + str(len(data)) + " rows")
+        b = BlankRowsRemoval()
+        data = b.transform(data)
+        print("\t Remaining items: " + str(len(data)) + " rows")
         print("...done.")
         print("")
         return data
