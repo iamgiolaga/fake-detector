@@ -11,7 +11,7 @@ from datetime import datetime
 
 ''' FIRST SECTION: LOADING AND PREPROCESSING '''
 date = datetime.now().strftime('%d.%m.%Y')
-time = datetime.now().strftime('%H:%M')
+time = datetime.now().strftime('%H.%M')
 
 ## Dataset loading ## (example)
 dataset_fake = pd.read_csv("datasets/fakeandreal/Fake.csv")
@@ -35,7 +35,7 @@ print("(TYPE: ", type(fake), ")")
 print(fake.head(10))
 
 preprocesser_fake = Preprocessing(
-    fake.head(50),
+    fake,
     date,
     time,
     analysis = analysis,
@@ -60,7 +60,7 @@ print("(TYPE: ", type(true), ")")
 print(true.head(10))
 
 preprocesser_true = Preprocessing(
-    true.head(50),
+    true,
     date,
     time,
     analysis = analysis,
