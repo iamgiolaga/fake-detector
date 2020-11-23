@@ -1,8 +1,9 @@
 import unittest
+import numpy as np
 import pandas as pd
 
 from classes.ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
-    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, Aggregation
+    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, WordVectorization, Aggregation
 
 ''' DESCRIPTION '''
 ''' This file defines the unit testing'''
@@ -238,7 +239,7 @@ class TestAggregation(unittest.TestCase):
     '''
 
     def test_single_row_aggregation(self):
-        w = pd.Series([[[2,4,6],
+        w = pd.Series([[[np.nan,4,6],
                         [1,2,3],
                         [3,3,3]]])
 
