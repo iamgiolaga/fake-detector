@@ -4,6 +4,8 @@ import numpy as np
 from mulearn import FuzzyInductor
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
+from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
+
 from classes.model import Model
 from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
 
@@ -17,7 +19,7 @@ def simple_split(dataset):
     y = dataset.iloc[:, 1].values  # labels
     return X, y
 
-PATH_TEXTS = "preprocessed_datasets/train/final_text_dataset_1594.csv"
+PATH_TEXTS = "preprocessed_datasets/text/23.11.2020_02.22/final_text_dataset_38592.csv"
 outer_folds = 5
 inner_folds = 4
 
@@ -31,8 +33,11 @@ X, y = simple_split(dataset)
 X = [ast.literal_eval(i) for i in X] # this is needed to parse strings
 X = np.array(X)
 
+scalers = [StandardScaler(), RobustScaler(), MinMaxScaler()]
+
 pipe = Pipeline([
-    ("FuzzyInductor", FuzzyInductor())
+    ("scaler", None),
+    ("learning_algorithm", FuzzyInductor())
 ])
 
 sigmas = [.225,.5]
@@ -41,10 +46,10 @@ learning_params = {
     'k': [kernel.GaussianKernel(s) for s in sigmas]
 }
 
-params = {}
+params = {"scaler": scalers}
 
 for k in learning_params:
-    params["FuzzyInductor__" + k] = learning_params[k]
+    params["learning_algorithm__" + k] = learning_params[k]
 
 print(params)
 
