@@ -10,5 +10,7 @@ results/
 
 00_preprocessing.ipynb
 
+classes/experiment.py
 main_mulearn.py
+main_experiment.py
 main_manipulation.py
