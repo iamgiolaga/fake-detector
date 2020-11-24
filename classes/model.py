@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import pickle
 
 from datetime import datetime
 
@@ -8,7 +9,7 @@ class Model:
     def __init__(self, fuzzy_inductor):
         self.model = fuzzy_inductor
         self.date = datetime.now().strftime('%d.%m.%Y')
-        self.time = datetime.now().strftime('%H:%M')
+        self.time = datetime.now().strftime('%H.%M')
 
     def write_model(self):
         params = self.extract_params()
@@ -35,6 +36,19 @@ class Model:
         }, ignore_index=True)
 
         models.to_csv(fullname, index=False)
+
+        outdir = "selected_models/"
+        outname = "model_" + self.date + "_" + self.time
+
+
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        fullname = os.path.join(outdir, outname)
+
+        file = open(fullname, "wb")
+        pickle.dump(self, file)
+        file.close()
 
     def extract_params(self):
         return self.model.get_params()
