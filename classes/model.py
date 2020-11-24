@@ -99,8 +99,8 @@ class Model:
             models.to_csv(fullname, index=False)
 
         for i, model in enumerate(self.best_models):
-            outdir = "selected_models/"
-            outname = "model_" + self.date + "_" + self.time + "(" + str(i) + ")"
+            outdir = "selected_models/" + self.date + "_" + self.time + "/"
+            outname = "model_(" + str(i) + ")"
 
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
