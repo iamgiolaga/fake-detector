@@ -17,7 +17,7 @@ class Preprocessing:
                 duplicate_rows_removal = True, lowercasing = True, tokenization = True,
                 lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
-                 word2vec = True, doc2vec = False, aggregation = True, test_size = 0.2):
+                 word2vec = True, doc2vec = False, aggregation = True):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.analysis = analysis
@@ -34,7 +34,6 @@ class Preprocessing:
         self.word2vec = word2vec
         self.doc2vec = doc2vec
         self.aggregation = aggregation
-        self.test_size = test_size
 
         if self.doc2vec:
             self.aggregation = False
