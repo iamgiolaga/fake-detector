@@ -13,12 +13,12 @@ PATH_TEXTS = "preprocessed_datasets/text/23.11.2020_02.22/final_text_dataset_385
 dataset = pd.read_csv(PATH_TEXTS)
 
 # extract sample
-dataset = dataset.head(10)
+dataset = dataset.head(50)
 
-# select best models
+print("INPUT")
+print(dataset.head(10))
+
+# select the best models
 m = Model()
-m.select_model(dataset)
-
-# when the best models are found, they are serialized and stored
-m.write_model()
+m.select_model(dataset, write=True)
 
