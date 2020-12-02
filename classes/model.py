@@ -121,9 +121,9 @@ class Model:
         recall = self.recall(TP, FN)
         f1 = self.f1(precision, recall)
 
-        scores["precisions"] = precision
-        scores["recalls"] = recall
-        scores["f1s"] = f1
+        scores["precision"] = precision
+        scores["recall"] = recall
+        scores["f1"] = f1
 
         return scores
 
@@ -215,10 +215,10 @@ class Model:
             column_names = ["Date", "Time", "Sample", "Solver", "Params", "Scores"]
             models = pd.DataFrame(columns=column_names)
 
-        for i, k in enumerate(self.best_params):
+        for i, param in enumerate(self.best_params):
             models = models.append({
                 "Date": self.date, "Time": self.time, "Sample": len(self.dataset),
-                "Solver": self.solver, "Params": k, "Scores": self.all_scores[i]
+                "Solver": self.solver, "Params": param, "Scores": self.all_scores[i]
             }, ignore_index=True)
 
         models.to_csv(fullname, index=False)
