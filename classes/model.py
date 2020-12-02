@@ -225,7 +225,7 @@ class Model:
 
         for i, model in enumerate(self.best_models):
             outdir = "selected_models/" + self.date + "_" + self.time + "/"
-            outname = "model_(" + str(i) + ")"
+            outname = "model_(" + str(i) + ").pickle"
 
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
