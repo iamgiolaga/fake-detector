@@ -1,12 +1,44 @@
 import pandas as pd
+import ast
 
 ''' DESCRIPTION '''
 ''' This is the file where we can visualize the final results '''
 
-# 1. read to see if there exists a models.csv file
-# 2. if yes, read it and store it in a dataframe
-# 3. if not, raise an exception
 from termcolor import colored
+
+def select_scores(models):
+    for i, score in enumerate(models["Scores"]):
+        print(i, score)
+
+def select_best_precisions(models):
+    precisions = {}
+    scores = models["Scores"]
+
+    for i, score in enumerate(scores):
+        precisions[i] = score['precision']
+
+    precisions = dict(sorted(precisions.items(), key = lambda item: item[1], reverse = True))
+    print(precisions)
+
+def select_best_recalls(models):
+    recalls = {}
+    scores = models["Scores"]
+
+    for i, score in enumerate(scores):
+        recalls[i] = score['recall']
+
+    recalls = dict(sorted(recalls.items(), key = lambda item: item[1], reverse = True))
+    print(recalls)
+
+def select_best_f1s(models):
+    f1s = {}
+    scores = models["Scores"]
+
+    for i, score in enumerate(scores):
+        f1s[i] = score['f1']
+
+    f1s = dict(sorted(f1s.items(), key = lambda item: item[1], reverse = True))
+    print(f1s)
 
 try:
     models = pd.read_csv("selected_models/models.csv")
@@ -16,9 +48,12 @@ except:
 if models.empty:
     print(colored("No models found", "red"))
 
-# TODO: prepare query that could be useful to retrieve results on some argument basis
+models["Scores"] = [ast.literal_eval(i) for i in models["Scores"]]
 
-print(models.columns)
-print(models.head(10))
-print(models.iloc[0])
+select_scores(models)
+select_best_precisions(models)
+select_best_recalls(models)
+select_best_f1s(models)
 
+# When you want to analyze a specific experiment, you can call this
+print(models.iloc[6])
