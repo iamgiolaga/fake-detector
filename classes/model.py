@@ -37,7 +37,8 @@ class Model:
                 if self.n_iter is not None:
                     self.strategy = (opt.solve_optimization_gurobi, {'n_iter': self.n_iter})
                 else:
-                    self.strategy = (opt.solve_optimization_gurobi, {'adjustment': 50})
+                    self.strategy = (opt.solve_optimization_gurobi, {} #{'adjustment': 50}
+                                     )
 
         fuzzifier_type = (fuzzifier.LinearFuzzifier, {})
 
@@ -79,14 +80,24 @@ class Model:
             params["learning_algorithm__" + j] = learning_params[j]
 
         outer_fold = StratifiedKFold(n_splits=outer_folds)
+
+        folds = {}
         best_models = []
         best_params = []
+        all_memberships = {}
+        all_labels = {}
         all_scores = []
 
         for i, (train_id, test_id) in enumerate(outer_fold.split(self.X, self.y)):
             print("Working on fold " + str(i + 1) + " of " + str(outer_folds))
             X_train, X_test = self.X[train_id], self.X[test_id]
             y_train, y_test = self.y[train_id], self.y[test_id]
+
+            folds["x train " + str(i)] = X_train
+            folds["y train " + str(i)] = y_train
+
+            folds["x test " + str(i)] = X_test
+            folds["y test " + str(i)] = y_test
 
             gs = GridSearchCV(
                 pipe,
@@ -97,14 +108,20 @@ class Model:
 
             gs = gs.fit(X_train, y_train)
             # f = gs.best_estimator_["learning_algorithm"]
-            scores = self.evaluate_model(gs, X_test, y_test)
+            memberships, labels, scores = self.evaluate_model(gs, X_test, y_test)
 
+            all_memberships[i] = memberships
+            all_labels[i] = labels
             all_scores.append(scores)
+
             best_models.append(gs.best_estimator_)
             best_params.append(gs.best_params_)
 
+        self.folds = folds
         self.best_models = best_models
         self.best_params = best_params
+        self.all_memberships = all_memberships
+        self.all_labels = all_labels
         self.all_scores = all_scores
 
         if self.write:
@@ -125,7 +142,7 @@ class Model:
         scores["recall"] = recall
         scores["f1"] = f1
 
-        return scores
+        return memberships, labels, scores
 
 
     def simple_split(self, dataset):
@@ -223,15 +240,27 @@ class Model:
 
         models.to_csv(fullname, index=False)
 
-        for i, model in enumerate(self.best_models):
-            outdir = "selected_models/" + self.date + "_" + self.time + "/"
-            outname = "model_(" + str(i) + ").pickle"
+        outdir = "selected_models/" + self.date + "_" + self.time + "/"
+        outname = "models.pickle"
 
-            if not os.path.exists(outdir):
-                os.makedirs(outdir)
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
 
-            fullname = os.path.join(outdir, outname)
+        fullname = os.path.join(outdir, outname)
 
-            file = open(fullname, "wb")
-            pickle.dump(model, file)
-            file.close()
+        file = open(fullname, "wb")
+        pickle.dump(self, file)
+        file.close()
+
+        # for i, model in enumerate(self.best_models):
+        #     outdir = "selected_models/" + self.date + "_" + self.time + "/"
+        #     outname = "model_(" + str(i) + ").pickle"
+        #
+        #     if not os.path.exists(outdir):
+        #         os.makedirs(outdir)
+        #
+        #     fullname = os.path.join(outdir, outname)
+        #
+        #     file = open(fullname, "wb")
+        #     pickle.dump(model, file)
+        #     file.close()
