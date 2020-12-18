@@ -253,8 +253,8 @@ class Preprocessing:
         pass
 
     def prepare_dataset(self, X, Y):
-        dataset = pd.concat([X,Y])
-        dataset = self.shuffle(dataset).reset_index(drop=True)
+        dataset = pd.concat([X,Y]).reset_index(drop=True)
+        dataset = self.shuffle(dataset).reset_index()
         return dataset
 
     def shuffle(self, dataset):
