@@ -18,12 +18,29 @@ class Model:
 
     def select_model(self, dataset, solver = "gurobi", n_iter = None, outer_folds = 5, inner_folds = 4, write = False):
         self.dataset = dataset
-        self.X, self.y = self.simple_split(dataset)
+        self.id, self.X, self.y = self.simple_split(dataset)
         self.X = [ast.literal_eval(i) for i in self.X]  # this is needed to parse strings
         self.X = np.array(self.X)
         self.solver = solver
         self.n_iter = n_iter
         self.write = write
+
+        ''' SET LOOKUP TABLE FOR FUTURE RETRIEVE OF NEWS '''
+        ''' 
+        lookup = {
+            <feature_vector> = {
+                'id' = <id_row>
+                'label' = <label>
+            }
+        }
+        '''
+        self.lookup = {}
+
+        for id, x, label in zip(self.id, self.X, self.y):
+            inner_lookup = {}
+            inner_lookup["id"] = id
+            inner_lookup["label"] = label
+            self.lookup[str(x)] = inner_lookup
 
         ''' CONFIGURE FUZZY INDUCTOR '''
         # solver strategy
@@ -54,7 +71,8 @@ class Model:
 
         # sigmas = np.linspace(.1, 1.0, 10)
         # alphas = np.linspace(.1, 1.0, 10)
-        sigmas = (0.1, 0.2, 0.3, 0.4, 0.5)
+        # sigmas = (0.1, 0.2, 0.3, 0.4, 0.5)
+        sigmas = np.logspace(0.1, 5, 10, endpoint=True)
         alphas = (0.2, 0.7)
         # exponential_fuzzifiers = [
         #     (fuzzifier.ExponentialFuzzifier,
@@ -65,7 +83,7 @@ class Model:
         # for e in exponential_fuzzifiers:
         #     self.fuzzifier_types.append(e)
 
-        c_vector = np.logspace(0.1, 1, 10, endpoint=True)
+        c_vector = np.logspace(0.1, 5, 10, endpoint=True)
 
         learning_params = {
             'c': c_vector,
@@ -146,9 +164,10 @@ class Model:
 
 
     def simple_split(self, dataset):
-        X = dataset.iloc[:, 0].values  # x-component
-        y = dataset.iloc[:, 1].values  # labels
-        return X, y
+        id = dataset.iloc[:, 1].values # id
+        X = dataset.iloc[:, 2].values  # x-component
+        y = dataset.iloc[:, 3].values  # labels
+        return id, X, y
 
     def threshold(self, membership, n = 0.5):
         memberships = []
