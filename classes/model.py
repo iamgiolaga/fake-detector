@@ -170,15 +170,15 @@ class Model:
         return id, X, y
 
     def threshold(self, membership, n = 0.4):
-        memberships = []
+        predictions = []
 
         for x in membership:
             if x >= n:
-                memberships.append(1) # fake
+                predictions.append(1) # fake
             else:
-                memberships.append(0) # true
+                predictions.append(0) # true
 
-        return memberships
+        return predictions
 
     def confusion_matrix(self, labels, predicted_labels, memberships):
         '''
