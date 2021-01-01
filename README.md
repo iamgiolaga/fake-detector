@@ -24,6 +24,7 @@ This repository is structured as follows:
     
 - <i>tests</i>:
     * ```tests/test_ppsteps.py```: the file where unitary tests for ```ppsteps.py``` are executed
+    * ```tests/test_model.py```: the file where unitary tests for ```model.py``` are executed
     
 - <i>generated files</i> (not shown in this repository):
     * ```datasets/fakeandreal/Fake.csv, True.csv```: the two .csv files from the dataset loaded from Kaggle

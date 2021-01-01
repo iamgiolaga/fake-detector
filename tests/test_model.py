@@ -1,8 +1,5 @@
 import unittest
 
-from mulearn import FuzzyInductor
-
-
 class TestModel(unittest.TestCase):
 
     def test_adjustment(self):
@@ -10,7 +7,3 @@ class TestModel(unittest.TestCase):
         result = exception.split("adjustment of ")
         result = result[1].split(" would be")
         assert float(result[0]) == 1.1e+02
-
-    def test_fuzzifier(self):
-        f = FuzzyInductor()
-        print(f.get_params())
