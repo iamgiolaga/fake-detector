@@ -62,14 +62,14 @@ class Preprocessing:
             print("")
 
         if self.entity_recognition == True:
-            print("(INPUT TYPE: ", type(self.preprocessed), ")")
-            self.entities = self.recognize_entity(self.preprocessed)
+            print("(INPUT TYPE: ", type(self.preprocessed["text"]), ")")
+            self.entities = self.recognize_entity(self.preprocessed["text"])
             print(self.entities)
             print("")
 
         if self.lemmatization == True:
-            print("(INPUT TYPE: ", type(self.preprocessed), ")")
-            self.preprocessed = self.lemmatize(self.preprocessed)
+            print("(INPUT TYPE: ", type(self.preprocessed["text"]), ")")
+            self.preprocessed = self.lemmatize(self.preprocessed["text"])
             print(self.preprocessed)
             print("")
 
@@ -84,8 +84,8 @@ class Preprocessing:
             print("")
 
         if self.stemming == True: # exclusive w.r.t. lemmatization
-            print("(INPUT TYPE: ", type(self.preprocessed), ")")
-            self.preprocessed = self.stem(self.preprocessed)
+            print("(INPUT TYPE: ", type(self.preprocessed["text"]), ")")
+            self.preprocessed = self.stem(self.preprocessed["text"])
             print(self.preprocessed)
             print("")
 
@@ -253,8 +253,8 @@ class Preprocessing:
         pass
 
     def prepare_dataset(self, X, Y):
-        dataset = pd.concat([X,Y]).reset_index(drop=True)
-        dataset = self.shuffle(dataset).reset_index()
+        dataset = pd.concat([X,Y]).reset_index()
+        dataset = self.shuffle(dataset).reset_index(drop=True)
         return dataset
 
     def shuffle(self, dataset):

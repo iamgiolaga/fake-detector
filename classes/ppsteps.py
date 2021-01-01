@@ -16,7 +16,7 @@ class BlankRowsRemoval(BaseEstimator):
         return
 
     def transform(self, data):
-        return data[data.map(lambda s: len(s)) > 0].reset_index(drop=True)
+        return data[data.map(lambda s: len(s)) > 0].reset_index()
 
 class Lowercasing(BaseEstimator):
     def fit(self, data):
@@ -32,7 +32,7 @@ class DuplicateRowsRemoval(BaseEstimator): # removes duplicate rows
     def transform(self, data):
         # it removes also missing values (without NaNs encoding), because they are considered duplicates as well
         try:
-            return data.drop_duplicates().reset_index(drop=True)
+            return data.drop_duplicates().reset_index()
         except:
             raise TypeError # drop_duplicates() doesn't work with lists
 

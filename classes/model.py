@@ -72,7 +72,7 @@ class Model:
         # sigmas = np.linspace(.1, 1.0, 10)
         # alphas = np.linspace(.1, 1.0, 10)
         # sigmas = (0.1, 0.2, 0.3, 0.4, 0.5)
-        sigmas = np.logspace(0.1, 5, 10, endpoint=True)
+        sigmas = np.logspace(-5, 5, 11, endpoint=True)
         alphas = (0.2, 0.7)
         # exponential_fuzzifiers = [
         #     (fuzzifier.ExponentialFuzzifier,
@@ -83,7 +83,7 @@ class Model:
         # for e in exponential_fuzzifiers:
         #     self.fuzzifier_types.append(e)
 
-        c_vector = np.logspace(0.1, 5, 10, endpoint=True)
+        c_vector = np.logspace(-5, 5, 11, endpoint=True)
 
         learning_params = {
             'c': c_vector,
@@ -164,12 +164,12 @@ class Model:
 
 
     def simple_split(self, dataset):
-        id = dataset.iloc[:, 1].values # id
-        X = dataset.iloc[:, 2].values  # x-component
-        y = dataset.iloc[:, 3].values  # labels
+        id = dataset.iloc[:, 0].values # id
+        X = dataset.iloc[:, 1].values  # x-component
+        y = dataset.iloc[:, 2].values  # labels
         return id, X, y
 
-    def threshold(self, membership, n = 0.5):
+    def threshold(self, membership, n = 0.4):
         memberships = []
 
         for x in membership:

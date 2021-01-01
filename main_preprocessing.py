@@ -85,7 +85,7 @@ dataset_true = pd.DataFrame(data_true.aggregated)
 dataset_fake["label"] = 1
 dataset_true["label"] = 0
 
-dataset = preprocesser_true.prepare_dataset(dataset_fake, dataset_true)
+dataset = preprocesser_true.prepare_dataset(dataset_true, dataset_fake)
 print("DATASET IS READY")
 print(dataset.head(10))
 
