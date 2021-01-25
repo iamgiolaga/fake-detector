@@ -7,6 +7,8 @@ selected_models/
 venv/
 preprocessed_datasets/
 results/
+generated_text/
+topic_samples/
 
 00_preprocessing.ipynb
 
