@@ -91,7 +91,7 @@ class Preprocessing:
 
         if self.stopword_removal == True:
             print("(INPUT TYPE: ", type(self.preprocessed), ")")
-            self.preprocessed = self.remove_stopword(self.preprocessed)
+            self.preprocessed = self.remove_stopword(self.preprocessed["text"])
             print(self.preprocessed)
             print("")
 
