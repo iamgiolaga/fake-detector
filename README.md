@@ -15,6 +15,7 @@ This repository is structured as follows:
     * ```main_plot.py```: the module that plots points in a 2D space and shows how the membership is determined by the models
     * ```main_use_preprocessed.py```: the module that deserializes preprocessed datasets
     * ```main_use_model.py```: the module that deserializes those models found through grid search
+    * ```main_generative.py```: the module which generates texts through LDA
 
 - <i>classes</i>:
     <!-- * ```experiment.py```: the class responsible for creating, fitting and using a predicitive model through the [mulearn](https://github.com/dariomalchiodi/mulearn) package -->
