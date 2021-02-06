@@ -14,8 +14,8 @@ date = datetime.now().strftime('%d.%m.%Y')
 time = datetime.now().strftime('%H.%M')
 
 ## Dataset loading ## (example)
-dataset_fake = pd.read_csv("datasets/fakeandreal/Fake.csv")
-dataset_true = pd.read_csv("datasets/fakeandreal/True.csv")
+dataset_fake = pd.read_csv("datasets/profner/Fake.csv")
+dataset_true = pd.read_csv("datasets/profner/True.csv")
 
 ## Detect text (news title or body) to use as input ##
 analysis = "text" # let's focus on the corpus of news
@@ -39,7 +39,8 @@ preprocesser_fake = Preprocessing(
     date,
     time,
     analysis = analysis,
-    news_type = "fake"
+    news_type = "fake",
+    language = "es"
 ) # here you can set the configuration
 data_fake = preprocesser_fake.run_pipeline()
 print("")
@@ -64,7 +65,8 @@ preprocesser_true = Preprocessing(
     date,
     time,
     analysis = analysis,
-    news_type = "true"
+    news_type = "true",
+    language = "es"
 )
 data_true = preprocesser_true.run_pipeline()
 print("")

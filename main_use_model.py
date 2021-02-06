@@ -1,6 +1,9 @@
 import pickle
 from termcolor import colored
 
+''' DESCRIPTION '''
+''' This is the file where models are loaded and reused '''
+
 fullname = "selected_models/02.12.2020_11.49/model_"
 models = []
 

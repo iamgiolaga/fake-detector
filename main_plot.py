@@ -11,6 +11,9 @@ from datetime import datetime
 date = datetime.now().strftime('%d.%m.%Y')
 time = datetime.now().strftime('%H:%M')
 
+''' DESCRIPTION '''
+''' This is the file dedicated to plot representations '''
+
 # plot functions
 def gr_dataset(X, y, cardinality):
     for lab, col, text in zip((0, 1),
