@@ -3,6 +3,8 @@ import string
 import numpy as np
 import re
 
+from tqdm import tqdm
+from nltk import SnowballStemmer
 from sklearn.base import BaseEstimator
 from nltk.tokenize import word_tokenize
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
@@ -23,7 +25,8 @@ class Lowercasing(BaseEstimator):
         return
 
     def transform(self, data):
-        return data.apply(lambda s: s.lower() if type(s) == str else s)
+        tqdm.pandas()
+        return data.progress_apply(lambda s: s.lower() if type(s) == str else s)
 
 class DuplicateRowsRemoval(BaseEstimator): # removes duplicate rows
     def fit(self, data):
@@ -41,17 +44,20 @@ class Tokenization(BaseEstimator):
         return
 
     def transform(self, data):
-        return data.apply(lambda s: [w for w in word_tokenize(s)])
+        tqdm.pandas()
+        return data.progress_apply(lambda s: [w for w in word_tokenize(s)])
 
 class BadCharRemoval(BaseEstimator):
     def fit(self, data):
         return
 
     def transform(self, data):
-        bad_characters = string.punctuation + "’" + "“" + "”" + "–" + " "
+        bad_characters = string.punctuation + "’" + "“" + "”" + "–" + " " + "¡" + "¿"
+
+        tqdm.pandas()
 
         # remove bad characters
-        data = data.apply(
+        data = data.progress_apply(
             lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
         )
 
@@ -62,8 +68,9 @@ class NumbersRemoval(BaseEstimator):
         return
 
     def transform(self, data):
+        tqdm.pandas()
         # remove numbers
-        return data.apply(lambda s: [w for w in s if w.isnumeric() != True])
+        return data.progress_apply(lambda s: [w for w in s if w.isnumeric() != True])
 
 class RemoveWordsWithNumbers(BaseEstimator):
     def __init__(self):
@@ -73,8 +80,9 @@ class RemoveWordsWithNumbers(BaseEstimator):
         return
 
     def transform(self, data):
+        tqdm.pandas()
         # remove URLs and words that contain numbers
-        return data.apply(lambda s: [w for w in s if self.has_numbers(w) != True])
+        return data.progress_apply(lambda s: [w for w in s if self.has_numbers(w) != True])
 
     def has_numbers(self, input_string):
         return any(char.isdigit() for char in input_string)
@@ -87,7 +95,8 @@ class CleaningWords(BaseEstimator):
         # remove symbols attached to words
         data = data.apply(lambda s: [re.sub(r'[^\w]', '', w) for w in s])
         bad_characters = string.punctuation + "’" + "“" + "”" + "–" + " "
-        data = data.apply(
+        tqdm.pandas()
+        data = data.progress_apply(
             lambda s: [w for w in s if not w in bad_characters and not w in "--" and not w in "..."]
         )
         return data
@@ -97,42 +106,59 @@ class DuplicateWordsRemoval(BaseEstimator):
         return
 
     def transform(self, data):
+        tqdm.pandas()
         # remove duplicate words
-        return data.apply(lambda s: list(dict.fromkeys(s)))
+        return data.progress_apply(lambda s: list(dict.fromkeys(s)))
 
 class Lemmatization(BaseEstimator):
-    def fit(self, data):
-        self.nlp = spacy.load('en_core_web_sm')
+    def fit(self, data, language):
+        if language == "en":
+            self.nlp = spacy.load('en_core_web_sm')
+        elif language == "es":
+            self.nlp = spacy.load('es')
 
     def transform(self, data):
         nlp = self.nlp
-        return data.apply(lambda s: [token.lemma_ for token in nlp(s) if not token.lemma_ in "-PRON-"])
+        tqdm.pandas()
+        return data.progress_apply(lambda s: [token.lemma_ for token in nlp(s) if not token.lemma_ in "-PRON-"])
 
 class Stemming(BaseEstimator):
-    def fit(self, data):
-        self.porter = PorterStemmer()
+    def fit(self, data, language):
+        if language == "en":
+            self.porter = PorterStemmer()
+        elif language == "es":
+            self.porter = SnowballStemmer('spanish')
 
     def transform(self, data):
         porter = self.porter
-        return data.apply(lambda s: [porter.stem(w) for w in s])
+        tqdm.pandas()
+        return data.progress_apply(lambda s: [porter.stem(w) for w in s])
 
 class StopwordRemoval(BaseEstimator):
 
     # noinspection PyUnresolvedReferences
-    def fit(self, data):
-        self.stopwords = spacy.lang.en.stop_words.STOP_WORDS
+    def fit(self, data, language):
+        if language == "en":
+            self.stopwords = spacy.lang.en.stop_words.STOP_WORDS
+        elif language == "es":
+            self.stopwords = spacy.lang.es.stop_words.STOP_WORDS
 
     def transform(self, data):
         stopwords = self.stopwords
-        return data.apply(lambda x: [i for i in x if not i in stopwords])
+        tqdm.pandas()
+        return data.progress_apply(lambda x: [i for i in x if not i in stopwords])
 
 class EntityRecognition(BaseEstimator):
-    def fit(self, data):
-        self.nlp = spacy.load('en_core_web_sm')
+    def fit(self, data, language):
+        if language == "en":
+            self.nlp = spacy.load('en_core_web_sm')
+        elif language == "es":
+            self.nlp = spacy.load('es')
 
     def transform(self, data):
         nlp = self.nlp
-        return data.apply(lambda s: [(i, i.label_, i.label) for i in nlp(s).ents])
+        tqdm.pandas()
+        return data.progress_apply(lambda s: [(i, i.label_, i.label) for i in nlp(s).ents])
 
 class DataAugmentation(BaseEstimator):
     def fit(self, data):
@@ -146,15 +172,20 @@ class URLRemoval(BaseEstimator):
         return
 
     def transform(self, data):
-        return data.apply(lambda s : [w for w in s if not "http" in w and not "www" in w])
+        tqdm.pandas()
+        return data.progress_apply(lambda s : [w for w in s if not "http" in w and not "www" in w])
 
 class WordVectorization(BaseEstimator):
-    def fit(self, data):
-        self.nlp = spacy.load('en_core_web_sm')
+    def fit(self, data, language):
+        if language == "en":
+            self.nlp = spacy.load('en_core_web_sm')
+        elif language == "es":
+            self.nlp = spacy.load('es')
 
     def transform(self, data):
         nlp = self.nlp
-        return data.apply(lambda s: [nlp(i).vector for i in s])
+        tqdm.pandas()
+        return data.progress_apply(lambda s: [nlp(i).vector for i in s])
 
 class DocVectorization(BaseEstimator):
     def __init__(self, vector_size=20, window=2, min_count=1, workers=4, epochs=100):
@@ -180,7 +211,8 @@ class Aggregation(BaseEstimator):
         return
 
     def transform(self, data): ## TODO: Fisher kernel aggregation
-        data = data.apply(lambda s: np.nanmean(s, axis=0))
-        return data.apply(lambda s: list(s))
+        tqdm.pandas()
+        data = data.progress_apply(lambda s: np.nanmean(s, axis = 0))
+        return data.progress_apply(lambda s: list(s))
 
 
