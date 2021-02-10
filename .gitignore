@@ -3,7 +3,7 @@
 __pycache__/
 datasets/
 raw_datasets/
-images/
+img/
 selected_models/
 venv/
 preprocessed_datasets/
