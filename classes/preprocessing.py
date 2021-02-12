@@ -5,7 +5,7 @@ import os
 from classes.ppsteps import BlankRowsRemoval, DuplicateRowsRemoval, Lowercasing, \
     Tokenization, BadCharRemoval, NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, \
     DuplicateWordsRemoval, Lemmatization, Stemming, StopwordRemoval, \
-    EntityRecognition, WordVectorization, DocVectorization, Aggregation, URLRemoval
+    EntityRecognition, WordVectorization, DocVectorization, Aggregation, URLRemoval, EmojiRemoval
 
 ''' DESCRIPTION '''
 ''' This class is responsible for the preprocessing pipeline execution '''
@@ -17,7 +17,7 @@ class Preprocessing:
                 duplicate_rows_removal = True, lowercasing = True, tokenization = True,
                 lemmatization = True, noise_removal = True, stemming = False,
                  stopword_removal = True, entity_recognition = False, data_augmentation = False,
-                 word2vec = True, doc2vec = False, aggregation = True):
+                 word2vec = True, doc2vec = False, aggregation = True, language = "en"):
         # currently, text is a vector of strings (titles or news bodies)
         self.preprocessed = text
         self.analysis = analysis
@@ -34,6 +34,7 @@ class Preprocessing:
         self.word2vec = word2vec
         self.doc2vec = doc2vec
         self.aggregation = aggregation
+        self.language = language # possible values: en, es
 
         if self.doc2vec:
             self.aggregation = False
@@ -92,6 +93,13 @@ class Preprocessing:
         if self.stopword_removal == True:
             print("(INPUT TYPE: ", type(self.preprocessed), ")")
             self.preprocessed = self.remove_stopword(self.preprocessed["text"])
+            # after stop word removal it is necessary another step of blank rows removal
+            print("\t Removing blank rows...")
+            print("\t Items found: " + str(len(self.preprocessed)) + " rows")
+            b = BlankRowsRemoval()
+            self.preprocessed = b.transform(self.preprocessed)
+            print("\t Remaining items: " + str(len(self.preprocessed)) + " rows")
+            print("...done.")
             print(self.preprocessed)
             print("")
 
@@ -102,7 +110,7 @@ class Preprocessing:
 
         if self.word2vec == True:
             print("(INPUT TYPE: ", type(self.preprocessed), ")")
-            self.wordvectors = self.wordvectorizer(self.preprocessed)
+            self.wordvectors = self.wordvectorizer(self.preprocessed["text"])
             print(self.wordvectors)
 
         if self.doc2vec == True:
@@ -149,7 +157,7 @@ class Preprocessing:
     def lemmatize(self, data):
         print("Lemmatization...")
         l = Lemmatization()
-        l.fit(data) # uses nlp from spacy
+        l.fit(data, self.language) # uses nlp from spacy
         data = l.transform(data)
         print("...done.")
         print("")
@@ -162,6 +170,11 @@ class Preprocessing:
         print(data)
         print("")
         print("Removing noise...")
+        print("\t Emojis...")
+        e = EmojiRemoval()
+        data = e.transform(data)
+        print(data)
+        print("")
         print("\t Bad characters...")
         b = BadCharRemoval()
         data = b.transform(data)
@@ -199,7 +212,7 @@ class Preprocessing:
     def stem(self, data):
         print("Stemming...")
         s = Stemming()
-        s.fit(data) # uses stemmer from porter
+        s.fit(data, self.language) # uses stemmer from porter
         data = s.transform(data)
         print("...done.")
         print("")
@@ -208,7 +221,7 @@ class Preprocessing:
     def remove_stopword(self, data):
         print("Removing stop words...")
         s = StopwordRemoval()
-        s.fit(data)
+        s.fit(data, self.language)
         data = s.transform(data)
         print("...done.")
         print("")
@@ -217,7 +230,7 @@ class Preprocessing:
     def recognize_entity(self, data): # creates a new object entities
         print("Recognizing entities...")
         e = EntityRecognition()
-        e.fit(data)
+        e.fit(data, self.language)
         entities = e.transform(data)
         print("...done.")
         print("")
@@ -226,7 +239,7 @@ class Preprocessing:
     def wordvectorizer(self, data): # creates a new object vectors
         print("Word to vec...")
         v = WordVectorization()
-        v.fit(data)
+        v.fit(data, self.language)
         wordvectors = v.transform(data)
         print("...done.")
         print("")

@@ -2,6 +2,7 @@ import spacy
 import string
 import numpy as np
 import re
+import ast
 
 from tqdm import tqdm
 from nltk import SnowballStemmer
@@ -18,7 +19,7 @@ class BlankRowsRemoval(BaseEstimator):
         return
 
     def transform(self, data):
-        return data[data.map(lambda s: len(s)) > 0].reset_index()
+        return data[data.map(lambda s: len(s)) > 1].reset_index()
 
 class Lowercasing(BaseEstimator):
     def fit(self, data):
@@ -46,6 +47,36 @@ class Tokenization(BaseEstimator):
     def transform(self, data):
         tqdm.pandas()
         return data.progress_apply(lambda s: [w for w in word_tokenize(s)])
+
+class EmojiRemoval(BaseEstimator):
+    def fit(self, data):
+        return
+
+    def transform(self, data):
+
+        tqdm.pandas()
+        emoji_pattern = re.compile("["
+                               u"\U0001F600-\U0001F64F"  # emoticons
+                               u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                               u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                               u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                               u"\U00002500-\U00002BEF"  # chinese char
+                               u"\U00002702-\U000027B0"
+                               u"\U00002702-\U000027B0"
+                               u"\U000024C2-\U0001F251"
+                               u"\U0001f926-\U0001f937"
+                               u"\U00010000-\U0010ffff"
+                               u"\u2640-\u2642"
+                               u"\u2600-\u2B55"
+                               u"\u200d"
+                               u"\u23cf"
+                               u"\u23e9"
+                               u"\u231a"
+                               u"\ufe0f"  # dingbats
+                               u"\u3030"
+                               "]+", flags=re.UNICODE)
+        data = data.progress_apply(lambda s: emoji_pattern.sub(r'', str(s)))
+        return data.progress_apply(lambda s: ast.literal_eval(s))
 
 class BadCharRemoval(BaseEstimator):
     def fit(self, data):
