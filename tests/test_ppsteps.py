@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 
 from classes.ppsteps import DuplicateRowsRemoval, BadCharRemoval, DuplicateWordsRemoval, Lowercasing, Lemmatization, \
-    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, WordVectorization, Aggregation
+    NumbersRemoval, RemoveWordsWithNumbers, CleaningWords, Stemming, StopwordRemoval, WordVectorization, Aggregation, \
+    EmojiRemoval, BlankRowsRemoval
 
 ''' DESCRIPTION '''
 ''' This file defines the unit testing'''
@@ -66,6 +67,25 @@ class TestLemmatization(unittest.TestCase): # for LEMMATIZATION
                                      ["www.wikipedia.org", "be", "the", "1st", "website", "that",
                                       "people", "would", "use", "to", "search", "information"]])
         pd.testing.assert_series_equal(expected_result, result)
+
+class TestEmojiRemoval(unittest.TestCase): # for NOISE REMOVAL
+
+    def test_single_row(self):
+        example = pd.Series([["Are", "you", "serious", "?", "😂"]])
+        e = EmojiRemoval()
+        result = e.transform(example)
+        expected_result = pd.Series([["Are", "you", "serious", "?", ""]])
+        pd.testing.assert_series_equal(expected_result, result)
+
+    def test_multiple_row(self):
+        example = pd.Series([["Are", "you", "serious", "?", "😂"],
+                             ["She", "cannot", "come", "today", "😭"]])
+        e = EmojiRemoval()
+        result = e.transform(example)
+        expected_result = pd.Series([["Are", "you", "serious", "?", ""],
+                                     ["She", "cannot", "come", "today", ""]])
+        pd.testing.assert_series_equal(expected_result, result)
+
 
 class TestBadCharRemoval(unittest.TestCase): # for NOISE REMOVAL
 
@@ -179,6 +199,15 @@ class TestDuplicateWordsRemoval(unittest.TestCase): # for NOISE REMOVAL
         d = DuplicateWordsRemoval()
         result = d.transform(example)
         expected_result = pd.Series([["donald", "trump"], ["this", "is", "a", "duplicate", "word"]])
+        pd.testing.assert_series_equal(expected_result, result)
+
+class TestBlankRowsRemoval(unittest.TestCase): # for NOISE REMOVAL
+
+    def test_multiple_row(self):
+        example = pd.Series([["she", "studied", "a", "lot", "and"], [""]])
+        b = BlankRowsRemoval()
+        result = b.transform(example)
+        expected_result = pd.Series([["she", "studied", "a", "lot", "and"]])
         pd.testing.assert_series_equal(expected_result, result)
 
 class TestStemming(unittest.TestCase): # for STEMMING
