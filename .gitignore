@@ -11,6 +11,9 @@ results/
 generated_text/
 generated_datasets/
 topic_samples/
+thesis/Tesi.aux
+thesis/Tesi.log
+thesis/Tesi.toc
 
 00_preprocessing.ipynb
 
