@@ -38,8 +38,8 @@ pp_generated = Preprocessing(
 gen = pp_generated.run_pipeline()
 dataframe = pd.DataFrame(gen.aggregated, columns = ["text"])
 dataframe["membership"] = generated["membership"]
-dataset = pp_generated.shuffle(dataframe).reset_index(drop = True)
-dataset.columns = ["text", "membership"]
+dataset = pp_generated.shuffle(dataframe).reset_index()
+dataset.columns = ["old index","text", "membership"]
 dataset.index.name = "index"
 
 cardinality = len(dataset)
