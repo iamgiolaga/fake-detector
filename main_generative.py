@@ -34,7 +34,7 @@ topic_2 = pd.read_csv("topic_samples/topic_2.csv")
 # print(topic_2)
 # print("")
 
-lda = Generation(topic_1, topic_2, M, N)
+lda = Generation(topic_1, topic_2, M, N, distribution="beta")
 lda.run_generation()
 
 # date = datetime.now().strftime('%d.%m.%Y')
