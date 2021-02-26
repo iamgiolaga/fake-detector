@@ -238,7 +238,7 @@ Concretamente, questo equivale a trovare una rappresentazione numerica del testo
 Due famose tecniche di embedding sono Word2Vec e Doc2Vec, il cui meccanismo viene illustrato nei paragrafi che seguono.
 \subsubsection{Word2Vec} \label{w2v}
 Word2Vec è un algoritmo che ha l'obiettivo di trasformare le parole in vettori numerici all'interno di uno spazio  di dimensione prefissata \cite{3}.
-Un corpus è composto da documenti, e ogni documento è composto da parole; ciascuna di queste parole, tramite Word2Vec, viene trasformata in un vettore di lunghezza $k$, dove $k$ indica il numero di feature numeriche che vengono considerate. 
+Un corpus è composto da documenti, e ogni documento è composto da parole; ciascuna di queste parole, tramite Word2Vec, viene trasformata in un vettore di lunghezza $r$, dove $r$ indica il numero di feature numeriche che vengono considerate. 
 \\
 Word2Vec si basa sull'utilizzo di reti neurali \cite{3} ed è principalmente implementato tramite due modelli: Skip-Gram e CBOW (Continuous Bag of Words) che vengono descritti qui di seguito.
 \\
@@ -286,13 +286,13 @@ Anche in questo caso viene addestrata una rete neurale utilizzando il metodo del
 \\
 In generale, data la natura di queste tecniche, per ottenere una rappresentazione compatta dell'intero documento si rende necessario l'utilizzo in una seconda fase di una tecnica di aggregazione.
 \\
-In questa fase ogni documento è formato da $n$ parole ed è composto da $n$ vettori lunghi $k$ feature. L'aggregazione interviene per comprimere ciascuno di questi vettori in un valore che sia rappresentativo della corrispondente parola, ottenendo così un vettore per il documento.
+In questa fase ogni documento è formato da $n$ parole ed è composto da $n$ vettori lunghi $r$ feature. L'aggregazione interviene per comprimere ciascuno di questi vettori in un valore che sia rappresentativo della corrispondente parola, ottenendo così un vettore per il documento.
 \\
 Così come in tante altre applicazioni dell'Informatica, i metodi di aggregazione sono molteplici, ad esempio la media aritmetica, la mediana, l'aggregazione del kernel di Fisher \cite{19}.
 \\
 Fare la media tra vettori significa poter agire su due dimensioni, la prima prevede di sommare prima gli elementi di ciascun vettore e poi dividere per il numero di elementi, ottenendo $n$ valori medi. In realtà, questa soluzione è scomoda per la successiva elaborazione dei dati, dal momento che ogni documento può avere un numero variabile di parole e dunque si otterrebbero vettori di lunghezza diversa per il corpus finale.
 \\
-La soluzione utilizzata, invece, si applica sommando i primi elementi di tutti i vettori, i secondi, i terzi e così via, per poi dividere per il numero di parole. Così facendo si preserva la rappresentazione tramite feature, perchè si ottiene per ogni documento un vettore lungo $k$; un discorso analogo vale per la mediana.
+La soluzione utilizzata, invece, si applica sommando i primi elementi di tutti i vettori, i secondi, i terzi e così via, per poi dividere per il numero di parole. Così facendo si preserva la rappresentazione tramite feature, perchè si ottiene per ogni documento un vettore lungo $r$; un discorso analogo vale per la mediana.
 \\
 L'aggregazione del kernel di Fisher, invece, propone una rappresentazione che si basa su quanto il vettore osservato si discosti dal modello generativo GMM (Gaussian Mixture Model). Tale discostamento è una misura di distanza che viene calcolata tramite il gradiente di una funzione di verosomiglianza; i vettori ottenuti prendono il nome di \textit{Fisher vectors}.
 
@@ -355,7 +355,7 @@ L'obiettivo è quello di ricavare un modello di apprendimento supervisionato in 
 potenzialmente, tale punteggio rappresenta quanto la notizia sia fake.
 
 \section{Induzione di funzioni di appartenenza} \label{induzione}
-In letteratura è stato proposto un algoritmo che fa utilizzo di una procedura originariamente nata come tecnica di support vector clustering \cite{23} per poter indurre la funzione di appartenenza dei punti a un certo insieme fuzzy \cite{1}.
+In letteratura è stato proposto un algoritmo che fa utilizzo di una procedura originariamente nata come tecnica di support vector clustering per poter indurre la funzione di appartenenza dei punti a un certo insieme fuzzy \cite{1}.
 \\
 I punti fondamentali di questo approccio riguardano determinare la forma dell'insieme fuzzy e inferire i parametri della sua funzione di appartenenza.
 
@@ -421,58 +421,54 @@ Esistono diversi tipi di kernel, ad esempio lineare, polinomiale, iperbolico, ga
 \chapter{Soluzione proposta}
 \label{Capitolo 2}
 \onehalfspacing
-Il secondo Capitolo presenta la soluzione proposta in questo elaborato.
+Il secondo Capitolo presenta la soluzione che viene proposta in questo elaborato.
+Tale soluzione consiste in un sistema di apprendimento supervisionato a partire dall'algoritmo $\bm{\mu}$\textbf{-learn} \cite{1}, il cui funzionamento viene descritto nel Paragrafo \ref{mulearn}.
 \\
-Tale soluzione consiste in un sistema di apprendimento supervisionato a partire dal modello matematico $\bm{\mu}$\textbf{-learn} \cite{1}, la cui struttura viene delineata all'interno del Paragrafo \ref{mulearn}.
-\\
-Nelil Paragrafo \ref{sistema}, invece, viene mostrata l'architettura del sistema completo e come il suddetto algoritmo sia stato integrato per poter lavorare su dati testuali inerenti a notizie.
+Nel Paragrafo \ref{sistema}, invece, si mostra l'utilizzo che è stato fatto del presente algoritmo all'interno del sistema, delineando le fasi che si susseguono nel corso degli esperimenti.
 
-\section[\texorpdfstring{Il modello $\mu$-learn}%
+\section[\texorpdfstring{L'algoritmo $\mu$-learn}%
                         {mu-learn}]% % choose text-only material here
-        {Il modello $\bm{\mu}$-learn}  % note use of \bm ("bold math")
+        {L'algoritmo $\bm{\mu}$-learn}  % note use of \bm ("bold math")
 \label{mulearn}
-Si tratta di un algoritmo che utilizza una procedura originariamente nata nel contesto del support vector clustering.
+$\mu$-\textit{learn} è un algoritmo di Machine Learning che utilizza una procedura originariamente nata nel contesto del support vector clustering \cite{23}.
 \\
 Essa si colloca nel gruppo di tecniche che lavora su insiemi fuzzy triangolari, trattando un problema di ottimizzazione non lineare.
 \\
 La natura di questo problema si rivela conveniente per la diversificazione delle funzioni di appartenenza, i cui parametri vanno a determinare la forma degli insiemi fuzzy formati.
 \\
-Il nome di questo modello suggerisce il suo obiettivo: apprendere $\mu$, il grado di appartenenza a un determinato insieme fuzzy.
+Il nome di questo algoritmo suggerisce il suo obiettivo: apprendere $\mu$, la funzione di appartenenza a un determinato insieme fuzzy e generare l'associato modello predittivo.
 
 \subsection{Fuzzificatore} \label{fuzzificatore}
 In letteratura i termini \textit{fuzzificazione} e \textit{defuzzificazione} indicano rispettivamente il passaggio da una quantità crisp a una quantità fuzzy e viceversa.
 \\
-Tale passaggio può avvenire in differenti modi, che dipendono dal tipo di fuzzificatore che si utilizza.
+Tale passaggio può avvenire in differenti modi che dipendono dal tipo di fuzzificatore che si utilizza. In questo senso è presente anche qui un'ampia scelta di soluzioni: tra quelle più diffuse si menzionano fuzzificatori di tipo lineare ed esponenziale.
 \\
-In questo senso è presente anche qui un'ampia scelta di soluzioni: tra quelle più diffuse si menzionano fuzzificatori di tipo lineare ed esponenziale.
-\\
-Nel caso di questi due fuzzificatori, si starebbe stabilendo se il processo di apprendimento sia fatto facendo decrescere linearmente o esponenzialmente i valori della funzione di appartenenza da 1 a 0.
+Nel caso di questi due fuzzificatori, si starebbe stabilendo se il processo di apprendimento sia realizzato facendo decrescere linearmente o esponenzialmente i valori della funzione di appartenenza dal valore 1 fino a 0.
 \\
 Geometricamente, questo equivale a definire una certa misura di distanza nello spazio in cui i punti vengono clusterizzati; con grado di appartenenza maggiore essi saranno agglomerati più densamente nel cluster, dualmente con grado minore, i suddetti punti saranno più distanti dall'insieme.
 
 \subsection{Support vector clustering modificato}
-L'assunzione di partenza è disporre di un dataset di punti, ciascuno associato a un proprio grado di appartenenza $\mu$ a un insieme fuzzy sconosciuto.
+L'assunzione iniziale è quella di disporre di un dataset di punti etichettati in cui le etichette sono valori crisp delle classi a cui appartengono; si presume che questi punti siano naturalmente associati a un proprio grado di appartenenza a un insieme fuzzy sconosciuto.
 \\
-L'obiettivo è individuare tale insieme e determinare $\mu$ relativamente ad ogni punto.
+L'obiettivo è proprio individuare tale insieme e determinare la funzione di appartenenza $\mu$ per approssimarne il grado.
 \\
-Il modello ricorre, quindi, alla tecnica di support vector clustering \cite{23} per raggruppare agglomerati di punti nello spazio in cui vengono mappati tramite il kernel trick.
+L'algoritmo ricorre, quindi, alla tecnica di support vector clustering \cite{23} per raggruppare agglomerati di punti nello spazio in cui vengono mappati tramite il kernel trick.
 \\
 Successivamente, verifica se l'immagine $\mathit{\Phi}$ dei punti appartenga a una sfera di raggio $R$ e centro $a$ inizialmente sconosciuti e, infine, determina il grado di appartenenza sulla base della distanza tra esse e il centro.
 \\
-Il problema di ottimizzazione non lineare a cui si accennava in precedenza riguarda, quindi, la minimizzazione della sfera che racchiude l'immagine dei punti mappati in questo spazio.
-\\
-I punti racchiusi, infatti, faranno parte dell'insieme fuzzy individuato.
+Il problema di ottimizzazione non lineare a cui si accennava in precedenza riguarda, quindi, la minimizzazione della sfera che racchiude l'immagine dei punti mappati in questo spazio; i punti racchiusi, infatti, faranno parte dell'insieme fuzzy individuato.
 \\
 In Figura \ref{gaussian} vengono mostrati quattro esempi di clusterizzazione tramite kernel gaussiano con valore crescente del suo iperparametro.
 \\
-\begin{figure}
+\begin{figure}[!ht]
     \centering
-    \includegraphics[scale = 0.7]{images/gaussian_kernel.png}
-    \caption{Esempi di clusterizzazione con kernel gaussiano - da \cite{23}}
+    \includegraphics[scale = 0.75]{images/gaussian_kernel.png}
+    \caption{Esempi di clusterizzazione con kernel gaussiano:
+    q = 1 (b) q = 20 (c) q = 24 (d) q = 48 - da \cite{23}}
     \label{gaussian}
 \end{figure}
 \\
-Quelli che seguono sono i tre vincoli del problema
+Quelli che seguono sono i tre vincoli del problema:
 \begin{equation}\label{vincolo}
     \mu_i || \mathit{\Phi}(x_i) - a ||^2 \leq \mu_iR^2 + \xi_i \;,
 \end{equation}
@@ -482,54 +478,230 @@ Quelli che seguono sono i tre vincoli del problema
 \begin{equation}\label{vincolo_3}
     \xi_i \geq 0, \tau_i \geq 0 \;.
 \end{equation}
-la soluzione originale viene, quindi, estesa minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro.
+la soluzione originale viene, quindi, estesa minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro; la soluzione viene ricavata tramite un solver.
 La fase successiva è di indurre il valore della funzione di appartenenza a tale insieme.
 
 \subsection{Induzione di insiemi fuzzy}
-L'ultima fase di induzione della funzione di appartenenza dipende dalla scelta di $C$.
+Se $F$ è l'insieme fuzzy analizzato, l'algoritmo individua un suo sottoinsieme $K$, detto \textit{core}, in cui assegna l'unità come grado di appartenenza dei punti che ne fanno parte.
 \\
-Per questa ragione è necessario uno step di \textit{model selection} in cui si fa tuning dei valori possibili per andare a cercare quelli che meglio si adattano al tipo di dato che si ha a disposizione.
+Infine, sulla base del fuzzificatore impostato, l'algoritmo fa decrescere il valore man mano che i punti si allontanano dal core (Figura \ref{mulearnplot}). 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.35]{images/mulearn.png}
+    \caption{Visualizzazione in uno spazio bidimensionale dei punti (400 osservazioni) e del fuzzy set associato alle fake news indotto da $\mu$-learn. In rosso le notizie echitettate come ``fake'' e in blu come ``vere''.
+    \\
+    Le curve di livello discriminano le soglie dei gradi di appartenenza dei punti a partire dall'insieme core al centro fino al resto delle osservazioni nelle zone periferiche.}
+    \label{mulearnplot}
+\end{figure}
+La fase di induzione della funzione di appartenenza è lo step in cui l'algoritmo viene effettivamente addestrato tramite i dati etichettati.
 \\
-Naturalmente, tale selezione avviene tenendo conto di tutti quei criteri che cercano di prevenire problemi di overfitting e underfitting.
-\\
-Tipicamente, questo avviene facendo una grid search di un certo intervallo di valori, al fine di valutare il loro impatto con quanti più training e test set possibili, mantenendo coerente la rappresentatività della popolazione.
+L'esito dell'induzione della funzione di appartenenza è influenzato dalla scelta degli iperparametri.
 
 \subsection{Iperparametri}
-Per quanto concerne l'algoritmo sopracitato, ci sono due principali attori: il parametro del kernel e $C$.
+Gli \textit{iperparametri} sono parametri speciali che non vengono appresi direttamente dall'algoritmo di Machine Learning ma che sono fissati prima dell'addestramento.
+Nel contesto considerato da questo elaborato si distinguono le seguenti quantità: 
+\begin{enumerate}
+    \item il solver utilizzato,
+    \item il tipo di kernel,
+    \item eventuali parametri che dipendono dal tipo di kernel,
+    \item $C$,
+    \item il tipo di fuzzificatore,
+    \item eventuali parametri legati al tipo di fuzzificatore,
+    
+\end{enumerate}
+Il primo è costituito da due possibilità: \textit{tensorflow} e \textit{gurobi}, due solver che usano strategie differenti per il problema di ottimizzazione non lineare; il secondo e il terzo condizionano la forma dell'insieme indotto, si pensi ad esempio a $\sigma$ per il kernel gaussiano, mostrato in precedenza.
 \\
-Il primo dipende strettamente dal tipo di kernel che si utilizza e condiziona la forma dell'insieme indotto, si pensi ad esempio a $\sigma$ per il kernel gaussiano.
+Il quarto impatta sulla dimensione del core dell'insieme:
+all'aumentare di $C$, il core si dilata e incrementa il numero di elementi in esso inclusi.
+Più precisamente, al raggiungimento dell'unità da parte di $C$ l'insieme fuzzy tende a un insieme regolare che racchiude i punti del campione le cui etichette sono diverse da zero.
 \\
-Il secondo impatta sulla dimensione del cosiddetto \textit{core} dell'insieme: più il valore si avvicina all'unità più i punti membri si rivelano essere quelli con grado di appartenenza diverso da zero.
+Infine, il quinto e il sesto sono legati al processo di fuzzificazione precedentemente definito nell'apposita Sezione.
+Una volta prefissati gli iperparametri, è possibile ricorrere a una tecnica per la loro ottimizzazione, detta \textit{tuning}.
+
+\paragraph{Tuning} Con tuning si intende l'addestramento di uno stimatore con diverse configurazioni dei suoi iperparametri, al fine di valutare i risultati delle predizioni e, sulla base di essi, scegliere opportunamente il set di valori ottimali per la generazione del modello finale.
 \\
-In quanto iperparametri, essi determinano i gradi di libertà del modello che si vuole ottenere.
+Concretamente, si può implementare il tuning tramite la cosiddetta \textit{grid search}: si tratta di una ricerca del modello migliore che considera una tabella di valori che si desidera esplorare ed è basata sulla \textit{cross validation}.
+
+\paragraph{Cross validation} 
+La cross validation è una tecnica che consiste nel partizionare il dataset in $k$ \textit{fold}, effettuare altrettante iterazioni e, per ciascuna, considerare l'$i$-esima fold come test set e le restanti $k-1$ come training set per addestrare il modello generato.
 \\
-A tal proposito, è importante avere un campione sufficientemente grande per poter compensare la differenza tra bias e variance error.
+In questo caso esistono diverse scuole di pensiero sulla percentuale che si preferisce impostare per la suddivisione in fold.
 \\
-Come è ben noto in letteratura, infatti, tale differenza causa dualmente problemi di overfitting e underfitting al prevalere dell'uno sull'altro.
+Indirettamente, definire ogni combinazione delle fold equivale a definire un nuovo modello, pertanto fare una cross validation $k$-fold significa generare $k$ modelli.
 \\
-Inoltre, il valore di questi iperparametri deve essere scelto con cura in quanto gioca un ruolo chiave per l'ottenimento di risultati positivi e affidabili; pertanto, a maggior ragione la fase di model selection è importante che venga fatta con attenzione.
+Questa tecnica ha il vantaggio di massimizzare l'utilizzo dei dati, evitando di costruire un validation set; inoltre, può essere usata per fare \textit{model selection} usando la sua versione ``innestata'': per ognuna delle iterazioni precedentemente descritte, si opera una cross validation interna per fare il tuning degli iperparametri e, dunque, generare $k$ modelli ottimizzati.
+\\
+Infine, questa tecnica rappresenta un metodo efficace per contrastare il problema di \textit{overfitting}, in quanto previene il fenomeno di \textit{data leakage}\footnote{Per data leakage si intende lo scenario in cui il training set viene contaminato dal test set. In altre parole violare la proprietà di disgiunzione tra questi due tipi di insiemi causa un eccessivo adattamento del modello sui dati di allenamento e, di conseguenza, performa molto bene su questi ultimi ma molto male su osservazioni nuove.}.
+
+\paragraph{Overfitting e underfitting}
+Essi rappresentano una buona frazione delle possibili insidie che si potrebbero incontrare durante l'addestramento di modelli predittivi.
+\\
+Gli iperparametri determinano i gradi di libertà del modello ottenuto; la loro numerosità, infatti, ha un impatto sulla complessità del modello: avere molti iperparametri rischia di complicarlo eccessivamente, dualmente averne pochi, lo rende potenzialmente troppo semplice. 
+\\
+Si distinguono, quindi, modelli che soffrono di underfitting quando hanno errore alto sul training set e sul test set, tipicamente questo è causato da un'eccessiva semplificazione del modello o una quantità di dati insufficiente.
+\\
+Al contrario, modelli che soffrono di overfitting sono troppo complessi e mostrano un errore basso sul training set ma alto sul test set, evidenziando una scarsa capacità di generalizzazione.
+\\
+In letteratura, il problema è descrivibile anche in termini di equilibrio tra \textit{bias} e \textit{variance error} \cite{31}: l'underfitting è il risultato del prevalere del bias error sul variance error; l'overfitting, invece, è causato dal dominare del variance error sul bias error.
+\\
+Di conseguenza, fare esclusivamente attenzione al problema di \textit{data leakage} non basta:
+al fine di trovare un compromesso per controllare questo tipo di problematica, è necessario avere una giusta complessità del modello, associata a un campione di dati sufficientemente grande.
 
 \section{Il sistema}
 \label{sistema}
-Nel presente Paragrafo si mostra ad alto livello l'architettura della soluzione proposta in questo elaborato, mostrando poi come sia stato utilizzato il modello $\mu$-learn nel contesto del riconoscimento delle fake news.
+Nel presente Paragrafo si mostra ad alto livello l'architettura della soluzione proposta in questo elaborato, mostrando prima i nodi che la compongono e poi come sia stato utilizzato il modello $\mu$-learn nel contesto del riconoscimento delle fake news.
+\\
+Nella seconda parte viene, invece, descritto come i nodi in questione comunichino fra loro e quali file vengano generati durante l'utilizzo del sistema.
+\\
+Per gestire la pluralità dei casi nella forma dell'input, il sistema definisce un formato per i dataset che andrà a trattare: il dataset ideale è un dataframe che contiene in forma tabulare osservazioni relative a dati testuali che, nell'ambito trattato da questo elaborato, possono essere il corpo delle notizie o i titoli.
+\\
+Tali osservazioni sono etichettate con valore 1 se si tratta di una notizia fake, 0 altrimenti. L'obiettivo di $\mu$-learn sarà, quindi, indurre l'insieme fuzzy delle fake news.
 \subsection{Architettura}
-\subsection{Utilizzo dell'algoritmo}
+L'architettura del sistema è composta da tre nodi: il preprocessing del dataset, la selezione dei modelli migliori e la visualizzazione dei dati; segue, quindi, una breve descrizione di ciascun nodo più nel dettaglio.
+
+\paragraph{Dataset preprocessing} All'inizio di questa fase ci sono tre possibili scenari: i) il dataset rispetta il formato, ii) il dataset è formattato diversamente e dunque necessita di una fase di rielaborazione per poter essere utilizzabile, iii) il dataset viene generato dal sistema stesso.
+\\
+In altre parole, nel secondo caso è necessario rendere la forma dell'input compatibile col formato predefinito; questo viene fatto da un modulo che ha la funzione di estrarre le informazioni fondamentali e di formare con esse il dataframe desiderato.
+\\
+A questo punto interviene la vera e propria fase di preprocessing che consiste nell'eseguire una pipeline di operazioni che hanno l'obiettivo di preparare il dataset alla fase successiva.
+\\
+Le operazioni in questione includono le tecniche di elaborazione del linguaggio naturale, descritte nel Capitolo \ref{Capitolo 1}.
+\\
+Tale pipeline viene opportunamente configurata a seconda delle esigenze per attivare o disattivare gli step per l'elaborazione dei dati, anche in base allo scenario considerato.
+\\
+Al termine del preprocessing, un nuovo dataset viene creato e scritto su file, per il suo utilizzo in un secondo momento. L'intero processo viene schematizzato in Figura \ref{preprocessmodule}.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{images/preprocessingmodule.png}
+    \caption{Primo nodo dell'architettura, il preprocessing dei dati, secondo i tre possibili scenari}
+    \label{preprocessmodule}
+\end{figure}
+
+\paragraph{Model selection}
+La fase di model selection si occupa di individuare il modello che meglio si adatta ai dati presi in esame.
+\\
+Al fine di rendere computazionalmente più agevole l'esecuzione e per ambire a risultati potenzialmente migliori, si applica la selezione a un dataset preprocessato.
+\\
+I modello ottimali vengono generati tramite la tecnica della cross validation innestata e, per ciascuna iterazione, viene fatta una \textit{grid search}, ossia un'ulteriore cross validation che indaga i migliori modelli sulla base del test error ottenuto.
+\\
+Alla fine di questa fase vengono ricavati i modelli che si sono adattati meglio ai dati e la relativa configurazione degli iperparametri.
+\\
+E' in questa fase che si colloca l'utilizzo di $\mu$-learn in quanto il test error concerne le predizioni dei modelli candidati alla selezione.
+Infine, i modelli generati da $\mu$-learn e che sono stati selezionati durante la grid search vengono serializzati per permettere il loro riutilizzo in un secondo momento; più precisamente, questo avviene nella fase di esperimenti in cui si vuole valutare il loro comportamento.
+\\
+In Figura \ref{selectionmodel} viene mostrata la rappresentazione del funzionamento sopra descritto.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{images/modelselectionmodule.png}
+    \caption{Secondo nodo dell'architettura, la selezione dei modelli}
+    \label{selectionmodel}
+\end{figure}
+
+\paragraph{Data visualization} 
+Nella parte di visualizzazione dei dati, i modelli vengono deserializzati per poterli riutilizzare e si opera un'analisi descrittiva.
+\\
+Tale analisi coinvolge principalmente i gradi di appartenenza approssimati dai modelli generati dal sistema, valutando la bontà delle predizioni da essi effettuate.
+\\
+Il criterio con cui viene valutata la correttezza delle predizioni consiste nell'utilizzare delle misure quantitative di errore. Queste metriche verranno approfondite nel dettaglio nel Capitolo \ref{Capitolo 3} ma, in generale, misurano il discostamento delle predizioni dalla \textit{ground truth}, ossia l'effettivo valore delle etichette nel dominio di conoscenza considerato, ad esempio 1 ("fake") e 0 ("vere") per le notizie.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{images/datavisualizationmodule.png}
+    \caption{Terzo nodo dell'architettura, la visualizzazione dei dati}
+    \label{datavisualization}
+\end{figure}
+
+\subsection{Funzionamento del sistema}
+In questo Paragrafo si descrive come funziona il sistema nella sua complessità e come esso sia stato utilizzato per produrre dei risultati.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.6]{images/cycle.png}
+    \caption{Schema del flusso di comunicazione all'interno del sistema}
+    \label{cycle}
+\end{figure}
+\\
+In Figura \ref{cycle} viene raffigurato il flusso di comunicazione all'interno del sistema, numerato passo per passo: 
+\begin{enumerate}
+    \item il processo ha inizio quando si dispone di un dataset, ottenuto in uno dei modi visti in precedenza, e viene così acquisito dal primo nodo per il preprocessing;
+    \item  il nodo ha prodotto un nuovo dataset rielaborato e pronto per l'addestramento. Ogni dataset preprocessato viene opportunamente scritto su file per permettere la successiva lettura;
+    \item i modelli predittivi ottimali sono stati trovati, serializzati e il sistema aggiorna la storia degli esperimenti, documentata in un registro dedicato. Lo scopo del registro è catalogare i modelli e i loro dati associati tramite l'informazione di data e ora;
+    \item i modelli vengono deserializzati e usati per l'analisi descrittiva delle predizioni;
+    \item tramite il registro, il sistema è in grado di risalire al dataset utilizzato per ottenere i relativi modelli e, dunque, completare l'analisi;
+    \item il modulo per la visualizzazione dei dati fornisce un report che viene aggiunto a quelli associati agli altri esperimenti;
+    \item il report permette di analizzare il comportamento dei modelli, di individuare eventuali fonti d'errore e correggere la configurazione del sistema;
+    \item a) la causa di errore è localizzata nel preprocessing dei dati e dunque è necessario ricominciare l'esperimento dall'inizio, andando a modificare i parametri in questione;
+    \\
+    b) la causa di errore riguarda il modo in cui viene fatta la grid search, pertanto si modifica i relativi valori a partire dalla model selection.
+\end{enumerate}
 
 \chapter{Implementazione}
 \label{Capitolo 3}
 \onehalfspacing
+Il Capitolo \ref{Capitolo 3} tratta l'implementazione della soluzione proposta in precedenza.
+\\
+All'interno del Paragrafo \ref{pipeline} viene illustrata la pipeline di preprocessing, il Paragrafo \ref{modelselection} descrive la fase di model selection, mentre il Paragrafo \ref{evaluation} definisce i punteggi utilizzati per misurare la bontà dei modelli selezionati.
 
-\section{Pipeline di preprocessing}
-\subsection{Lowercasing e rimozione del rumore}
+\section{Pipeline di preprocessing}\label{pipeline}
+Per la fase di preprocessing è stata predisposta una pipeline, ovvero un insieme di operazioni eseguite consecutivamente.
+\\
+La sequenza di operazioni viene configurata al momento dell'esecuzione tramite un'opportuna parametrizzazione degli step della pipeline.
+\\
+Ogni operazione segue il pattern di implementazione della libreria \textit{scikit-learn}, che prevede di separare le procedure di \textit{fit}, \textit{predict} e \textit{transform}.
+\\
+Nel caso di operazioni di rielaborazione dai dati, vengono prese in considerazione \textit{fit} e \textit{transform} che definiscono rispettivamente la parte di apprendimento dei dati, quando richiesta, e quella di effettiva trasformazione dell'input in un output processato.
+\\
+Adottare questa convenzione rappresenta un vantaggio per poter accedere alle funzioni della libreria menzionata sopra, utilizzando ad esempio la pipeline stessa direttamente come parametro.
+Inoltre, il codice organizzato in questa maniera si presta bene a future estensioni e favorisce la sua manutenibilità poiché rispetta il criterio della \textit{Separation of Concerns}, concetto chiave nell'ambito dell'Ingegneria del software \cite{32}.
+\\
+Quella che segue è la lista dei parametri della pipeline che al momento della configurazione è possibile attivare a seconda delle esigenze:
+\begin{itemize}
+    \item Lowercase,
+    \item Rimozione dei duplicati,
+    \item Tokenizzazione,
+    \item Lemmatizzazione,
+    \item Stemming,
+    \item Rimozione del rumore,
+    \item Rimozione delle stop word,
+    \item Word2Vec,
+    \item Aggregazione,
+    \item Doc2Vec.
+\end{itemize}
+Intuitivamente, le operazioni non sono tutte compatibili, al contrario, alcune sono tra di loro esclusive, come Word2Vec e Doc2Vec, oppure la lemmatizzazione e lo stemming.
+Inoltre, l'ordine con cui esse vengono applicate è determinante per la rielaborazione del testo: è più semplice rimuovere il rumore analizzando i token piuttosto che le stringhe di intere frasi, ecco perchè la tokenizzazione avviene tipicamente all'inizio della pipeline.\\
+Infine, alcune operazioni possono escluderne delle altre: l'aggregazione, ad esempio, è necessaria solo in caso di utilizzo di Word2Vec.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/pipeline.png}
+    \caption{Esempio di configurazione di una pipeline di preprocessing}
+    \label{pipeline}
+\end{figure}
+
+In Figura \ref{pipeline} viene mostrato un esempio di pipeline che è stata frequentemente utilizzata durante gli esperimenti.
+\\
+Si noti come in questo tipo di configurazione non sia necessario includere lo step di tokenizzazione in quanto la lemmatizzazione prevede una suddivisione in token che garantisce lo stesso risultato.
+
+\subsection{Lowercasing}
+Il \textit{lowercasing} è una tecnica che consiste nel trasformare una stringa di testo in una stringa composta unicamente da caratteri minuscoli.
+\\
+\\
+\textbf{Input}: stringa, ``\textit{As of Tuesday evening, more than 8,000 hectares (nearly 20,000 acres) had been burned and hundreds of firefighters were involved in controlling the fire, according to DFES. The department said the cause of the 'out-of-control' blaze is unknown.}''
+\\
+\textbf{Output}: stringa, ``\textit{as of tuesday evening, more than 8,000 hectares (nearly 20,000 acres) had been burned and hundreds of firefighters were involved in controlling the fire, according to dfes. the department said the cause of the 'out-of-control' blaze is unknown.}''
+
+\subsection{Rimozione dei duplicati}
+
+\subsection{Rimozione del rumore}
 \subsection{Lemmatizzazione}
 \subsection{Rimozione delle stop word}
 \subsection{Word2Vec}
 \subsection{Aggregazione}
-\section{Selezione dei modelli}
+\section{Selezione dei modelli}\label{modelselection}
 \subsection{Tuning degli iperparametri}
 \subsection{Cross validation}
 \subsection{Grid search}
-\section{Valutazione dei modelli}
+\section{Valutazione dei modelli}\label{evaluation}
 \subsection{Matrice di confusione}
 \subsection{Precision, Recall e F1}
 
