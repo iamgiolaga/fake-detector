@@ -583,12 +583,12 @@ La fase di model selection si occupa di individuare il modello che meglio si ada
 \\
 Al fine di rendere computazionalmente più agevole l'esecuzione e per ambire a risultati potenzialmente migliori, si applica la selezione a un dataset preprocessato.
 \\
-I modello ottimali vengono generati tramite la tecnica della cross validation innestata e, per ciascuna iterazione, viene fatta una \textit{grid search}, ossia un'ulteriore cross validation che indaga i migliori modelli sulla base del test error ottenuto.
+I modelli ottimali vengono generati tramite la tecnica della cross validation innestata e, per ciascuna iterazione, viene fatta una \textit{grid search} per indagare quali siano i migliori modelli sulla base del test error ottenuto.
 \\
-Alla fine di questa fase vengono ricavati i modelli che si sono adattati meglio ai dati e la relativa configurazione degli iperparametri.
+Alla fine di questa fase vengono ricavati, infatti, i modelli che si sono adattati meglio ai dati e fornita la relativa configurazione degli iperparametri.
 \\
-E' in questa fase che si colloca l'utilizzo di $\mu$-learn in quanto il test error concerne le predizioni dei modelli candidati alla selezione.
-Infine, i modelli generati da $\mu$-learn e che sono stati selezionati durante la grid search vengono serializzati per permettere il loro riutilizzo in un secondo momento; più precisamente, questo avviene nella fase di esperimenti in cui si vuole valutare il loro comportamento.
+E' in questa fase che si colloca l'utilizzo di $\mu$-learn in quanto il test error concerne le predizioni dei modelli generati da $\mu$-learn.
+I modelli selezionati vengono, dunque, serializzati per permettere il loro riutilizzo in un secondo momento; più precisamente, questo avviene nella fase di esperimenti in cui si vuole valutare il loro comportamento.
 \\
 In Figura \ref{selectionmodel} viene mostrata la rappresentazione del funzionamento sopra descritto.
 \begin{figure}
