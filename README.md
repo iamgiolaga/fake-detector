@@ -39,10 +39,7 @@ This repository is structured as follows:
     * ```generated_datasets/<date_time>/generated_dataset_<samplesize>.csv```: the .csv file with the preprocessed embedded generated data
     
 # Data Flow Diagram
-![main_kaggle.py](repository_images/main_kaggle.jpg)
-![main_kaggle.py](repository_images/main_preprocessing.jpg)
-![main_kaggle.py](repository_images/main_model_selection.jpg)
-![main_kaggle.py](repository_images/main_models_viewer.jpg)
+![flow](repository_images/cycle.png)
 
 # Datasets (updated on 20/02/2021)
 Currently, two main interesting datasets about web news have been found.
