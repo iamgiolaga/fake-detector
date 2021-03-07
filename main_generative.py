@@ -20,8 +20,8 @@ M = 500 # number of documents
 # beta # parameter of the prior Dirichlet for the topic-word distribution
 N = 1000 # number of words for each document / choose N from Poisson(eps)
 
-topic_1 = pd.read_csv("topic_samples/topic_1.csv")
-topic_2 = pd.read_csv("topic_samples/topic_2.csv")
+topic_1 = pd.read_csv("topic_samples/topic_1_mixed.csv")
+topic_2 = pd.read_csv("topic_samples/topic_2_mixed.csv")
 
 # topic_1 = list(dict.fromkeys(topic_1.columns.values[0].split(" ")).keys())
 # topic_2 = list(dict.fromkeys(topic_2.columns.values[0].split(" ")).keys())

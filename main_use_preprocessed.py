@@ -11,7 +11,7 @@ from datetime import datetime
 
 ''' Generated data case '''
 
-PATH_TEXTS = "generated_text/14.02.2021_16.46/generated_dataset_500.csv"
+PATH_TEXTS = "generated_text/25.02.2021_17.21/generated_dataset_500.csv"
 
 # directory = os.fsencode(PATH_TEXTS)
 
@@ -39,7 +39,7 @@ gen = pp_generated.run_pipeline()
 dataframe = pd.DataFrame(gen.aggregated, columns = ["text"])
 dataframe["membership"] = generated["membership"]
 dataset = pp_generated.shuffle(dataframe).reset_index()
-dataset.columns = ["old index","text", "membership"]
+dataset.columns = ["old index", "text", "membership"]
 dataset.index.name = "index"
 
 cardinality = len(dataset)

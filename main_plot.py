@@ -40,7 +40,7 @@ def gr_membership_contour(estimated_membership):
                                      levels = (.1, .3, .5, .95), colors = 'k')
     plt.clabel(membership_contour, inline = 1)
 
-fullname = "selected_models/15.12.2020_11.29/models.pickle"
+fullname = "selected_models/08.02.2021_11.55/models.pickle"
 file = open(fullname, "rb")
 models = pickle.load(file)
 all_memberships = models.all_memberships
@@ -74,7 +74,7 @@ for i in range(0,5):
     gr_membership_contour(model.estimated_membership_)
     plt.show()
 
-    outdir = "images/"
+    outdir = "img/"
     if not os.path.exists(outdir):
         os.mkdir(outdir)
 
