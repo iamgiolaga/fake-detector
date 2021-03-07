@@ -42,8 +42,11 @@ class Generation:
                 p = uniform.rvs(loc = 0, scale = 1)
             elif self.distribution == "norm": # TODO: is it useful for our case, since it is (-inf, + inf)?
                 p = norm.rvs()
-            elif self.distribution == "beta": # with alfa = 2, beta = 2 approximately normal on [0,1]
-                p = beta.rvs(2, 2)
+            elif self.distribution == "beta":
+                # with alfa = beta = 5 approximately normal on [0,1]
+                #p = beta.rvs(5, 5)
+                # with alfa = beta = 0.5 polarized on 0 and 1
+                p = beta.rvs(0.5, 0.5)
 
             document = []
             document_pd = pd.DataFrame(columns = ["text", "membership"])
