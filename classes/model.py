@@ -47,25 +47,24 @@ class Model:
         # solver strategy
         if self.solver == "tensorflow":
             if self.n_iter is not None:
-                self.strategy = (opt.solve_optimization_tensorflow, {'n_iter': self.n_iter})
+                self.strategy = opt.TensorFlowSolver(n_iter=self.n_iter)
             else:
-                self.strategy = (opt.solve_optimization_tensorflow, {})
+                self.strategy = opt.TensorFlowSolver()
         else:
             if self.solver == "gurobi":
                 if self.n_iter is not None:
-                    self.strategy = (opt.solve_optimization_gurobi, {'n_iter': self.n_iter})
+                    self.strategy = opt.GurobiSolver(time_limit=n_iter)
                 else:
-                    self.strategy = (opt.solve_optimization_gurobi, {} #{'adjustment': 50}
-                                     )
+                    self.strategy = opt.GurobiSolver()
 
-        fuzzifier_type = (fuzzifier.LinearFuzzifier, {})
+        fuzzifier_type = fuzzifier.LinearFuzzifier()
 
         # scalers = [StandardScaler(), RobustScaler(), MinMaxScaler()]
 
         pipe = Pipeline([
             #("scaler", None),
             ("learning_algorithm", FuzzyInductor(
-                solve_strategy = self.strategy,
+                solver = self.strategy,
                 fuzzifier = fuzzifier_type
             ))
         ])
@@ -116,7 +115,7 @@ class Model:
         for i, (train_id, test_id) in enumerate(outer_fold.split(self.X, self.y_cut)):
             print("Working on fold " + str(i + 1) + " of " + str(outer_folds))
             X_train, X_test = self.X[train_id], self.X[test_id]
-            y_train, y_test = self.y[train_id], self.y[test_id]
+            y_train, y_test = self.y_cut[train_id], self.y_cut[test_id]
 
             folds["x train " + str(i)] = X_train
             folds["y train " + str(i)] = y_train
