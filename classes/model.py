@@ -3,6 +3,7 @@ import os
 import pickle
 import ast
 import numpy as np
+
 from mulearn import FuzzyInductor, fuzzifier, kernel, optimization as opt
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
@@ -65,14 +66,14 @@ class Model:
             #("scaler", None),
             ("learning_algorithm", FuzzyInductor(
                 solve_strategy = self.strategy,
-                fuzzifier= fuzzifier_type
+                fuzzifier = fuzzifier_type
             ))
         ])
 
         # sigmas = np.linspace(.1, 1.0, 10)
         # alphas = np.linspace(.1, 1.0, 10)
         # sigmas = (0.1, 0.2, 0.3, 0.4, 0.5)
-        sigmas = np.logspace(-5, 5, 11, endpoint=True)
+        sigmas = np.logspace(-5, 5, 6, endpoint=True)
         alphas = (0.2, 0.7)
         # exponential_fuzzifiers = [
         #     (fuzzifier.ExponentialFuzzifier,
@@ -83,7 +84,7 @@ class Model:
         # for e in exponential_fuzzifiers:
         #     self.fuzzifier_types.append(e)
 
-        c_vector = np.logspace(-5, 5, 11, endpoint=True)
+        c_vector = np.logspace(-5, 5, 6, endpoint=True)
 
         learning_params = {
             'c': c_vector,
@@ -102,11 +103,17 @@ class Model:
         folds = {}
         best_models = []
         best_params = []
+        all_training_memberships = {}
+        all_training_labels = {}
+        all_training_scores = []
         all_memberships = {}
         all_labels = {}
         all_scores = []
 
-        for i, (train_id, test_id) in enumerate(outer_fold.split(self.X, self.y)):
+        # this code is used for generated datasets
+        self.y_cut = np.array(self.threshold(self.y, 0.5))
+
+        for i, (train_id, test_id) in enumerate(outer_fold.split(self.X, self.y_cut)):
             print("Working on fold " + str(i + 1) + " of " + str(outer_folds))
             X_train, X_test = self.X[train_id], self.X[test_id]
             y_train, y_test = self.y[train_id], self.y[test_id]
@@ -126,6 +133,12 @@ class Model:
 
             gs = gs.fit(X_train, y_train)
             # f = gs.best_estimator_["learning_algorithm"]
+
+            training_memberships, training_labels, training_scores = self.evaluate_model(gs, X_train, y_train)
+            all_training_memberships[i] = training_memberships
+            all_training_labels[i] = training_labels
+            all_training_scores.append(training_scores)
+
             memberships, labels, scores = self.evaluate_model(gs, X_test, y_test)
 
             all_memberships[i] = memberships
@@ -138,6 +151,9 @@ class Model:
         self.folds = folds
         self.best_models = best_models
         self.best_params = best_params
+        self.all_training_memberships = all_training_memberships
+        self.all_training_labels = all_training_labels
+        self.all_training_scores = all_training_scores
         self.all_memberships = all_memberships
         self.all_labels = all_labels
         self.all_scores = all_scores
@@ -166,10 +182,10 @@ class Model:
     def simple_split(self, dataset):
         id = dataset.iloc[:, 0].values # id
         X = dataset.iloc[:, 1].values  # x-component
-        y = dataset.iloc[:, 2].values  # labels
+        y = dataset.iloc[:, 2].values  # labels / membership
         return id, X, y
 
-    def threshold(self, membership, n = 0.4):
+    def threshold(self, membership, n = 0.5):
         predictions = []
 
         for x in membership:
