@@ -25,5 +25,5 @@ print(dataset.head(10))
 
 # select the best models
 m = Model()
-m.select_model(dataset.head(100), write=False)
+m.select_model(dataset.head(500), write=True)
 

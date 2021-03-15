@@ -14,7 +14,7 @@ from classes.generation import Generation
 ''' This is the file where experiments are artificial documents are generated through LDA '''
 
 # K = 2 # number of topics
-M = 500 # number of documents
+M = 1000 # number of documents
 # V # number of unique words, part of the vocabulary
 #alpha = np.array([1, 10]) # parameter of the prior Dirichlet for the document-topic distribution, has length k
 # beta # parameter of the prior Dirichlet for the topic-word distribution

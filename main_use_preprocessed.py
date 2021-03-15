@@ -11,7 +11,7 @@ from datetime import datetime
 
 ''' Generated data case '''
 
-PATH_TEXTS = "generated_text/25.02.2021_17.21/generated_dataset_500.csv"
+PATH_TEXTS = "generated_text/14.03.2021_15.38/generated_dataset_1000.csv"
 
 # directory = os.fsencode(PATH_TEXTS)
 

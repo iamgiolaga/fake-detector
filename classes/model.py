@@ -80,7 +80,7 @@ class Model:
         # for e in exponential_fuzzifiers:
         #     self.fuzzifier_types.append(e)
 
-        c_vector = np.logspace(-1, 1, 6, endpoint=True)
+        c_vector = np.logspace(-2, 2, 6, endpoint=True)
 
         learning_params = {
             'c': c_vector,
