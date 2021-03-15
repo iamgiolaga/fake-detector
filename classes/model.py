@@ -244,6 +244,12 @@ class Model:
         else:
             return 2 * ((precision * recall) / (precision + recall))
 
+    def MSE(self, prediction, y):
+        return (1/len(prediction))*sum((y - prediction) ** 2)
+
+    def RMSE(self, prediction, y):
+        return np.sqrt(self.MSE(prediction, y))
+
     def write_model(self):
         # 1. read to see if any dataframe is already available
         # 2. if yes, read it and update it
