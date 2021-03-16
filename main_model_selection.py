@@ -7,7 +7,7 @@ from classes.model import Model
 ''' DESCRIPTION '''
 ''' This is the file where models are selected by doing a nested cross validation '''
 
-PATH_TEXTS = "generated_datasets/14.02.2021_17.44/generated_dataset_500.csv"
+PATH_TEXTS = "generated_datasets/13.03.2021_18.57/generated_dataset_1000.csv"
 #PATH_TEXTS = "preprocessed_datasets/text/28.12.2020_18.48/final_text_dataset_38592.csv"
 #PATH_TEXTS = "preprocessed_datasets/text/06.02.2021_21.00/final_text_dataset_7926.csv"
 
@@ -25,5 +25,5 @@ print(dataset.head(10))
 
 # select the best models
 m = Model()
-m.select_model(dataset.head(500), write=True)
+m.select_model(dataset.head(1000), write=True)
 

@@ -59,7 +59,7 @@ class Model:
         # scalers = [StandardScaler(), RobustScaler(), MinMaxScaler()]
 
         pipe = Pipeline([
-            #("scaler", None),
+            ("scaler", StandardScaler()),
             ("learning_algorithm", FuzzyInductor(
                 solver = self.strategy,
                 fuzzifier = fuzzifier_type
@@ -80,7 +80,7 @@ class Model:
         # for e in exponential_fuzzifiers:
         #     self.fuzzifier_types.append(e)
 
-        c_vector = np.logspace(-2, 2, 6, endpoint=True)
+        c_vector = [0.01, 0.1, 0.5, 1.0, 10, 100]
 
         learning_params = {
             'c': c_vector,
@@ -162,15 +162,17 @@ class Model:
         scores = {}
         memberships = gs.predict(X)
         predicted_labels = self.threshold(memberships)
-        labels = y
+        labels = self.threshold(y)
         TP, FP, FN, TN = self.confusion_matrix(labels, predicted_labels, memberships)
         precision = self.precision(TP, FP)
         recall = self.recall(TP, FN)
         f1 = self.f1(precision, recall)
+        rmse = self.RMSE(memberships, y)
 
         scores["precision"] = precision
         scores["recall"] = recall
         scores["f1"] = f1
+        scores["rmse"] = rmse
 
         return memberships, labels, scores
 
