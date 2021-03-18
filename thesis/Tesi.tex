@@ -29,6 +29,7 @@
 \usepackage{url}
 \usepackage{wasysym}
 \usepackage{hyperref}
+\usepackage{adjustbox}
 \usepackage{epsfig}
 \usepackage[italian]{babel}
 \usepackage{setspace}
@@ -68,7 +69,7 @@
 \newcolumntype{"}{@{\hskip\tabcolsep\vrule width 1pt\hskip\tabcolsep}}
 \makeatother
 \begin{document}
-\title{Rilevazione di fake news
+\title{Rilevazione di fake news \\
 basata sull'induzione di insiemi fuzzy}
 \author{Giovanni LAGANÀ}
 \dept{Corso di Laurea Magistrale in Informatica}
@@ -739,13 +740,13 @@ Le considerazioni fatte nei Paragrafi \ref{erroreclass} e \ref{erroreregr} porta
 
 Sono state esplorate due possibilità: la pura induzione della funzione di appartenenza e un classificatore binario derivato da tale induzione.
 Siano $\lambda$ e $\omega$ i due predittori appena presentati, si definisce il primo predittore come
-\begin{center}
-    $\lambda$: $\mathbb{R}^h \rightarrow \mu$
-\end{center}
+\begin{equation}
+    \lambda: \mathbb{R}^h \rightarrow \mu
+\end{equation}
 con $\mu \in [0,1]$ e dove $h$ è il numero di feature; sia $x$ una generica osservazione del dataset, il secondo predittore è definito come
-\begin{center}
-    $\omega(x) = \begin{cases} 1 & \mbox{se } \lambda(x) >= 0.5, \\ 0 & \mbox{altrimenti.} \end{cases}$
-\end{center}
+\begin{equation}
+    \omega(x) = \begin{cases} 1 & \mbox{se } \lambda(x) >= 0.5, \\ 0 & \mbox{altrimenti.} \end{cases}
+\end{equation}
 Ne consegue che per $\lambda$ risultano più appropriate le misure di MSE e RMSE, mentre per $\omega$ sono state scelte le metriche di precision, recall e F1\footnote{In realtà si tratta di una versione leggermente modificata: si tratta di calcolare le misure di precision, recall e F1 pesando il numero di veri positivi e falsi positivi con $\mu$ e il numero di falsi negativi per $1-\mu$.}.
 
 \chapter{Implementazione}
@@ -754,11 +755,10 @@ Ne consegue che per $\lambda$ risultano più appropriate le misure di MSE e RMSE
 Il Capitolo \ref{Capitolo 3} tratta l'implementazione della soluzione proposta nel capitolo precedente. Nel Paragrafo \ref{datasethandle} si descrive la prima parte inerente alle modalità con cui si gestiscono i vari scenari relativi al tipo di dataset che si ha a disposizione.
 
 All'interno del Paragrafo \ref{pp} viene illustrata la pipeline di preprocessing, soffermandosi su ognuno degli step che la compongono; il Paragrafo \ref{modelselection}, invece, descrive come è stata implementata la parte di model selection tramite la grid search.
-
 Infine, nel Paragrafo \ref{datavisualizationimpl} viene descritta la fase di visualizzazione dei dati.
 
 \section{Gestione dei dataset}\label{datasethandle}
-Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: utilizzare un dataset acquisito da terzi oppure generarlo.
+Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: utilizzare un dataset acquisito da terzi e generarlo.
 Nel primo caso servizi come \textit{Kaggle} hanno facilitato l'individuazione di dataset interessanti, mentre nel secondo è stato implementato un modulo adibito alla generazione artificiale di documenti testuali.
 
 \subsection{Adattatore di dataset}\label{adapter}
@@ -775,7 +775,7 @@ L'etichetta ha due forme possibili: un valore binario o un valore compreso nell'
 Oltre a poter trattare osservazioni con etichette categoriali relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica \textit{LDA}, \textit{Latent Dirichlet Allocation} \cite{20} per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
 Si consideri, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso di $P_1 \cap P_2 = \emptyset$ e poi quello dell'intersezione non vuota.
 
-La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic; si definisce, quindi, grado di appartenenza ``atteso'' la probabilità $\mu_i$ di successo di una distribuzione binomiale che una parola $p_j \in P_1$ oppure $p_j \in P_2$, con $i=1, ..., m$ e $j=1, ..., n$, e $B, Z$ due variabili casuali che seguono rispettivamente la distribuzione binomiale e la distribuzione di Zipf \cite{34}. Infine, sia $d$ un'arbitraria distribuzione di probabilità, il funzionamento dello strumento di supporto fin sopra descritto viene mostrato nell'Algoritmo \ref{lda}.
+La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic; si fissa l'insieme $P_2$, rappresentativo del topic $t_2$ delle fake news, si definisce, quindi, grado di appartenenza ``atteso'' la probabilità $\mu_i$ di successo di una distribuzione bernoulliana che una parola $p_j \in P_2$, con $i=1, ..., m$ e $j=1, ..., n$, e si stabiliscono $B$ e $Z$, due variabili casuali che seguono rispettivamente la distribuzione bernoulliana e la distribuzione di Zipf \cite{34}. Infine, sia $d$ un'arbitraria distribuzione di probabilità, il funzionamento dello strumento di supporto fin sopra descritto viene mostrato nell'Algoritmo \ref{lda}.
 \begin{algorithm}
 \caption{procedura del \texttt{generatore di dataset}}
 \label{lda}
@@ -791,7 +791,7 @@ La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estrat
 \STATE document = [ ]
 \STATE document.membership = $\mu_i$
 \FOR{$j$ in $1, ..., n$}
-\STATE $B$ = extraction(binomial, probability = $\mu_i$)
+\STATE $B$ = extraction(bernoulli, probability = $\mu_i$)
 \STATE $Z$ = extraction(zipf)
 \STATE word = $P$[$B$][$Z$]
 \STATE document.add(word)
@@ -801,7 +801,13 @@ La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estrat
 \RETURN documents
 \end{algorithmic}
 \end{algorithm}
-In pratica, si tratta di un processo non deterministico di estrazione delle parole, in cui la variabile $Z$ indica la parola estratta, una volta fissato il topic scelto tramite $B$.
+In pratica, si tratta di un processo non deterministico di estrazione delle parole, in cui la variabile $Z$ indica la parola estratta e $B$ è la variabile casuale bernoulliana che determina il topic selezionato in base alla probabilità di successo $\mu_i$. Nel caso di due topic si hanno due valori possibili: 0 per il topic delle notizie vere e 1 per le fake news, allora si definisce di ``successo'' l'evento $B=1$ con probabilità $\mu_i$ e l'evento di ``insuccesso'' $B=0$ con probabilità $1-\mu_i$, o equivalentemente
+\begin{equation}
+    \mathsf{P}(p_j \in P_2) = \mu_i,
+\end{equation}
+\begin{equation}
+    \mathsf{P}(p_j \in P_1) = 1 - \mu_i.
+\end{equation}
 
 L'obiettivo del generatore è testare la capacità predittiva di $\mu$-learn e capire la potenzialità di questo approccio nell'avvicinarsi al grado di appartenenza atteso.
 
@@ -827,13 +833,13 @@ Quella che segue è la lista dei parametri della pipeline che al momento della c
     \item Aggregazione,
     \item Doc2Vec.
 \end{itemize}
-Addizionalmente si considera anche uno step finale di Shuffling che fa una permutazione delle righe.
+Addizionalmente si considera anche uno step di shuffling che fa una permutazione delle righe e uno finale di standardizzazione che porta i valori delle feature in un'unica scala.
 
-In generale, le operazioni non sono tutte compatibili, al contrario, alcune sono tra di loro esclusive, come Word2Vec e Doc2Vec, oppure la lemmatizzazione e lo stemming.
+In generale, le operazioni della pipeline non sono tutte compatibili, al contrario, alcune sono tra di loro esclusive, come Word2Vec e Doc2Vec, oppure la lemmatizzazione e lo stemming.
 Inoltre, l'ordine con cui esse vengono applicate è determinante per la rielaborazione del testo: è più semplice rimuovere il rumore analizzando i token piuttosto che le stringhe di intere frasi, ecco perchè la tokenizzazione avviene tipicamente nei primi step della pipeline. Un altro esempio è quello dell'aggregazione che, come visto nei Paragrafi \ref{w2v} e \ref{d2v}, è necessaria solo in caso di utilizzo di Word2Vec.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.45]{images/pipeline.png}
+    \includegraphics[scale=0.4]{images/pipeline.png}
     \caption{Esempio di configurazione di una pipeline di preprocessing.}
     \label{pipeline}
 \end{figure}
@@ -1149,9 +1155,12 @@ Secondariamente, quest'operazione fornisce un ulteriore modo per ottenere dei da
     \end{tabular}
 \end{center}
 
-%\subsection{Normalizzazione}
-%Spesso, in letteratura, in una pipeline come %questa è presente anche uno step finale per la %normalizzazione dei dati.
-%In questo lavoro di tesi è stato scelto di non %usufruire di tale tecnica per la seguente %ragione: in \cite{36} si 
+\subsection{Standardizzazione}\label{standardization}
+È presente, inoltre, un passaggio finale della pipeline che riguarda la standardizzazione dei dati. In letteratura sono presenti molteplici opzioni, ad esempio la trasformazione \textit{Min-Max} oppure quella basata sul \textit{range interquartile}. In questo caso è stata scelta la tecnica che mira a calcolare i punti \textit{z-score}: si applica ad ogni osservazione la seguente trasformazione:
+\begin{equation}
+    z_i = \frac{x_i - \mu}{\sigma}
+\end{equation}
+con $x_i$ l'$i$-esima osservazione e $\mu$ e $\sigma$, rispettivamente la media e la deviazione standard della distribuzione delle feature; si ottiene, quindi, una distribuzione standard centrata nell'origine, con media 0 e deviazione standard pari a 1.
 
 \section{Selezione dei modelli}\label{modelselection}
 Nel processo di apprendimento di un task predittivo vengono generati numerosi modelli; per questa ragione diventa cruciale utilizzare un criterio di selezione di tali modelli come la grid search per ricavare i migliori risultati possibili.
@@ -1264,18 +1273,244 @@ Nel prossimo capitolo verranno presentati gli esperimenti realizzati e gli esiti
 \chapter{Valutazione sperimentale}
 \label{Capitolo 4}
 \onehalfspacing
-\section{Dataset}
-\subsection{Fake and real news dataset}
-\subsection{Dataset generati}
-\section{Esperimenti}
-\subsection{Esperimento 1}
-\subsection{Esperimento 2}
-\subsection{Esperimento 3}
-\subsection{Esperimento 4}
-\subsection{Esperimento 5}
-\subsection{Esperimento 6}
-\subsection{Esperimento 7}
-\subsection{Esperimento 8}
+In quest'ultimo capitolo si illustra nel dettaglio la consistente parte di esperimenti che è stata condotta durante il lavoro documentato da questa tesi.
+
+Nel Paragrafo \ref{dataset} vengono presentati i dataset che sono stati presi in considerazione per la sperimentazione del sistema descritto nel Capitolo \ref{Capitolo 3}. Successivamente, all'interno del Paragrafo \ref{esperimenti} vengono mostrati i risultati finali che sono stati prodotti.
+
+\section{Dataset}\label{dataset}
+All'interno del Paragrafo \ref{datasethandle} sono stati definiti i possibili scenari per i dati tramite i quali il sistema di apprendimento è stato allenato. Per quanto riguarda i dataset raccolti da terzi, sono state identificate le seguenti possibilità:
+\begin{enumerate}
+    \item \texttt{Fake and real news dataset} - 44898 osservazioni - 111 MB,
+    \item \texttt{All the News 2.0} - 2.7 milioni di osservazioni - 9.2 GB,
+    \item \texttt{ProfNER} - 10000 osservazioni - 13.6 MB.
+\end{enumerate}
+Il primo comprende un misto di notizie pubblicate su testate giornalistiche negli Stati Uniti e di tweet, il secondo è ricco di notizie e di saggi su 27 diverse pubblicazioni americane mentre il terzo include dei tweet in lingua spagnola.
+
+Al fine di trovare un compromesso accettabile tra il numero di esperimenti e la capacità computazionale a disposizione è stato scelto il primo dataset.
+
+\subsection{Fake and real news dataset}\label{fakenewsdataset}
+\textit{Fake and real news dataset} è un dataset disponibile sulla piattaforma \textit{Kaggle} che raccoglie notizie e tweet, separandoli in ``fake'' e ``true'' news. Più precisamente sono presenti 23481 osservazioni per la parte di notizie false e 21417 per quelle annotate come vere, formando, quindi, un dataset approsimativamente bilanciato. 
+Le osservazioni sono composte da informazioni inerenti al titolo della notizia, al corpo, all'argomento in essa contenuto e alla data di pubblicazione. Nelle Figure \ref{fake_sample} e \ref{true_sample} viene mostrato un esempio per ciascun dataframe.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.52]{images/fake_sample.png}
+    \caption{Campione delle notizie del dataset etichettate come ``fake''.}
+    \label{fake_sample}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/true_sample.png}
+    \caption{Campione delle notizie del dataset etichettate come ``vere''.}
+    \label{true_sample}
+\end{figure}
+Si osserva la presenza di un'informazione temporale relativa al giorno di pubblicazione della notizia: questo fornisce una motivazione convincente del perché la fase di shuffling descritta nel Paragrafo \ref{pp} sia necessaria al fine di prevenire un sovradattamento dovuto a un tale ordinamento.
+
+La colonna relativa al titolo, per quanto rilevante, non è stata considerata ai fini dell'addestramento. La motivazione riguarda principalmente la presenza di tweet: in quel caso è difficile, infatti, parlare di ``titolo'', ed è tendenzialmente anche poco informativo (lo si evince facilmente dalla riga 8 della Figura \ref{true_sample}). Si presume, quindi, che tale informazione possa essere usata in congiunzione con altre come supporto.
+Anche la colonna relativa all'argomento non è stata utilizzata, in quanto si è rilevata una sostanziale differenza nella ricchezza di informazioni contenute per la parte di notizie vere rispetto a quelle fake, oltre che un'evidente inconsistenza degli argomenti identificati. Si conferma questo aspetto nella Tabella \ref{subject}.
+\begin{table}[!h]
+\centering
+ \begin{tabular}{|c|c|c|} 
+ \hline 
+ \textbf{argomento} & \textbf{fake news} & \textbf{true news}
+\\ [0.5ex] 
+ \thickhline
+\texttt{News} & 38.54 \% & - \\
+\texttt{politics} & 29.13 \% & -\\ 
+\texttt{left-news} & 18.99 \% & -\\
+\texttt{Government News} & 6.69 \% & -\\
+\texttt{US\_News} & 3.33 \% & -\\
+\texttt{Middle-east} & 3.31 \% & -\\
+\texttt{politicsNews} & - & 52.63 \% \\
+\texttt{worldnews} & - & 47.37 \% \\
+ \hline
+\end{tabular}
+\caption{Frequenze relative degli argomenti.}
+\label{subject}
+\end{table}
+Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l'informazione riguardante il corpo della notizia. 
+
+Il suddetto dataset è stato preprocessato tramite due pipeline di preprocessing: una per le fake news e una dedicata alle true news, ottenendo così dei vettori di feature a cui sono stati associati i valori binari delle etichette.
+Infine, sono stati accorpati, rimescolati e standardizzati: un esempio di risultato è quello mostrato in Tabella \ref{preprocesseddata}.
+\begin{table}[!h]
+\centering
+ \begin{tabular}{|c|c|c|} 
+ \hline 
+ \textbf{index} & \textbf{text} & \textbf{label}
+\\ [0.5ex] 
+ \thickhline
+22 & [0.34, 0.14, ..., 0.51] (96 elementi) & 1 \\
+6 & [-0.45, -0.10, ..., 0.55] (96 elementi) & 0 \\ 
+59 & [0.91, -0.92, ..., -1.14] (96 elementi) & 0\\
+21 & [-0.86, 0.54, ..., 0.51] (96 elementi) & 1\\
+12 & [0.11, 0.67, ..., -1.95] (96 elementi) & 0\\
+132 & [0.83, -0.37, ..., 0.85] (96 elementi) & 1\\
+ \hline
+\end{tabular}
+\caption{Esempio di dataset preprocessato.}
+\label{preprocesseddata}
+\end{table}
+
+\subsection{Dataset generati}\label{generated_datasets}
+Una direzione alternativa che è stata proposta per la pianificazione degli esperimenti è quella di addestrare i modelli generati da $\mu$-learn tramite dei dataset etichettati direttamente coi gradi di appartenenza. 
+La soluzione per generare un dataset simile è stata descritta nel Paragrafo \ref{generator}, al cui interno si nominava anche una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di fornire una panoramica il più esaustiva possibile sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione beta.
+
+\paragraph{Distribuzione uniforme}
+Nella teoria delle Probabilità e in Statistica una delle distribuzioni più conosciute è sicuramente quella uniforme continua (Figura \ref{uniforme}). Genericamente definita su un intervallo $[a,b]$, essa ha una funzione densità di probabilità
+\begin{equation}
+    f(x)= \begin{cases} \frac{1}{b-a} & \mbox{se } a\leq x \leq b, \\ 0 & \mbox{altrimenti.} \end{cases}
+\end{equation}
+Dal momento che il grado di appartenenza è compreso nell'intervallo $[0,1]$, anche la distribuzione uniforme selezionata è impostata su tale intervallo. 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/uniform.png}
+    \caption{Esempio di distribuzione approssimativamente uniforme.}
+    \label{uniforme}
+\end{figure}
+\paragraph{Distribuzione beta}
+L'altro tipo di distribuzione scelta è la distribuzione beta: a differenza di quella uniforme essa è specificatamente definita nell'intervallo $[0,1]$ e, dunque, adatta al contesto di generazione del grado di appartenenza. I parametri che ne regolano l'andamento sono due: $\alpha$ e $\beta$. La funzione densità di probabilità è:
+\begin{equation}
+    f(x)= \frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)}
+\end{equation}
+dove $B$ è la funzione
+\begin{equation}
+    B(\alpha, \beta) = \int_{0}^{1} x^{\alpha - 1}(1-x)^{\beta - 1} \,dx.
+\end{equation}
+Mediante questa distribuzione sono stati creati due scenari significativi:
+\begin{enumerate}
+    \item $\alpha = \beta = 5$ (Figura \ref{beta5}),
+    \item $\alpha = \beta = 0.5$ (Figura \ref{beta05}).
+\end{enumerate}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/beta5.png}
+    \caption{Esempio di distribuzione approssimativamente beta, con parametri $\alpha = \beta = 5$.}
+    \label{beta5}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/beta05.png}
+    \caption{Esempio di distribuzione approssimativamente beta, con parametri $\alpha = \beta = 0.5$.}
+    \label{beta05}
+\end{figure}
+I tre scenari ottenuti consentono di testare la capacità dell'algoritmo di indurre la funzione di appartenenza fissando le distribuzioni viste finora. Il primo caso coinvolge gradi di appartenenza che hanno equa probabilità di occorrere, il secondo ha le sembianze di una distribuzione normale tagliata nell'intervallo $[0,1]$ e il terzo presenta un fenomeno di polarizzazione delle occorrenze ai valori estremi dell'intervallo.
+
+\subsubsection{Insiemi di parole} Il generatore di dataset, tramite le distribuzioni appena descritte, è in grado di creare dei documenti testuali sintetici a partire da insiemi di parole rappresentative di due topic.
+Da un punto di vista lessicale, il problema non è banale e andrebbe approfondito determinando con cura l'insieme delle parole che contraddistingue una notizia vera piuttosto che una fake.
+In questo lavoro di tesi sono state poste le basi per fare degli esperimenti da un punto di vista puramente sintattico, con l'intenzione di fornire un punto di partenza per esperimenti futuri più accurati.
+
+Si definiscono gli insiemi
+\begin{center}
+    $P_1$ = \texttt{\{arrogant, uptight, toothpaste, bottle, grass, show, ..., religion\}} (156 elementi)
+\end{center}
+\begin{center}
+    $P_2$ = \texttt{\{ARROGANT, UPTIGHT, TOOTHPASTE, BOTTLE, GRASS, SHOW, ..., RELIGION\}} (156 elementi)
+\end{center}
+composti da termini inglesi randomici la cui semantica non viene considerata per le rilevazione delle fake news. Senza perdita di generalità si considera $P_1$ l'insieme rappresentativo del topic delle notizie vere e $P_2$ l'insieme associato alle fake news.
+
+\paragraph{Insiemi disgiunti}
+Dal momento che $P_1$ è completamente lowercase e $P_2$ uppercase, allora sintatticamente si ha che $P_1$ $\cap$ $P_2 = \emptyset$. Si parla, quindi, di insiemi disgiunti e la generazione di dataset avviene a partire da questi due insiemi. In Tabella \ref{generationexample} viene riportato un esempio di generazione di documenti testuali al variare del grado di appartenenza. In questo caso è stato fissato come evento di successo il fatto che la parola generata appartenga all'insieme $P_2$; di conseguenza, all'aumentare di $\mu_i$ si osserva una crescente componente di parole maiuscole all'interno del documento generato.
+\begin{table}[!h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+ \begin{tabular}{|c|c|c|} 
+ \hline
+\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$  
+\\ [0.5ex] 
+ \thickhline
+0 & ``extend bottle bottle extend toothpaste SHOW grass cuddly uptight uptight eager ... violet" & 0.07 \\ 
+1 & ``uptight bottle toothpaste occur scream SUDDEN show toothpaste provide violet embarrass ... wistful" & 0.14 \\
+2 & ``thick QUILL toothpaste toothpaste BOTTLE BOTTLE uptight lyrical introduce SUPPORT toothpaste ... trees" & 0.32 \\
+3 & ``BOTTLE TOOTHPASTE BOTTLE SMILING lyrical LIE VIOLET REMOVE YELLOW bottle BOTTLE ... MICE" & 0.49 \\
+4 & ``DREARY NEAR UPTIGHT uptight MICE bottle bottle trousers uptight UPTIGHT UPTIGHT ... mice" & 0.55\\
+5 & ``USE violet MICE EXTEND show INTRODUCE DESCRIBE show uptight DRAG UPTIGHT ... DELICIOUS" & 0.57\\
+6 & ``BOTTLE UPTIGHT YUMMY show GRASS HOLIDAY rare SHOW EAGER UPTIGHT hulking ... UPTIGHT" & 0.64\\
+7 & ``uptight OUTSTANDING tedious stem SHOW DUCKS BOTTLE INTRODUCE OBSOLETE HOMELESS FIELD ... SHOW" & 0.69 \\
+8 & ``toothpaste fly UPTIGHT BARBAROUS RIGHT BOTTLE SHOW uptight TOOTHPASTE BOTTLE uptight ... ADORABLE" & 0.75\\
+9 & ``UPTIGHT oval APATHETIC COLLECT racial TOOTHPASTE TOOTHPASTE UPTIGHT GRASS QUILL BOTTLE ... MICE" & 0.83\\
+ \hline
+\end{tabular}
+\end{adjustbox}
+\caption{Esempio di testi sintetici a partire da $P_1 \cap P_2 = \emptyset$, al variare di $\mu_i$.}
+\label{generationexample}
+\end{table}
+
+\paragraph{Insiemi sovrapposti}
+Realisticamente parlando, l'insieme delle parole occorrenti nelle fake news non è disgiunto da quello delle parole presenti nelle notizie vere.
+Per questa ragione sono stati modificati gli insiemi di partenza, inserendo in ciascuno una componente di sovrapposizione con l'altro insieme del $17 \%$ e ottenendo, così,
+\begin{center}
+    $P_{1}^{*}$ = \texttt{\{arrogant, UPTIGHT, toothpaste, bottle, grass, SHOW, ..., religion\}} (156 elementi)
+\end{center}
+\begin{center}
+    $P_{2}^{*}$ = \texttt{\{ARROGANT, UPTIGHT, toothpaste, BOTTLE, GRASS, SHOW, ..., religion\}} (156 elementi)
+\end{center}
+di conseguenza, $P_{1}^{*}$ $\cap$ $P_{2}^{*} \neq \emptyset$.
+
+Il processo di generazione è stato ripetuto e sono stati ottenuti nuovi documenti, come mostrato in Tabella \ref{generationexample2}.
+\begin{table}[!h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+ \begin{tabular}{|c|c|c|} 
+ \hline
+\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$ 
+\\ [0.5ex] 
+ \thickhline
+0 & ``occur stale eager UPTIGHT grass lyrical grass UPTIGHT PARTNER UPTIGHT UPTIGHT ... toothpaste" & 0.02 \\
+1 & ``stem drag HALL SHOW ticket bottle bottle SHOW UPTIGHT stimulating mice ... GRASS" & 0.14  \\
+2 & ``UPTIGHT lyrical UPTIGHT lyrical toothpaste grass grass UPTIGHT homeless UPTIGHT BOTTLE ... drag" & 0.24 \\
+3 & ``hall hall USE sleet bubble toothpaste DELICIOUS RIGHT MERE UPTIGHT UPTIGHT ... delicious" & 0.32 \\
+4 & ``smiling HOLIDAY absent YELLOW SHOW BUBBLE UPTIGHT UPTIGHT minor DELICIOUS toothpaste ... UPTIGHT" & 0.45 \\
+5 & ``PARTNER QUILL SOPHISTICATED UPTIGHT SHOW BAG DESCRIBE ticket UPTIGHT UPTIGHT grass ... sudden" & 0.55 \\
+6 & ``SHOW UPTIGHT GATE UPTIGHT BOTTLE GRASS FLOAT UPTIGHT TROUSERS QUILL LYRICAL ... WRONG" & 0.60  \\
+7 & ``LIMPING toothpaste toothpaste TENT delicious QUILL SHOW VIOLET LYRICAL SUDDEN SHOW ... UPTIGHT" & 0.75 \\
+8 & ``UPTIGHT SOPHISTICATED SHOW TENT LYRICAL UPTIGHT peace lyrical MICE EARTH WELL-GROOMED ... UPTIGHT" & 0.84 \\
+9 & ``GRASS PEACE BOTTLE BOTTLE UPTIGHT MICE DREARY UPTIGHT PSYCHOTIC BUBBLE REMOVE ... EMBARRASS" & 0.94 \\
+ \hline
+\end{tabular}
+\end{adjustbox}
+\caption{Esempio di testi sintetici a partire da $P_{1}^{*} \cap P_{2}^{*} \neq \emptyset$, al variare di $\mu_i$.}
+\label{generationexample2}
+\end{table}
+
+
+In generale, una volta generato un dataset in uno dei due modi visti in precedenza, esso viene elaborato dal modulo di preprocessing, un esempio di come appare al termine di questa fase viene mostrato in Tabella \ref{uniformlda}.
+\begin{table}[!h]
+\centering
+ \begin{tabular}{|c|c|c|} 
+ \hline 
+ \textbf{index} & \textbf{text} & \textbf{membership}
+\\ [0.5ex] 
+ \thickhline
+67 & [0.55, -0.34, ..., -1.63] (96 elementi) & 0.59 \\
+31 & [0.90, -0.40, ..., -1.61] (96 elementi) & 0.83\\ 
+2 & [1.07, -0.48, ..., -1.65] (96 elementi) & 0.97\\
+99 & [0.31, -0.21, ..., -1.63] (96 elementi) & 0.48\\
+17 & [0.91, -0.38, ..., -1.65] (96 elementi) & 0.80\\
+29 & [0.92, -0.42, ..., -1.67] (96 elementi) & 0.83\\
+ \hline
+\end{tabular}
+\caption{Esempio di dataset preprocessato generato tramite LDA basata su distribuzione uniforme e da insiemi disgiunti.}
+\label{uniformlda}
+\end{table}
+
+\paragraph{Altri potenziali dataset}
+Gli altri due dataset citati nel Paragrafo \ref{dataset} non sono ancora stati considerati per l'addestramento e la conseguente generazione di modelli predittivi tuttavia si ritiene che il sistema sia effettivamente pronto per una loro futura elaborazione, in quanto presenta un modulo per l'adattamento del dataset (Paragrafo \ref{adapter}) e, in generale, è stato predisposto per trattare documenti testuali in lingua italiana, inglese, francese e spagnola.
+
+\section{Esperimenti}\label{esperimenti}
+Durante il lavoro di questa tesi sono stati condotti circa 30 esperimenti, durante i quali è stato esplorato il maggior numero possibile di strade da percorrere. Si ritiene che gli esperimenti riportati in questo paragrafo siano i più rappresentativi dell'intero processo di test del sistema creato. Ciascuno di essi viene presentato in due varianti: il comportamento del predittore $\lambda$ e del classificatore $\omega$ (Paragrafo \ref{predictors}); pertanto, si utilizzerà per il primo la misura di RMSE e per il secondo le metriche di precision, recall e F1. La valutazione sperimentale prevede anche un confronto tra il predittore proposto e alcuni di quelli già presenti in letteratura; per questa ragione, è stata istituita una baseline per permettere un confronto con $\lambda$ e $\omega$; tale baseline è composta da un albero decisionale, una rete neurale, un classificatore support vector e l'algoritmo Random Forest per la regressione.
+Inoltre, è stata fatta un'ulteriore suddivisione tra gli esperimenti sul dataset introdotto nel Paragrafo \ref{fakenewsdataset} e sui dati generati nei modi visti nel Paragrafo \ref{generated_datasets}.  sostanziale, riguarda 
+
+\subsection{Esperimenti con il dataset di Kaggle}
+\paragraph{Esperimento 1}
+\paragraph{Esperimento 2}
+\subsection{Esperimenti con i dataset generati}
+\subsubsection{Insiemi disgiunti}
+\paragraph{Esperimento 3}
+\paragraph{Esperimento 4}
+\paragraph{Esperimento 5}
+\subsubsection{Insiemi sovrapposti}
+\paragraph{Esperimento 6}
+\paragraph{Esperimento 7}
+\paragraph{Esperimento 8}
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
