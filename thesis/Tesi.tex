@@ -1397,8 +1397,7 @@ Il suddetto dataset è stato elaborato tramite due pipeline di preprocessing: un
 \end{table}
 
 \subsection{Dataset generati}\label{generated_datasets}
-Una direzione alternativa che è stata proposta per la pianificazione degli esperimenti è quella di addestrare i modelli generati da $\mu$-learn tramite dei dataset etichettati direttamente coi gradi di appartenenza. 
-La soluzione per generare un dataset simile è stata descritta nel Paragrafo~\ref{generator}, al cui interno si nominava anche una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di fornire una panoramica esaustiva sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione beta.
+Un approccio proposto per gli esperimenti è quello di utilizzare dei dataset generati tramite la tecnica descritta nel Paragrafo~\ref{generator}. Tale tecnica si basa sulla scelta di una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di fornire una panoramica esaustiva sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione beta.
 
 \paragraph{Distribuzione uniforme}
 Nella teoria delle Probabilità e in Statistica una delle distribuzioni più conosciute è sicuramente quella uniforme continua (Figura~\ref{uniforme}). Genericamente definita su un intervallo $[a,b]$, essa ha una funzione densità di probabilità
@@ -1442,7 +1441,7 @@ I tre scenari ottenuti consentono di testare la capacità dell'algoritmo di indu
 
 \subsubsection{Insiemi di parole} Il generatore di dataset, tramite le distribuzioni appena descritte, è in grado di creare dei documenti testuali sintetici a partire da insiemi di parole rappresentative di due topic.
 Da un punto di vista lessicale, il problema non è banale e andrebbe approfondito determinando con cura l'insieme delle parole che contraddistinguono una notizia vera piuttosto che una fake.
-In questo lavoro di tesi sono state poste le basi per fare degli esperimenti da una prospettiva puramente sintattica, con l'intenzione di fornire un punto di partenza per esperimenti futuri più accurati.
+Per questa parte di esperimenti sono state poste le basi per fare delle prove da una prospettiva puramente sintattica, con l'intenzione di fornire un punto di partenza per esperimenti futuri più accurati.
 
 Si definiscono gli insiemi
 \begin{center}
@@ -1559,7 +1558,7 @@ Quella che segue è la lista degli esperimenti che sono stati pianificati.
 \begin{itemize}
     \item \textit{fake and real news dataset} (Paragrafo~\ref{fakenewsdataset}).
 \end{itemize}
-La valutazione sperimentale prevede anche un confronto tra i predittori proposti e alcuni di quelli già presenti in letteratura; per questa ragione, è stata predisposto un confronto con l'algoritmo Random Forest per la regressione e per la classificazione contestualmente alla prima parte di esperimenti sui dati generati. Nella seconda parte relativa al dataset presente su Kaggle è stata prevista una baseline composta da un albero decisionale, una rete neurale multi-livello, un classificatore suppor vector e dall'algoritmo Random Forest per la regressione e per la classificazione.
+La valutazione sperimentale prevede anche un paragone tra i predittori proposti e alcuni di quelli già presenti in letteratura; per questa ragione, è stato predisposto un confronto con l'algoritmo Random Forest per la regressione e per la classificazione contestualmente alla prima parte di esperimenti sui dati generati. Nella seconda parte relativa al dataset presente su Kaggle è stata prevista una baseline composta da un albero decisionale, una rete neurale multi-livello, un classificatore suppor vector e dall'algoritmo Random Forest per la regressione e per la classificazione.
 La pipeline di preprocessing utilizzata è la seguente: lowercasing, rimozione dei duplicati, lemmatizzazione, rimozione del rumore, rimozione delle stop word, word2vec, aggregazione, shuffling e standardizzazione.
 
 In Tabella~\ref{gridtable} viene mostrata la griglia comune che è stata utilizzata per la ricerca degli iperparametri ottimali per tutti gli esperimenti; inoltre, la cross validation k-fold annidata utilizzata è stata impostata per eseguire 5 fold esterne e 4 interne: a conferma di ciò, ogni esperimento documentato riporta la selezione di 5 modelli ottimali, i cui training e test error sono stati ricavati facendo la media aritmetica.
@@ -1636,7 +1635,7 @@ In Figura~\ref{prediction_exp1} viene riportato un confronto tra la ground truth
     \label{prediction_exp1}
 \end{figure} 
 
-Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$-learn, sono state calcolate le predizioni da parte dell'algoritmo Random Forest (Figura~\ref{rf_exp1}). Tali predizioni sono state generate a partire dai migliori modelli selezionati, per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono riportati in Tabella~\ref{models_rf_exp1}.
+Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$-learn, sono state calcolate le predizioni da parte dell'algoritmo Random Forest (Figura~\ref{rf_exp1}). Tali predizioni sono state generate a partire dai migliori modelli selezionati tramite la grid search; i valori ottimali degli iperparametri dei modelli sono riportati in Tabella~\ref{models_rf_exp1}.
 
 \begin{table}
 \centering
@@ -1775,7 +1774,7 @@ Si prosegue utilizzando una distribuzione beta con parametri $\alpha=\beta=5$; i
 \label{models_exp2}
 \end{table}
 \paragraph{Confronto con $\bm{\lambda}$}
-Analogamente a quanto fatto nel primo esperimento, si riporta in Figura~\ref{prediction_exp2} il confronto tra la ground truth dei dati generati e i gradi di appartenenza predetti dai modelli con il predittore $\lambda$.
+Analogamente a quanto fatto nel primo esperimento, si riporta in Figura~\ref{prediction_exp2} il confronto tra la ground truth dei dati generati e i gradi di appartenenza indotti dai modelli con il predittore $\lambda$.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2054,7 +2053,7 @@ Si chiude questa prima parte di esperimenti con la Tabella~\ref{prf_exp3} relati
 \label{prf_exp3}
 \end{table}
 L'algoritmo Random Forest si rivela particolarmente efficace anche in questo caso, riuscendo a riprodurre fedelmente la distribuzione di partenza e compiendo un errore davvero contenuto.
-I modelli generati da $\mu$-learn rivelano dei punteggi accettabili sia nel caso della classificazione che dell'induzione del grado di appartenenza, tuttavia nel confronto con la baseline risultano finora inferiori.
+I modelli generati da $\mu$-learn rivelano dei punteggi accettabili sia nel caso della classificazione che dell'induzione del grado di appartenenza, tuttavia nel confronto con la baseline risultano fin qui inferiori.
 
 
 \subsubsection{Insiemi sovrapposti}\label{insiemisovrapposti}
@@ -2081,7 +2080,7 @@ L'altra sequenza di esperimenti si basa su insiemi di parole di partenza con una
 \label{models_exp4}
 \end{table}
 \paragraph{Confronto con $\bm{\lambda}$}
-In Figura~\ref{prediction_exp4} è raffigurato il comportamento di $\lambda$ nel generare le predizioni.
+In Figura~\ref{prediction_exp4} è raffigurato il comportamento di $\lambda$ nel generare le predizioni e il risultato è pressoché identico a quello ritrovato nel caso di insiemi disgiunti.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2229,7 +2228,7 @@ Nel caso della distribuzione beta con parametri $\alpha=\beta=5$ per insiemi sov
 \label{models_exp5}
 \end{table}
 \paragraph{Confronto con $\bm{\lambda}$}
-In Figura~\ref{prediction_exp5} si visualizza i grafici della ground truth dei dati generati e dei gradi di appartenenza predetti dai modelli con il predittore $\lambda$.
+In Figura~\ref{prediction_exp5} si visualizza i grafici della ground truth dei dati generati e dei gradi di appartenenza trovati dai modelli con il predittore $\lambda$.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2547,7 +2546,7 @@ In Figura~\ref{prediction_exp7} viene riportato un confronto tra la ground truth
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel settimo esperimento.}
     \label{prediction_exp7}
 \end{figure} 
-In questo caso si osserva la presenza di tre componenti: due valori estremi a indicare notizie predette come completamente fake e completamente non-fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
+In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non-fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
 
 In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random Forest, per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono riportati in Tabella~\ref{models_rf_exp7}.
 
@@ -2584,7 +2583,7 @@ In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random For
 \end{figure} 
 In questo caso, l'andamento dei valori è molto diverso rispetto a quello ricavato da $\mu$-learn: il risultato è una distribuzione piuttosto incerta il cui picco sembra essere influenzato dalla presenza di più occorrenze per il valore 0.
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp7}). Si specifica che, per via della natura del dataset, per entrambi i modelli persiste una buona componente d'errore dovuta alla forma binaria delle etichette. Da questo punto di vista, i modelli si equivalgono tuttavia visivamente mostrano un approccio diverso nel modellare l'andamento dei gradi di appartenenza.
+Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp7}). Si specifica che, per via della natura del dataset, per entrambi i modelli persiste una buona componente d'errore dovuta alla forma binaria delle etichette. Da questo punto di vista i modelli si equivalgono, tuttavia, visivamente, mostrano un approccio diverso nel modellare l'andamento dei gradi di appartenenza.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2706,7 +2705,7 @@ Nel caso della classificazione, modelli basati su support vector si rivelano sup
 In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
 \begin{itemize}
     \item l'algoritmo $\mu$-learn può rappresentare un'alternativa ai modelli per la classificazione ma, oltre a non essere il più efficace, non si tratta della sua funzione originaria;
-    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico come la Latent Dirichlet Allocation l'algoritmo Random Forest ottiene notevoli risultati, riproducendo fedelmente le etichette attese;
+    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico, come la Latent Dirichlet Allocation, l'algoritmo Random Forest ottiene notevoli risultati, riproducendo fedelmente le etichette attese;
     \item la componente semantica di un documento testuale influisce pesantemente sul riconoscimento;
     \item l'algoritmo $\mu$-learn potrebbe avere la potenzialità di individuare una componente di indecisione nelle notizie.
 \end{itemize}
