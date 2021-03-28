@@ -2510,7 +2510,7 @@ In realtà, gli esperimenti finora considerati trattano dataset di natura artifi
 L'assunzione fondamentale fatta in questa tesi è che il problema delle fake news sia modellabile secondo la logica fuzzy, basandosi sul fatto che questo tipo di notizie, in realtà, presenti una componente di indecisione intrinsecamente complessa che dipende dalla sintassi, dalla semantica e dall'ambiguità del linguaggio umano e che oggi rappresentano il motivo per cui non risulta semplice rilevarle automaticamente.
 Alla luce delle considerazioni sin qui fatte, si pongono le basi per analizzare l'ultimo esperimento condotto, relativo ai dati reali compresi nel dataset presentato nel Paragrafo~\ref{fakenewsdataset}.
 
-\subsection{Esperimento con il dataset di Kaggle}
+\subsection{Esperimento con il dataset di Kaggle}\label{kaggleexperiment}
 Questo esperimento coinvolge il dataset descritto nel Paragrafo~\ref{fakenewsdataset}, presente sulla piattaforma Kaggle. In questo tipo di esperimento l'apprendimento è avvenuto tramite delle etichette binarie e riguarda delle notizie che sono state raccolte mediante Web Scraping.
 Al fine di fornire un confronto con alcuni stimatori allo stato dell'arte, è stata formata una baseline di predittori in parte destinati alla classificazione e, dunque, a un paragone con $\omega$, in parte dedicati alla regressione per $\lambda$.
 In Tabella~\ref{models_exp7} vengono mostrate le configurazioni dei modelli selezionati durante la cross validation e, a partire da essi, sono stati ricavati $\lambda$ e $\omega$.
@@ -2546,7 +2546,7 @@ In Figura~\ref{prediction_exp7} viene riportato un confronto tra la ground truth
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel settimo esperimento.}
     \label{prediction_exp7}
 \end{figure} 
-In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non-fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
+In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
 
 In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random Forest, per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono riportati in Tabella~\ref{models_rf_exp7}.
 
@@ -2700,8 +2700,6 @@ In Tabella~\ref{prf_exp7} vengono riportati i punteggi di Precision, Recall e F1
 \label{prf_exp7}
 \end{table}
 Nel caso della classificazione, modelli basati su support vector si rivelano superiori nel produrre predizioni accurate.
-\\
-\\
 In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
 \begin{itemize}
     \item l'algoritmo $\mu$-learn può rappresentare un'alternativa ai modelli per la classificazione ma, oltre a non essere il più efficace, non si tratta della sua funzione originaria;
@@ -2709,6 +2707,20 @@ In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
     \item la componente semantica di un documento testuale influisce pesantemente sul riconoscimento;
     \item l'algoritmo $\mu$-learn potrebbe avere la potenzialità di individuare una componente di indecisione nelle notizie.
 \end{itemize}
+
+\subsubsection{Componente di indecisione}
+Gli esperimenti del Paragrafo~\ref{kaggleexperiment} hanno evidenziato la presenza di una componente di indecisione nelle predizioni effettuate dall'algoritmo $\mu$-learn, utilizzato nel sistema proposto in questa tesi. 
+
+In Figura~\ref{overlaypred} viene mostrata una visualizzazione alternativa delle predizioni che permette di distinguere queste ultime in fake e non fake secondo la ground truth e, soprattutto, mostra più esplicitamente tale componente di indecisione.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.48]{images/experiment kaggle/overlaypred.png}
+    \caption{Predizioni dell'algoritmo $\mu$-learn. In rosso le predizioni che secondo il dataset sono fake, in azzurro quelle vere.}
+    \label{overlaypred}
+\end{figure}
+In corrispondenza dei valori estremi, laddove è presente una sovrapposizione, si parla rispettivamente di falsi negativi e falsi positivi. Nella parte centrale del grafico, invece, si nota una sovrapposizione delle due componenti, evidenziando un aspetto di indecisione da parte del predittore ad assegnare dei gradi di appartenenza a un tipo di notizia piuttosto che all'altro.
+A tal proposito un possibile approccio consiste nel definire un raggio $r$ e una soglia $s$, al fine di individuare un intervallo di indecisione $[s-r,s+r]$.
+L'esito dell'esperimento, inoltre, pone come ipotesi il passaggio da dei valori binari per le etichette a dei valori ternari in cui, alle risposte ``fake'' o ``non fake'', si aggiungerebbe una terza classe di notizie la cui è natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente.
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
