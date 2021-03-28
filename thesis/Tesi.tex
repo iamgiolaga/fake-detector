@@ -2715,17 +2715,25 @@ In Figura~\ref{overlaypred} viene mostrata una visualizzazione alternativa delle
 \begin{figure}
     \centering
     \includegraphics[scale=0.48]{images/experiment kaggle/overlaypred.png}
-    \caption{Predizioni dell'algoritmo $\mu$-learn. In rosso le predizioni fake, in azzurro quelle vere.}
+    \caption{Predizioni dell'algoritmo $\mu$-learn. In rosso le predizioni etichettate come fake, in azzurro quelle vere.}
     \label{overlaypred}
 \end{figure}
 In corrispondenza dei valori estremi, laddove è presente la sovrapposizione, si parla rispettivamente di falsi negativi e falsi positivi. Nella parte centrale del grafico, invece, si nota una fascia progressivamente mista delle due componenti, evidenziando un aspetto di indecisione da parte del predittore ad assegnare dei gradi di appartenenza a un tipo di notizia piuttosto che all'altro.
 A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e una soglia $s$, al fine di individuare un intervallo di indecisione $[s-r,s+r]$.
-L'esito dell'esperimento, inoltre, pone come ipotesi il fatto che, se l'assunzione delle fake news come problema fuzzy fosse corretta, allora si otterrebbe il passaggio da dei valori binari per le etichette a dei valori ternari in cui, alle risposte ``fake'' o ``non fake'', si aggiungerebbe una terza classe di notizie la cui è natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.48]{images/experiment kaggle/indecisionrf.png}
+    \caption{Predizioni dell'algoritmo Random Forest. In rosso le predizioni etichettate come fake, in azzurro quelle vere.}
+    \label{indecisionrf}
+\end{figure}
+In Figura~\ref{indecisionrf} lo stesso tipo di visualizzazione viene fatta per le predizioni ottenute tramite l'algoritmo Random Forest. Anche qui si distinguono tre componenti, tuttavia l'intersezione è più ampia e si osserva un comportamento meno drastico da parte del regressore.
+L'esito dell'esperimento, inoltre, pone come ipotesi il fatto che se l'assunzione delle fake news come problema fuzzy fosse corretta allora si otterrebbe il passaggio da dei valori binari per le etichette a dei valori ternari. Questo significa che alle risposte ``fake'' e ``non fake'' si aggiungerebbe una terza classe di notizie la cui natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
 \markboth{Conclusioni e sviluppi futuri}{} 
 \onehalfspacing
+
 
 %Integrare l'analisi delle fake news con tecniche di image e video processing per modellare il problema più complesso in cui anche immagini e video svolgono un ruolo centrale nelle fake news (es: immagini vecchie riusate per notizie nuove, video che non corrispondono ai fatti riportati).
 
