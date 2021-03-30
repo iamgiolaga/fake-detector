@@ -483,7 +483,7 @@ L'assunzione iniziale è quella di disporre di un dataset $S$ di $m$ osservazion
 in cui $\mathbf{x_i} \in \mathbb{R}^h$ è l'$i$-esimo vettore delle feature e $y_i$ è l'etichetta target che si vuole predire; tale etichetta può essere rappresentata da dei valori binari in $[0,1]$ o dai gradi di appartenenza $\mu_i$ a un insieme fuzzy sconosciuto $A$.
 L'obiettivo è proprio individuare tale insieme e determinare la funzione di appartenenza $\mu_A$ per approssimarne il grado.
 
-L'algoritmo descritto nel Paragrafo~\ref{mulearn} parte dalla tecnica di support vector clustering presente in letteratura~\cite{23} e la estende per l'individuazione di insiemi fuzzy. Si tratta di un algoritmo di clustering non parametrico che affronta il problema dell'identificazione del minimo raggio dell'ipersfera di raggio $R$ e centro $a$ che include le immagini della maggior parte di un insieme di punti; in particolare, i punti che si trovano sulla superficie di tale ipersfera sono chiamati \textit{support vector} e, nello spazio delle feature, essi dividono i dati in cluster.
+L'algoritmo descritto nel Paragrafo~\ref{mulearn} parte dalla tecnica di support vector clustering presente in letteratura~\cite{23} e la estende per l'individuazione di insiemi fuzzy. Si tratta di un algoritmo di clustering non parametrico che affronta il problema dell'identificazione del minimo raggio $R$ dell'ipersfera di centro $a$ che include le immagini della maggior parte di un insieme di punti; in particolare, i punti che si trovano sulla superficie di tale ipersfera sono chiamati \textit{support vector} e, nello spazio delle feature, essi dividono i dati in cluster.
 Tali punti vengono esclusi o inclusi da $\mu$-learn in funzione dei loro gradi di appartenenza a un insieme fuzzy, sulla base della distanza tra le immagini dei punti e $a$.
 
 Il problema di ottimizzazione non lineare a cui si accennava nel Paragrafo~\ref{mulearn} riguarda, quindi, la minimizzazione del raggio di questa ipersfera.
@@ -500,7 +500,7 @@ Quelli che seguono sono i tre vincoli del problema e si distinguono dalla tecnic
 \end{equation}
 In~\ref{vincolo} il primo vincolo richiede che le immagini dei punti attraverso $\mathit{\Phi}$ abbiano una distanza dal centro minore o uguale di una quantità che è tanto più piccola quanto più è elevato il relativo $\mu_i$. Il secondo vincolo in~\ref{vincolo_2} richiede, invece, che al diminuire di $\mu_i$, le immagini si trovino a una distanza che tende ad aumentare. Infine, il vincolo~\ref{vincolo_3} impone dei valori non negativi per le variabili slack che rilassano il problema.
 
-Il problema di ottimizzazione originale viene, quindi, esteso minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro, e viene ricavata tramite un solver.
+Il problema di ottimizzazione originale viene, quindi, esteso minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro e si ricava la soluzione tramite un solver.
 La fase successiva è quella di indurre il valore della funzione di appartenenza a tale insieme.
 
 \subsection{Fuzzificatore} \label{fuzzificatore}
@@ -535,7 +535,7 @@ in cui $l$ è una funzione lineare.
 In questo caso gli step della funzione sono definiti in funzione dei quartili delle distanze quadratiche tra le immagini dei punti e il centro della sfera appresa.
 
 \subsection{Induzione di insiemi fuzzy}
-Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno membership unitaria di appartenenza a F. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core. 
+Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno valore unitario per il grado di appartenenza a F. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core. 
 Al fine di visualizzare il comportamento descritto, si mostra in Figura~\ref{mulearnplot} un esempio di esecuzione dell'algoritmo e la conseguente rappresentazione del risultato ottenuto:
 si assuma che le fake news siano appartenenti a un determinato insieme fuzzy $F$ e si supponga di volerlo individuare tramite la procedura vista in precedenza.
 Con un campione di 400 notizie (228 vere e 172 fake) opportunamente preprocessato con le tecniche viste nel Paragrafo~\ref{nlp}, è stato eseguito $\mu$-learn con un kernel gaussiano e un fuzzificatore di tipo lineare; successivamente, i risultati sono stati rappresentati in uno spazio bidimensionale applicando la tecnica di PCA~\cite{30}.
@@ -606,8 +606,8 @@ La differenza è che, mentre un classificatore (binario) può commettere solo du
 In generale, ricorrere a queste misure consente di descrivere quanto sia rilevante l'errore compiuto dal predittore e stabilire se sia numericamente accettabile per la scelta finale del modello.
 
 \subsection{Matrice di confusione}
-Quando si mira ad ottenere un classificatore, uno strumento molto utilizzato per valutare la sua bontà è la matrice di confusione, una struttura dati che analizza le predizioni e le divide nelle quattro classi menzionate nel paragrafo precedente. 
-Il caso più semplice è quello mostrato in Figura~\ref{confusion} in cui si considera delle etichette binarie.
+Quando si mira ad ottenere un classificatore, uno strumento molto utilizzato per valutare la sua bontà è la matrice di confusione, una struttura dati che analizza le predizioni e le divide nei possibili esiti. 
+Il caso più semplice è quello mostrato in Figura~\ref{confusion} in cui si considera delle etichette binarie: dati due valori di risposta da parte del classificatore e due valori di verità della ground truth, si ottengono due tipi di predizione corretta (veri positivi e veri negativi) e due casi di predizione sbagliata (falsi positivi e falsi negativi).
 
 Nel contesto di classificazioni multi-classe è sufficiente estendere la matrice ottenendo sulla diagonale il numero di predizioni corrette e nel resto della matrice i vari casi di errore con cui è possibile capire quali classi vengano più o meno facilmente confuse. 
 
@@ -619,7 +619,7 @@ Nel contesto di classificazioni multi-classe è sufficiente estendere la matrice
 \end{figure}
 
 \subsection{Precision, Recall e F1}\label{erroreclass}
-L'accuratezza è una misura utile ma che assume una distribuzione uniforme delle quattro classi individuate nella matrice di confusione. Nel caso in cui tale distribuzione non sia effettivamente uniforme, questo tipo di misura può risultare ingannevole: si consideri, ad esempio, un campione di 1000 predizioni in cui si ha 1 vero positivo, 0 falsi positivi, 1 falso negativo e 998 veri negativi. In questo caso si otterrebbe un'accuratezza pari a 99.9\% ma, come è facile intuire da questo esempio giocattolo, tale misura non fornisce alcuna informazione riguardo a come le predizioni corrette siano distribuite e questo potrebbe rivelarsi un problema nel momento in cui si confrontano degli esiti così diversi per i casi positivi e per quelli negativi.
+L'accuratezza è una misura utile ma che assume una distribuzione uniforme delle quattro classi individuate nella matrice di confusione. Nel caso in cui tale distribuzione non sia effettivamente uniforme, questo tipo di misura può risultare ingannevole: si consideri, ad esempio, un campione di 1000 predizioni in cui si ha 1 vero positivo, 0 falsi positivi, 1 falso negativo e 998 veri negativi. In questo caso si otterrebbe un'accuratezza pari al 99.9\% ma, come è facile intuire da questo esempio giocattolo, tale misura non fornisce alcuna informazione riguardo a come le predizioni corrette siano distribuite.
 Nel contesto della classificazione è possibile, infatti, calcolare delle misure quantitative per valutare la bontà di un predittore che tengono in considerazione la distribuzione delle predizioni; esse sono dette \textit{Precision}, \textit{Recall} e \textit{F1} e sono basate sul numero di veri positivi, veri negativi, falsi positivi e falsi negativi.
 
 \paragraph{Precision}
@@ -681,7 +681,7 @@ Infine, il Bayes error è una quantità irriducibile e, dal punto di vista dell'
 Da questo punto di vista, l'underfitting è il risultato del prevalere del bias error sul variance error; l'overfitting, invece, è causato dal dominare del variance error sul bias error.
 Di conseguenza, al fine di trovare un compromesso per controllare questo tipo di problematica, è necessario avere una giusta complessità del modello, associata a un campione di dati sufficientemente grande.
 
-In Figura~\ref{underfittingoverfitting} viene riportato un confronto tra due modelli: nell'immagine di sinistra è presente un modello troppo semplice con un eccessivo bias error; a destra, invece, un modello con tanti gradi di libertà allo scopo di adattarsi molto bene ai punti ma che porta ad aumentare il variance error, rivelandosi poco robusto su nuove osservazioni. 
+In Figura~\ref{underfittingoverfitting} viene riportato un confronto tra due modelli: nell'immagine di sinistra è presente un modello troppo semplice con un eccessivo bias error; a destra, invece, un modello con tanti gradi di libertà allo scopo di adattarsi molto bene ai punti ma che porta ad aumentare eccessivamente il variance error, rivelandosi poco robusto su nuove osservazioni. 
 Un altro aspetto che non dipende dalla complessità del modello e a cui, però, occorre prestare comunque attenzione è il fenomeno di \textit{data leakage}.
 
 \begin{figure}
@@ -696,7 +696,7 @@ Un altro aspetto che non dipende dalla complessità del modello e a cui, però, 
     \label{underfittingoverfitting}
 \end{figure} 
 
-\paragraph{Data leakage} Per \textit{data leakage} si intende lo scenario in cui il training set o il validation set viene contaminato dal test set. In altre parole violare la proprietà di disgiunzione tra questi due tipi di insiemi causa un eccessivo adattamento del modello sui dati di allenamento e, di conseguenza, performa molto bene su questi ultimi ma molto male su osservazioni nuove.
+\paragraph{Data leakage} Per \textit{data leakage} si intende lo scenario in cui il training set o il validation set vengono contaminati dal test set. In altre parole violare la proprietà di disgiunzione tra questi due tipi di insiemi causa un eccessivo adattamento del modello sui dati di allenamento e, di conseguenza, esso performa molto bene su questi ultimi ma molto male su osservazioni nuove.
 Questa è la ragione per cui il partizionamento del campione in training, validation e test set deve essere fatto rendendo tali insiemi disgiunti fra loro.
 
 \section{Il sistema}
@@ -735,13 +735,13 @@ Al termine del preprocessing, un nuovo dataset viene creato e scritto su file, p
 \end{figure}
 
 \paragraph{Selezione dei modelli}
-La fase di selezione dei modelli si occupa di individuare il modello ideale tenendo presente le considerazioni relative alla valutazione della capcità predittiva e alla bontà di generalizzazione dei modelli fatte nei Paragrafi~\ref{evaluation} e~\ref{generalization}.
+La fase di selezione dei modelli si occupa di individuare il modello ideale tenendo presente le considerazioni fatte nei Paragrafi~\ref{evaluation} e~\ref{generalization}, relative alla valutazione della capacità predittiva e alla bontà di generalizzazione dei modelli.
 
 Al fine di rendere computazionalmente più agevole l'esecuzione degli esperimenti si è optato per isolare ciascun nodo per permettere, ad ogni step, la scrittura in memoria persistente dell'output. Nel caso della model selection risulta particolarmente conveniente disporre di un dataset precedentemente elaborato su cui impostare la selezione dei modelli in quanto, innanzitutto potrebbe richiedere notevole tempo per terminare, e soprattutto lo stesso campione elaborato potrebbe essere utilizzato più volte.
 
 I modelli ottimali vengono generati tramite la tecnica della cross validation annidata e, per ciascuna iterazione, viene fatta una \textit{grid search} per indagare quali siano i migliori modelli sulla base del validation error ottenuto.
 
-Alla fine di questa operazione vengono ricavati, infatti, i modelli che si sono adattati meglio ai dati e fornita la relativa configurazione degli iperparametri.
+Alla fine di quest'operazione vengono ricavati, infatti, i modelli che si sono adattati meglio ai dati e fornita la relativa configurazione degli iperparametri.
 
 \`E in questa fase che si colloca l'utilizzo di $\mu$-learn in quanto le configurazioni della grid search riguardano gli iperparametri di tale algoritmo.
 I modelli selezionati vengono, dunque, serializzati per permettere il loro riutilizzo in un secondo momento; più precisamente, questo avviene nel terzo nodo di visualizzazione dei dati in cui si vuole valutare il loro comportamento.
@@ -794,7 +794,7 @@ In Figura~\ref{cycle} viene raffigurato il flusso di comunicazione all'interno d
 \section{Tipi di predittore considerati}\label{predictors}
 Le considerazioni fatte nei Paragrafi~\ref{erroreclass} e~\ref{erroreregr} portano a domandarsi quale tipo di predittore sia il caso di considerare per il problema delle fake news.
 
-Sono state esplorate due possibilità: la pura induzione della funzione di appartenenza e un classificatore binario derivato da tale induzione.
+Da questo punto di vista sono state esplorate due possibilità: la pura induzione della funzione di appartenenza e un classificatore binario derivato da tale induzione.
 Siano $\lambda$ e $\omega$ i due predittori appena presentati, si definisce il primo predittore come
 \begin{equation}
     \lambda: \mathbb{R}^h \rightarrow [0,1]
