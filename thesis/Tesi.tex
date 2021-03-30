@@ -41,7 +41,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 %\usepackage{algpseudocode}
-\usepackage[detect-all]{siunitx} 
+\usepackage[detect-all]{siunitx}
 
 \makeatletter
 \renewcommand{\ALG@name}{Algoritmo}
@@ -96,7 +96,7 @@ basata sull'induzione di insiemi fuzzy}
 %			DEDICA
 %
 \beforepreface
-        {\hfill \Large {\sl \begin{flushright} Dedica da inserire.         
+        {\hfill \Large {\sl \begin{flushright} Dedica da inserire.
 \end{flushright}         }}
 %
 %			PREFAZIONE
@@ -118,10 +118,10 @@ basata sull'induzione di insiemi fuzzy}
 
 %
 %
-%			CAPITOLO 1: 
+%			CAPITOLO 1:
 
 \chapter*{Introduzione}
-\addcontentsline{toc}{chapter}{Introduzione} \markboth{Introduzione}{} 
+\addcontentsline{toc}{chapter}{Introduzione} \markboth{Introduzione}{}
 \onehalfspacing
 Con l'avvento della digitalizzazione il settore del giornalismo ha goduto di una forte espansione, causata dalla creazione e diffusione di nuovi mezzi di comunicazione. In particolare, l'informazione è diventata più accessibile alle persone e in tempi sempre più rapidi, soprattutto grazie agli strumenti di condivisione nati con i social network.
 Da una parte, il progresso tecnologico ha consentito di migliorare la fruizione delle notizie, velocizzandone la propagazione tramite i cosiddetti fenomeni virali; inoltre, la presenza di motori di ricerca e, in generale, l'ampio spazio sul Web, hanno consentito la creazione di nuove testate giornalistiche e fonti di informazione, alcune di natura puramente online.
@@ -129,7 +129,7 @@ L'altra faccia della medaglia è che una tale facilitazione dei processi sopra m
 Tale fenomeno prende forma in uno specifico contesto: l'era digitale è contraddistinta dalla presenza di un mondo costituito da una crescente quantità di dati, pertanto gli utenti che utilizzano Internet si ritrovano esposti a un numero di informazioni sempre più grande.
 In un contesto simile è facile intuire come il livello di attenzione cali sensibilmente; inoltre, verificare le fonti di una notizia è un processo che richiede sempre più attenzione e, ovviamente, uno sforzo attivo da parte dell'utente.
 
-L'aspetto problematico della disinformazione è che si tratta di un fenomeno, spesso, intenzionale e guidato da interessi che coinvolgono principalmente il mondo della politica, dal momento che la veicolazione delle \textit{fake news} mira in qualche modo all'alterazione dell'opinione pubblica. 
+L'aspetto problematico della disinformazione è che si tratta di un fenomeno, spesso, intenzionale e guidato da interessi che coinvolgono principalmente il mondo della politica, dal momento che la veicolazione delle \textit{fake news} mira in qualche modo all'alterazione dell'opinione pubblica.
 Con il passare degli anni, le tipologie di fake news sono aumentate e la loro qualità, a volte, risulta paragonabile a quella di notizie affidabili. Il problema considerato, dunque, è complesso in quanto gli elementi in questione sono costruiti per essere ingannevoli per gli utenti.
 Inoltre, nel rapporto 2020 dei servizi italiani di Intelligence viene segnalato come durante la pandemia di Covid-19 ci sia stato un forte aumento di fake news relativamente all'ambito sanitario.
 \\
@@ -143,7 +143,7 @@ La soluzione proposta è stata, quindi, sviluppata nel lavoro di questa tesi mag
 \label{Capitolo 1}
 \onehalfspacing
 
-Il capitolo che apre questa tesi è inerente allo stato dell'arte e si compone come segue: il Paragrafo~\ref{fakenews} descrive il problema delle fake news, introducendo la disciplina del fact-checking; il Paragrafo~\ref{nlp} riporta le tecniche di elaborazione del linguaggio naturale, soffermandosi sulla gestione del rumore, sulla rielaborazione del testo e sull'embedding per convertire tale testo in un dato di tipo numerico per la fase di preprocessing. 
+Il capitolo che apre questa tesi è inerente allo stato dell'arte e si compone come segue: il Paragrafo~\ref{fakenews} descrive il problema delle fake news, introducendo la disciplina del fact-checking; il Paragrafo~\ref{nlp} riporta le tecniche di elaborazione del linguaggio naturale, soffermandosi sulla gestione del rumore, sulla rielaborazione del testo e sull'embedding per convertire tale testo in un dato di tipo numerico per la fase di preprocessing.
 Il Paragrafo~\ref{insiemifuzzy} presenta il concetto degli insiemi fuzzy e fornisce una motivazione del perché essi siano uno strumento adeguato per il problema delle fake news.
 Infine, il Paragrafo~\ref{induzione} porta alla luce le principali componenti del processo di induzione considerato.
 
@@ -161,7 +161,7 @@ Inoltre, esiste un'intrinseca difficoltà nel valutare la veridicità di una not
 Al di là di quale sia il secondo fine di chi diffonde fake news, il nemico numero uno del giornalismo è la disinformazione.
 Per questo motivo, un lavoro da sempre svolto da giornalisti, e non, è quello del \textit{fact-checking}: si tratta di una serie di attività mirate alla verifica accurata e puntuale delle fonti.
 Secondo questo criterio, la verifica delle sorgenti di informazione avrebbe il vantaggio di validare i fatti, non lasciando spazio ad avvenimenti non confermati da fonti autorevoli.
-Questo approccio, però, presenta delle criticità, ad esempio l'assunzione che le fake news non abbiano fonti: 
+Questo approccio, però, presenta delle criticità, ad esempio l'assunzione che le fake news non abbiano fonti:
 esistono notizie che, pur basandosi su fatti realmente accaduti, possono esasperare aspetti apparentemente secondari che, invece, possono alterare la narrazione principale, fino a sconvolgerla.
 
 Un altro aspetto è che non è così semplice stabilire con certezza quando una fonte sia autorevole e quando no; inoltre, è opinabile assumere a priori che la stessa fonte considerata autorevole non commetta mai a sua volta errori di questo tipo.
@@ -182,7 +182,7 @@ L'automazione dell'analisi lessicale fa parte dell'ampia branca dell'informatica
 \subsection{Tecniche di gestione del rumore} \label{clean}
 Come nella stragrande maggioranza dei dataset, anche in quelli testuali è presente del rumore, sia a ``basso livello'' nel contenuto dell'informazione, sia ad ``alto livello'' nella forma dei dati che si sta utilizzando.
 
-Possono essere molte le motivazioni che portano un dataset a presentare errori, anomalie o rumore al suo interno: 
+Possono essere molte le motivazioni che portano un dataset a presentare errori, anomalie o rumore al suo interno:
 nel caso di osservazioni raccolte manualmente può verificarsi una componente di errore umano; dualmente, dataset generati automaticamente (ad esempio tramite dati raccolti da sensori) possono presentare delle anomalie e produrre risultati imprevisti.
 
 Nel caso dei dati trattati in questa tesi, inoltre, si ha a che fare con informazioni provenienti dal Web, tipicamente ricavate tramite Web Scraping, dunque, esiste una maggior probabilità di incontrare osservazioni di natura digitale ricavate da pagine HTML o, addirittura, influenzate dal tipo di codifica scelto per rappresentare caratteri speciali.
@@ -213,10 +213,10 @@ Vari studi nel campo dell'Information Retrieval \cite{2, 22}, infatti, hanno dim
 \paragraph{Stemming} Lo stemming consiste nell'individuare e rimuovere il prefisso e il suffisso delle parole, in modo da ricavarne la radice, ne viene mostrato un esempio in Tabella~\ref{stemming}.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|} 
- \hline 
+ \begin{tabular}{|c|c|c|}
+ \hline
  \textbf{Forma} & \textbf{Suffisso} & \textbf{Radice}
-\\ [0.5ex] 
+\\ [0.5ex]
 \hline
 pront\textbf{o} & \textbf{-o} & \textbf{pront} \\
 pronunc\textbf{erà} & \textbf{-erà} & \textbf{pronunc} \\
@@ -231,10 +231,10 @@ pronunc\textbf{ia} & \textbf{-ia} & \textbf{pronunc} \\
 Un esempio di questa tecnica viene mostrato in Tabella~\ref{lemmatization}.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|} 
- \hline 
+ \begin{tabular}{|c|c|c|}
+ \hline
  \textbf{Forma} & \textbf{Informazione morfologica} & \textbf{Lemma}
-\\ [0.5ex] 
+\\ [0.5ex]
 \hline
 ragazze & femminile plurale di \textbf{ragazzo} & \textbf{ragazzo} \\
 studia & terza persona singolare, presente del verbo \textbf{studiare} & \textbf{studiare} \\
@@ -258,7 +258,7 @@ Concretamente, questo equivale ad estrarre delle feature che caratterizzano le n
 Due famose tecniche di embedding sono \textit{Word2Vec} e \textit{Doc2Vec}, il cui meccanismo viene illustrato nei paragrafi che seguono.
 \subsubsection{Word2Vec} \label{w2v}
 Word2Vec è un algoritmo che ha l'obiettivo di trasformare le parole in vettori numerici all'interno di uno spazio  di dimensione prefissata \cite{3}.
-Un corpus è composto da documenti e ogni documento è composto da parole; ciascuna di queste parole, tramite Word2Vec, viene trasformata in un vettore di lunghezza $h$, dove $h$ indica il numero di feature numeriche che vengono considerate. 
+Un corpus è composto da documenti e ogni documento è composto da parole; ciascuna di queste parole, tramite Word2Vec, viene trasformata in un vettore di lunghezza $h$, dove $h$ indica il numero di feature numeriche che vengono considerate.
 
 Word2Vec si basa sull'utilizzo di reti neurali, dei modelli computazionali basati su neuroni artificiali che emulano in maniera semplificata il comportamento dei neuroni biologici \cite{38}, ed è principalmente implementato tramite due modelli: \textit{Skip-Gram} e \textit{CBOW} (Continuous Bag of Words), che vengono descritti qui di seguito.
 
@@ -316,7 +316,7 @@ Questo comporta chiaramente il raggiungimento del risultato senza ricorrere a un
 
 Conosciuto anche come \textit{Paragraph Vector}, Doc2Vec si articola in due principali implementazioni: \textit{PV-DM} (Distributed Memory) e \textit{DBOW} (Distributed Bag of Words).
 
-\paragraph{PV-DM} 
+\paragraph{PV-DM}
 Come per Word2Vec, il task che viene fatto ripetutamente è quello di predire la parola successiva nella frase. I vettori delle parole e i vettori dei capoversi sono chiamati a contribuire a tale predizione.
 
 Ogni capoverso viene mappato in un vettore, rappresentato da una colonna nella matrice $D$, così come il vettore di ogni parola è rappresentato da una colonna della matrice $P$ (Figura~\ref{pvdm}). I vettori menzionati vengono mediati o concatenati e, a loro volta, essi vengono passati alla rete neurale per prevedere la parola centrale.
@@ -328,7 +328,7 @@ La rappresentazione del capoverso è ciò che effettivamente distingue questa te
     \caption{Architettura in PV-DM (D è la matrice dei documenti e P la matrice delle parole).}
     \label{pvdm}
 \end{figure}
-La matrice del capoverso ha, infatti, gli embedding per i capoversi ``visti'', allo stesso modo in cui i modelli Word2Vec apprendono gli embedding per le parole. Per i capoversi non visualizzati, invece, il modello viene nuovamente eseguito più volte attraverso la discesa del gradiente per generare un vettore del documento. 
+La matrice del capoverso ha, infatti, gli embedding per i capoversi ``visti'', allo stesso modo in cui i modelli Word2Vec apprendono gli embedding per le parole. Per i capoversi non visualizzati, invece, il modello viene nuovamente eseguito più volte attraverso la discesa del gradiente per generare un vettore del documento.
 
 \paragraph{DBOW}
 L'architettura DBOW non utilizza le parole di contesto ma effettua la predizione direttamente dalle parole campionate dal capoverso.
@@ -391,7 +391,7 @@ Formalmente, si può asserire che:
 \end{itemize}
 Esempi di concetti fuzzy sono \textit{giovane}, \textit{ricco}, \textit{alto}, mentre non lo sono \textit{fratello}, \textit{studente}, \textit{professore}.
 
-Per determinare il valore di $\mu_A$ vengono definiti diversi tipi di funzioni di appartenenza: funzione sigma, funzione triangolare, trapezoidale, S-Shape, e altre ancora (Figura~\ref{membership_functions}). 
+Per determinare il valore di $\mu_A$ vengono definiti diversi tipi di funzioni di appartenenza: funzione sigma, funzione triangolare, trapezoidale, S-Shape, e altre ancora (Figura~\ref{membership_functions}).
 \begin{figure}
     \centering
     \includegraphics[scale = 0.7]{images/membership_functions.png}
@@ -402,10 +402,10 @@ Per determinare il valore di $\mu_A$ vengono definiti diversi tipi di funzioni d
 I metodi kernel sono degli oggetti matematici ampiamente utilizzati in congiunzione con le support vector machine \cite{28} per problemi di natura non lineare, tuttavia è applicabile anche a numerosi altri contesti, ad esempio la \textit{kernel Principal Component Analysis} \cite{29}.
 
 Questa metodologia prende il nome di \textit{kernel trick} e consiste nel mappare i punti dallo spazio originale $\mathcal X$ a uno spazio $\mathcal H$ a dimensionalità superiore o infinita, dove il problema diventa lineare e i dati risultano linearmente separabili.
-Tale tecnica si appoggia a una funzione kernel, una funzione simmetrica 
+Tale tecnica si appoggia a una funzione kernel, una funzione simmetrica
 \begin{equation}
     k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}
-\end{equation} 
+\end{equation}
 tale che in $\mathcal{H}$, detto \textit{spazio delle feature}, è definito un prodotto scalare $<$ ·, · $>$ ed esiste una funzione $\mathit{\Phi }: \mathcal{X} \rightarrow \mathcal{H}$ per cui:
 \begin{equation}
     k(x,y) = <\mathit{\Phi}(x), \mathit{\Phi}(y)>
@@ -505,9 +505,9 @@ La fase successiva è quella di indurre il valore della funzione di appartenenza
 
 \subsection{Fuzzificatore} \label{fuzzificatore}
 In letteratura i termini \textit{fuzzificazione} e \textit{defuzzificazione} indicano rispettivamente il passaggio da una quantità crisp a una quantità fuzzy e viceversa.
-Tale passaggio può avvenire in differenti modi che dipendono dal tipo di fuzzificatore che si utilizza. 
+Tale passaggio può avvenire in differenti modi che dipendono dal tipo di fuzzificatore che si utilizza.
 In altre parole, si stabilisce il modo in cui vengono fatti decrescere i valori della funzione di appartenenza dal valore 1 fino a 0. Geometricamente, questo equivale a definire una certa misura di distanza nello spazio in cui i punti vengono racchiusi; con grado di appartenenza maggiore essi saranno raggruppati più densamente nell'ipersfera di cui l'algoritmo minimizza il raggio, dualmente con grado minore, i suddetti punti saranno più distanti dall'insieme.
-Nel caso di $\mu$-learn, sono stati implementati diversi tipi di fuzzificatore, ciascuno caratterizzato dall'apprendimento di un diverso profilo della funzione di appartenenza. Per profilo si intende la funzione associata 
+Nel caso di $\mu$-learn, sono stati implementati diversi tipi di fuzzificatore, ciascuno caratterizzato dall'apprendimento di un diverso profilo della funzione di appartenenza. Per profilo si intende la funzione associata
 \begin{equation}
     p: \mathbb{R}^+ \rightarrow [0,1]
 \end{equation}
@@ -535,7 +535,7 @@ in cui $l$ è una funzione lineare.
 In questo caso gli step della funzione sono definiti in funzione dei quartili delle distanze quadratiche tra le immagini dei punti e il centro della sfera appresa.
 
 \subsection{Induzione di insiemi fuzzy}
-Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno valore unitario per il grado di appartenenza a $F$. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core. 
+Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno valore unitario per il grado di appartenenza a $F$. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core.
 Al fine di visualizzare il comportamento descritto, si mostra in Figura~\ref{mulearnplot} un esempio di esecuzione dell'algoritmo e la conseguente rappresentazione del risultato ottenuto:
 si assuma che le fake news siano appartenenti a un determinato insieme fuzzy $F$ e si supponga di volerlo individuare tramite la procedura vista in precedenza.
 Con un campione di 400 notizie (228 vere e 172 fake), opportunamente preprocessato con le tecniche viste nel Paragrafo~\ref{nlp}, è stato eseguito $\mu$-learn con un kernel gaussiano e un fuzzificatore di tipo lineare; successivamente, i risultati sono stati rappresentati in uno spazio bidimensionale applicando la tecnica di PCA~\cite{30}.
@@ -556,7 +556,7 @@ L'esito dell'induzione della funzione di appartenenza è influenzato dalla scelt
 
 \subsection{Iperparametri}\label{iperparameters}
 Gli \textit{iperparametri} sono parametri speciali che non vengono appresi direttamente dall'algoritmo di Machine Learning, al contrario, il loro valore viene assegnato prima dell'addestramento.
-Nel contesto considerato da questa tesi si distinguono i seguenti iperparametri: 
+Nel contesto considerato da questa tesi si distinguono i seguenti iperparametri:
 \begin{enumerate}
     \item il solver utilizzato,
     \item il tipo di kernel,
@@ -586,7 +586,7 @@ Il test set, invece, funge da prova finale per valutare la capacità di generali
 Esistono tanti modi per dividere i dati nei tre insiemi sopra descritti, uno di questi è la \textit{cross validation}.
 
 
-\paragraph{Cross validation} 
+\paragraph{Cross validation}
 La cross validation è una tecnica che consiste nel partizionare il dataset in $k$ \textit{fold} equiampie, effettuare altrettante iterazioni e, per ciascuna, considerare l'$i$-esima fold come validation set e le restanti $k-1$ come training set per addestrare il modello generato.
 In questo caso esistono diverse scuole di pensiero sulla percentuale che si preferisce impostare per la suddivisione in fold.
 In generale, è opportuno bilanciare le fold in maniera tale da avere un numero sufficiente di dati per fare l'apprendimento e per fare la validazione.
@@ -606,10 +606,10 @@ La differenza è che, mentre un classificatore (binario) può commettere solo du
 In generale, ricorrere a queste misure consente di descrivere quanto sia rilevante l'errore compiuto dal predittore e stabilire se sia tollerabile per la scelta finale del modello.
 
 \subsection{Matrice di confusione}
-Quando si mira ad ottenere un classificatore, uno strumento molto utilizzato per valutare la sua bontà è la matrice di confusione, una struttura dati che analizza le predizioni e le divide nei possibili esiti. 
+Quando si mira ad ottenere un classificatore, uno strumento molto utilizzato per valutare la sua bontà è la matrice di confusione, una struttura dati che analizza le predizioni e le divide nei possibili esiti.
 Il caso più semplice è quello mostrato in Figura~\ref{confusion} in cui si considera delle etichette binarie: dati due valori di risposta da parte del classificatore e due valori di verità della ground truth, si ottengono due tipi di predizione corretta (veri positivi e veri negativi) e due casi di predizione sbagliata (falsi positivi e falsi negativi).
 
-Nel contesto di classificazioni multi-classe è sufficiente estendere la matrice ottenendo sulla diagonale il numero di predizioni corrette e nel resto della matrice i vari casi di errore con cui è possibile capire quali classi vengano più o meno facilmente confuse. 
+Nel contesto di classificazioni multi-classe è sufficiente estendere la matrice ottenendo sulla diagonale il numero di predizioni corrette e nel resto della matrice i vari casi di errore con cui è possibile capire quali classi vengano più o meno facilmente confuse.
 
 \begin{figure}
     \centering
@@ -652,7 +652,7 @@ dove $\mathbf{x_i}$ indica il vettore delle feature, $y_i$ l'etichetta, $i$ l'in
 \end{equation}
 dove $\hat{y}_j$ è la predizione.
 \paragraph{RMSE}
-Al fine di portare il valore dell'errore ad avere la stessa unità di misura delle predizioni può essere utile sfruttare l'RMSE, definito come 
+Al fine di portare il valore dell'errore ad avere la stessa unità di misura delle predizioni può essere utile sfruttare l'RMSE, definito come
 \begin{equation}
     \sqrt{MSE}
 \end{equation}
@@ -662,7 +662,7 @@ Nell'ambito del Machine Learning, generare un modello predittivo affidabile non 
 Questa capacità di adattamento consente di valutare quella che viene definita la \textit{bontà di generalizzazione} che il modello ha sui dati che non ha mai visto. Da questo punto di vista, un modello con una buona capacità di generalizzazione è in grado di intuire correttamente le etichette dei dati perché è riuscito ad estrarre efficacemente la relazione di dipendenza tra le feature e le etichette target desiderate.
 A volte, questo meccanismo viene raggiunto sui dati di addestramento tramite una continua regolazione degli iperparametri nella fase di tuning, tuttavia questo rischia di causare la generazione di un modello che su quel tipo di dato riesce a ottenere buoni risultati ma che ha una bassa capacità di generalizzazione su altri poiché, più che formare la sua esperienza su concrete relazioni dei dati, ha raggiunto l'obiettivo tramite un eccessivo incremento della complessità.
 
-Gli iperparametri determinano, infatti, i gradi di libertà del modello ottenuto e la loro numerosità ha un impatto sulla complessità del modello: avere molti iperparametri rischia di complicarlo eccessivamente, dualmente, averne pochi, lo rende potenzialmente troppo semplice. 
+Gli iperparametri determinano, infatti, i gradi di libertà del modello ottenuto e la loro numerosità ha un impatto sulla complessità del modello: avere molti iperparametri rischia di complicarlo eccessivamente, dualmente, averne pochi, lo rende potenzialmente troppo semplice.
 Sulla base di queste premesse si introducono, quindi, i concetti di \textit{overfitting} e \textit{underfitting}.
 
 \subsection{Overfitting e underfitting}
@@ -681,7 +681,7 @@ Infine, il Bayes error è una quantità irriducibile e, dal punto di vista dell'
 Da questo punto di vista, l'underfitting è il risultato del prevalere del bias error sul variance error; l'overfitting, invece, è causato dal dominare del variance error sul bias error.
 Di conseguenza, al fine di trovare un compromesso per controllare questo tipo di problematica, è necessario avere una giusta complessità del modello, associata a un campione di dati sufficientemente grande.
 
-In Figura~\ref{underfittingoverfitting} viene riportato un confronto tra due modelli: nell'immagine di sinistra è presente un modello troppo semplice con un eccessivo bias error; a destra, invece, un modello con tanti gradi di libertà allo scopo di adattarsi molto bene ai punti ma che porta ad aumentare eccessivamente il variance error, rivelandosi poco robusto su nuove osservazioni. 
+In Figura~\ref{underfittingoverfitting} viene riportato un confronto tra due modelli: nell'immagine di sinistra è presente un modello troppo semplice con un eccessivo bias error; a destra, invece, un modello con tanti gradi di libertà allo scopo di adattarsi molto bene ai punti ma che porta ad aumentare eccessivamente il variance error, rivelandosi poco robusto su nuove osservazioni.
 Un altro aspetto che non dipende dalla complessità del modello e a cui, però, occorre prestare comunque attenzione è il fenomeno di \textit{data leakage}.
 
 \begin{figure}
@@ -694,7 +694,7 @@ Un altro aspetto che non dipende dalla complessità del modello e a cui, però, 
     \end{minipage}
     \caption{Nel primo grafico si mostra un esempio di modello di Machine Learning che evidenzia problemi di underfitting; nel secondo caso si mostra un tipico comportamento di overfitting - Fonte: \url{https://towardsdatascience.com/what-are-overfitting-and-underfitting-in-machine-learning-a96b30864690}.}
     \label{underfittingoverfitting}
-\end{figure} 
+\end{figure}
 
 \paragraph{Data leakage} Per \textit{data leakage} si intende lo scenario in cui il training set o il validation set vengono contaminati dal test set. In altre parole violare la proprietà di disgiunzione tra questi due tipi di insiemi causa un eccessivo adattamento del modello sui dati di allenamento e, di conseguenza, esso performa molto bene su questi ultimi ma molto male su osservazioni nuove.
 Questa è la ragione per cui il partizionamento del campione in training, validation e test set deve essere fatto rendendo tali insiemi disgiunti fra loro.
@@ -709,7 +709,7 @@ Tali osservazioni sono etichettate con valore 1 se si tratta di una notizia fake
 
 L'obiettivo di $\mu$-learn sarà, quindi, indurre l'insieme fuzzy delle fake news inizialmente sconosciuto ed apprendere la funzione di appartenenza ad esso associata.
 \subsection{Architettura}\label{architecture}
-L'architettura del sistema è composta da tre nodi, dedicati alle seguenti attività: 
+L'architettura del sistema è composta da tre nodi, dedicati alle seguenti attività:
 \begin{enumerate}
     \item il preprocessing del dataset,
     \item la selezione dei modelli migliori,
@@ -754,7 +754,7 @@ In Figura~\ref{selectionmodel} viene mostrata la rappresentazione del funzioname
     \label{selectionmodel}
 \end{figure}
 
-\paragraph{Visualizzazione dei dati} 
+\paragraph{Visualizzazione dei dati}
 Nella parte di visualizzazione dei dati, i modelli vengono deserializzati per poterli riutilizzare al fine di operare un'analisi descrittiva.
 Tale analisi coinvolge principalmente i gradi di appartenenza approssimati dai modelli generati dal sistema, valutando la bontà delle predizioni da essi effettuate.
 
@@ -775,7 +775,7 @@ In questo paragrafo si descrive come funziona il sistema nella sua complessità 
     \caption{Schema del flusso di comunicazione all'interno del sistema.}
     \label{cycle}
 \end{figure}
-In Figura~\ref{cycle} viene raffigurato il flusso di comunicazione all'interno del sistema, numerato passo per passo: 
+In Figura~\ref{cycle} viene raffigurato il flusso di comunicazione all'interno del sistema, numerato passo per passo:
 \begin{enumerate}
     \item il processo ha inizio quando si dispone di un dataset, ottenuto in uno dei modi visti in precedenza, e viene così acquisito dal primo nodo per il preprocessing;
     \item  il nodo effettua il preprocessing del dataset e ne produce uno nuovo che viene opportunamente scritto su file per permettere la successiva lettura da parte del nodo di model selection;
@@ -785,9 +785,9 @@ In Figura~\ref{cycle} viene raffigurato il flusso di comunicazione all'interno d
     \item il modulo per la visualizzazione dei dati fornisce un report che viene aggiunto a quelli associati agli altri esperimenti;
     \item il report permette di analizzare il comportamento dei modelli e individuare delle possibili configurazioni da testare per i nuovi esperimenti;
     \item se si desira fare nuovi esperimenti
-    
+
     a) ripartendo dal preprocessing dei dati, è necessario ricominciare l'esperimento dall'inizio, andando a modificare i parametri in questione;
-    
+
     b) modificando il modo in cui viene fatta la grid search, si regolano i relativi valori a partire dalla model selection.
 \end{enumerate}
 
@@ -828,17 +828,17 @@ Il testo riguarda delle possibili sequenze di parole che, nell'ambito delle fake
 L'etichetta ha due forme possibili: un valore binario o un valore compreso nell'intervallo $[0,1]$ per il caso di dataset generati.
 
 \subsection{Generatore di dataset}\label{generator}
-Oltre a poter trattare osservazioni con etichette categorici relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
+Oltre a poter trattare osservazioni con etichette categorici relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi.
 Si denoti, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso di $P_1 \cap P_2 = \emptyset$ e poi quello dell'intersezione non vuota.
 
-La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic nel modo seguente: 
+La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic nel modo seguente:
 \begin{itemize}
     \item si fissa l'insieme $P_2$, rappresentativo del topic $t_2$ delle fake news;
     \item si definisce, quindi, grado di appartenenza ``atteso'' dell'$i$-esimo documento la probabilità $\mu_i$ di successo di una distribuzione bernoulliana che una parola $p_j \in P_2$ venga inserita nel documento, con $i=1, ..., m$ e $j=1, ..., n$;
     \item si indicano con $B$ e $Z$ due variabili casuali che seguono rispettivamente la distribuzione bernoulliana e la distribuzione di Zipf \cite{34};
     \item si fissa un'arbitraria distribuzione di probabilità $d$;
     \item si esegue l'Algoritmo~\ref{lda}.
-\end{itemize}  
+\end{itemize}
 
 \begin{algorithm}
 \caption{procedura del \texttt{generatore di dataset}}
@@ -1022,7 +1022,7 @@ La \textit{tokenizzazione} consiste nella pura suddivisione delle frasi in token
 
 \paragraph{Rimozione del rumore}
 La \textit{rimozione del rumore} è, a sua volta, scomponibile in molteplici passaggi, ciascuno delegato alla rimozione di uno specifico tipo di rumore.
-In tal senso, sono stati implementate le rimozioni di URL, emoji, punteggiatura, numeri, parole contenenti numeri, parole duplicate, e osservazioni vuote nel dataset. 
+In tal senso, sono stati implementate le rimozioni di URL, emoji, punteggiatura, numeri, parole contenenti numeri, parole duplicate, e osservazioni vuote nel dataset.
 \\
 \\
 \textbf{Input}: dataframe di liste di stringhe:
@@ -1159,7 +1159,7 @@ La fase di \textit{aggregazione} è necessaria nel caso si utilizzi Word2Vec, po
 
 \paragraph{Doc2Vec}
 \textit{Doc2Vec} è una soluzione alternativa di embedding per convertire direttamente le frasi in vettori; essa non necessita, infatti, di una fase di aggregazione ma richiede come input un dataframe di stringhe.
-L'esempio considera un modello di 20 feature 
+L'esempio considera un modello di 20 feature
 \\
 \\
 \textbf{Input}: dataframe di stringhe:
@@ -1232,12 +1232,12 @@ Il termine grid deriva dal fatto che si preimposta una griglia di valori per tut
 Un esempio di griglia viene mostrato in Tabella~\ref{grid}: in questo caso è stato fissato il tipo di fuzzificatore, il tipo di kernel e il tipo di solver, mentre è stato previsto un intervallo di dieci ordini di grandezza per $\sigma$, parametro del kernel gaussiano, e per $C$.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}} 
-\\ [0.5ex] 
+\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+\\ [0.5ex]
  \thickhline
- lineare & gaussiano & gurobi & logspace(-5, 5, 11) & logspace(-5, 5, 11) \\ 
+ lineare & gaussiano & gurobi & logspace(-5, 5, 11) & logspace(-5, 5, 11) \\
  \hline
 \end{tabular}
 \caption{Esempio di griglia di iperparametri.}
@@ -1308,7 +1308,7 @@ La procedura descritta nell'Algoritmo~\ref{kfold} viene, pertanto, estesa, come 
 \ENDFOR
 \STATE optimized\_model = optimized\_model.fit(train)
 \STATE predictions = optimized\_model.predict(test)
-\STATE evaluation = optimized\_model.evaluate(predictions) 
+\STATE evaluation = optimized\_model.evaluate(predictions)
 \STATE optimized\_models.add(optimized\_model)
 \STATE evaluations.add(evaluation)
 \ENDFOR
@@ -1347,7 +1347,7 @@ Il primo comprende un misto di notizie pubblicate su testate giornalistiche negl
 Al fine di trovare un compromesso accettabile tra il numero di esperimenti e la capacità computazionale a disposizione è stato scelto il primo dataset.
 
 \subsection{Fake and real news dataset}\label{fakenewsdataset}
-\textit{Fake and real news dataset} è un dataset disponibile sulla piattaforma \textit{Kaggle} che raccoglie notizie e tweet, separandoli in ``fake'' e ``true'' news. Più precisamente sono presenti 23481 osservazioni per la parte di notizie false e 21417 per quelle annotate come vere, formando, quindi, un dataset approssimativamente bilanciato. 
+\textit{Fake and real news dataset} è un dataset disponibile sulla piattaforma \textit{Kaggle} che raccoglie notizie e tweet, separandoli in ``fake'' e ``true'' news. Più precisamente sono presenti 23481 osservazioni per la parte di notizie false e 21417 per quelle annotate come vere, formando, quindi, un dataset approssimativamente bilanciato.
 Le osservazioni sono composte da informazioni inerenti al titolo della notizia, al corpo, all'argomento in essa contenuto e alla data di pubblicazione. Nelle Figure~\ref{fake_sample} e~\ref{true_sample} viene mostrato un esempio per ciascun dataframe.
 \begin{figure}
     \centering
@@ -1367,13 +1367,13 @@ La colonna relativa al titolo, per quanto rilevante, non è stata considerata ai
 Anche la colonna relativa all'argomento non è stata utilizzata, in quanto è stata rilevata una sostanziale differenza nella ricchezza di informazioni contenute per la parte di notizie vere rispetto a quelle fake, oltre che un'evidente inconsistenza degli argomenti identificati. Si conferma questo aspetto nella Tabella~\ref{subject}.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|} 
- \hline 
+ \begin{tabular}{|c|c|c|}
+ \hline
  \textbf{argomento} & \textbf{fake news} & \textbf{true news}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
 \texttt{News} & 38.54 \% & - \\
-\texttt{politics} & 29.13 \% & -\\ 
+\texttt{politics} & 29.13 \% & -\\
 \texttt{left-news} & 18.99 \% & -\\
 \texttt{Government News} & 6.69 \% & -\\
 \texttt{US\_News} & 3.33 \% & -\\
@@ -1385,18 +1385,18 @@ Anche la colonna relativa all'argomento non è stata utilizzata, in quanto è st
 \caption{Frequenze relative degli argomenti.}
 \label{subject}
 \end{table}
-Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l'informazione riguardante il corpo della notizia. 
+Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l'informazione riguardante il corpo della notizia.
 
 Il suddetto dataset è stato elaborato tramite due pipeline di preprocessing: una per le fake news e una dedicata alle true news, ottenendo così dei vettori di feature a cui sono stati associati i valori binari delle etichette; infine, sono stati accorpati, rimescolati e standardizzati: un esempio di risultato è quello mostrato in Tabella~\ref{preprocesseddata}.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|} 
- \hline 
+ \begin{tabular}{|c|c|c|}
+ \hline
  \textbf{index} & \textbf{text} & \textbf{label}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
 22 & [0.34, 0.14, ..., 0.51] (96 elementi) & 1 \\
-6 & [-0.45, -0.10, ..., 0.55] (96 elementi) & 0 \\ 
+6 & [-0.45, -0.10, ..., 0.55] (96 elementi) & 0 \\
 59 & [0.91, -0.92, ..., -1.14] (96 elementi) & 0\\
 21 & [-0.86, 0.54, ..., 0.51] (96 elementi) & 1\\
 12 & [0.11, 0.67, ..., -1.95] (96 elementi) & 0\\
@@ -1415,7 +1415,7 @@ Nella teoria delle Probabilità e in Statistica una delle distribuzioni più con
 \begin{equation}
     f(x)= \begin{cases} \frac{1}{b-a} & \mbox{se } a\leq x \leq b, \\ 0 & \mbox{altrimenti.} \end{cases}
 \end{equation}
-Dal momento che il grado di appartenenza è compreso nell'intervallo $[0,1]$, anche la distribuzione uniforme selezionata è impostata su tale intervallo. 
+Dal momento che il grado di appartenenza è compreso nell'intervallo $[0,1]$, anche la distribuzione uniforme selezionata è impostata su tale intervallo.
 \begin{figure}
     \centering
     \includegraphics[scale=0.4]{images/uniform.png}
@@ -1468,12 +1468,12 @@ Dal momento che $P_1$ è completamente lowercase e $P_2$ uppercase, allora sinta
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
-\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$  
-\\ [0.5ex] 
+\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$
+\\ [0.5ex]
  \thickhline
-0 & ``extend bottle bottle extend toothpaste SHOW grass cuddly uptight uptight eager ... violet" & 0.07 \\ 
+0 & ``extend bottle bottle extend toothpaste SHOW grass cuddly uptight uptight eager ... violet" & 0.07 \\
 1 & ``uptight bottle toothpaste occur scream SUDDEN show toothpaste provide violet embarrass ... wistful" & 0.14 \\
 2 & ``thick QUILL toothpaste toothpaste BOTTLE BOTTLE uptight lyrical introduce SUPPORT toothpaste ... trees" & 0.32 \\
 3 & ``BOTTLE TOOTHPASTE BOTTLE SMILING lyrical LIE VIOLET REMOVE YELLOW bottle BOTTLE ... MICE" & 0.49 \\
@@ -1505,10 +1505,10 @@ Il processo di generazione è stato ripetuto e sono stati ottenuti nuovi documen
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
-\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$ 
-\\ [0.5ex] 
+\textbf{id} & \textbf{esempio di testo ottenuto (1000 parole)} & $\bm{\mu_i}$
+\\ [0.5ex]
  \thickhline
 0 & ``occur stale eager UPTIGHT grass lyrical grass UPTIGHT PARTNER UPTIGHT UPTIGHT ... toothpaste" & 0.02 \\
 1 & ``stem drag HALL SHOW ticket bottle bottle SHOW UPTIGHT stimulating mice ... GRASS" & 0.14  \\
@@ -1531,13 +1531,13 @@ Il processo di generazione è stato ripetuto e sono stati ottenuti nuovi documen
 In generale, una volta generato un dataset in uno dei due modi visti in precedenza, esso viene elaborato dal modulo di preprocessing, un esempio di come appare al termine di questa fase viene mostrato in Tabella~\ref{uniformlda}.
 \begin{table}
 \centering
- \begin{tabular}{|c|c|c|} 
- \hline 
+ \begin{tabular}{|c|c|c|}
+ \hline
  \textbf{index} & \textbf{text} & \textbf{membership}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
 67 & [0.55, -0.34, ..., -1.63] (96 elementi) & 0.59 \\
-31 & [0.90, -0.40, ..., -1.61] (96 elementi) & 0.83\\ 
+31 & [0.90, -0.40, ..., -1.61] (96 elementi) & 0.83\\
 2 & [1.07, -0.48, ..., -1.65] (96 elementi) & 0.97\\
 99 & [0.31, -0.21, ..., -1.63] (96 elementi) & 0.48\\
 17 & [0.91, -0.38, ..., -1.65] (96 elementi) & 0.80\\
@@ -1552,7 +1552,7 @@ In generale, una volta generato un dataset in uno dei due modi visti in preceden
 Gli altri due dataset citati nel Paragrafo~\ref{dataset} non sono ancora stati considerati per l'addestramento e per la conseguente generazione di modelli predittivi; tuttavia, si ritiene che il sistema sia effettivamente pronto per una loro futura elaborazione, in quanto presenta un modulo per l'adattamento del dataset (Paragrafo~\ref{adapter}) e, in generale, è stato predisposto per trattare documenti testuali in lingua italiana, inglese, francese e spagnola.
 
 \section{Esperimenti}\label{esperimenti}
-Durante il lavoro di questa tesi sono stati condotti circa 30 esperimenti, durante i quali è stato esplorato il maggior numero possibile di strade da percorrere. Si ritiene che gli esperimenti riportati in questo paragrafo siano i più rappresentativi dell'intero processo di test del sistema creato. Ciascuno di essi viene presentato in due varianti, mostrando il comportamento del predittore $\lambda$ e del classificatore $\omega$ (Paragrafo~\ref{predictors}); pertanto, si utilizzerà per il primo la misura di RMSE e per il secondo le metriche di Precision, Recall e F1, distinguendo in training e test error. 
+Durante il lavoro di questa tesi sono stati condotti circa 30 esperimenti, durante i quali è stato esplorato il maggior numero possibile di strade da percorrere. Si ritiene che gli esperimenti riportati in questo paragrafo siano i più rappresentativi dell'intero processo di test del sistema creato. Ciascuno di essi viene presentato in due varianti, mostrando il comportamento del predittore $\lambda$ e del classificatore $\omega$ (Paragrafo~\ref{predictors}); pertanto, si utilizzerà per il primo la misura di RMSE e per il secondo le metriche di Precision, Recall e F1, distinguendo in training e test error.
 
 Quella che segue è la lista degli esperimenti che sono stati pianificati.
 
@@ -1576,12 +1576,12 @@ In Tabella~\ref{gridtable} viene mostrata la griglia comune che è stata utilizz
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}} 
-\\ [0.5ex] 
+\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+\\ [0.5ex]
  \thickhline
- lineare & gaussiano & gurobi & $(10^{-5}, 10^{-3}, 10^{-1}, 10, 10^3, 10^5)$ & (0.01, 0.1, 0.5, 1.0, 10, 100) \\ 
+ lineare & gaussiano & gurobi & $(10^{-5}, 10^{-3}, 10^{-1}, 10, 10^3, 10^5)$ & (0.01, 0.1, 0.5, 1.0, 10, 100) \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -1592,12 +1592,12 @@ Per quanto riguarda la baseline, in Tabella~\ref{gridtablebaseline} viene mostra
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & (80, 90, 100, 110) & (2, 3) & (3, 4, 5) & (8, 10, 12) & (100, 200, 300, 1000) \\ 
+ Sì & (80, 90, 100, 110) & (2, 3) & (3, 4, 5) & (8, 10, 12) & (100, 200, 300, 1000) \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -1616,10 +1616,10 @@ Gli esperimenti relativi agli insiemi disgiunti sono basati su insiemi di parole
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 1000 & 1 \\
  lineare & gaussiano & gurobi & 10 & 0.01 \\
@@ -1644,23 +1644,23 @@ In Figura~\ref{prediction_exp1} viene riportato un confronto tra la ground truth
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel primo esperimento.}
     \label{prediction_exp1}
-\end{figure} 
+\end{figure}
 
 Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$-learn, sono state calcolate le predizioni da parte dell'algoritmo Random Forest (Figura~\ref{rf_exp1}). Tali predizioni sono state generate a partire dai migliori modelli selezionati tramite la grid search; i valori ottimali degli iperparametri dei modelli sono riportati in Tabella~\ref{models_rf_exp1}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 4 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ Sì & 80 & 3 & 4 & 8 & 1000 \\
+ Sì & 80 & 3 & 4 & 8 & 100 \\
+ Sì & 80 & 3 & 4 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -1678,16 +1678,16 @@ Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel primo esperimento.}
     \label{rf_exp1}
-\end{figure} 
+\end{figure}
 Dai grafici si evince chiaramente una notevole capacità da parte di Random Forest nel replicare fedelmente la distribuzione impostata per la generazione.
-Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp1}). 
+Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp1}).
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.18 & 0.18 \\
  regressore random forest & \textbf{0.01} & \textbf{0.01}
@@ -1701,7 +1701,7 @@ Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i
 I numeri confermano la superiorità da parte del regressore nell'individuare il grado di appartenenza originale dei documenti.
 
 \paragraph{Confronto con $\bm{\omega}$}
-Per quanto concerne la classificazione, in Figura~\ref{classification_exp1} viene fatto un primo confronto considerando il classificatore $\omega$. 
+Per quanto concerne la classificazione, in Figura~\ref{classification_exp1} viene fatto un primo confronto considerando il classificatore $\omega$.
 Più precisamente, in Figura~\ref{4cases_exp1} vengono mostrati i grafici relativi alle quattro classi presenti nella matrice di confusione.
 Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il comportamento di $\omega$ che effettua la classificazione in base alla classe preponderante.
 \begin{figure}
@@ -1744,15 +1744,15 @@ Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il co
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel primo esperimento.}
     \label{rf_class_exp1}
-\end{figure} 
+\end{figure}
 Anche in questo caso, l'algoritmo Random Forest si rivela particolarmente efficace. Si conferma questo aspetto nella Tabella~\ref{prf_exp1}, in cui vengono riportati i punteggi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.75, 0.97, 0.85 & 0.77, 0.97, 0.86 \\
  classificatore random forest & \textbf{0.99, 1.0, 1.0} & \textbf{0.99, 0.99, 0.99} \\
@@ -1768,10 +1768,10 @@ Si prosegue utilizzando una distribuzione Beta con parametri $\alpha=\beta=5$; i
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 10 & 0.01 \\
  lineare & gaussiano & gurobi & 100000 & 10 \\
@@ -1796,23 +1796,23 @@ Analogamente a quanto fatto nel primo esperimento, si riporta in Figura~\ref{pre
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel secondo esperimento.}
     \label{prediction_exp2}
-\end{figure} 
+\end{figure}
 
 Anche in questo caso vengono raffigurate le predizioni dell'algoritmo Random Forest (Figura~\ref{rf_exp2}), per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono presenti in Tabella~\ref{models_rf_exp2}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 10 & 200 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 200 \\ 
- Sì & 80 & 3 & 3 & 12 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ Sì & 80 & 3 & 3 & 10 & 200 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 10 & 200 \\
+ Sì & 80 & 3 & 3 & 12 & 300 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -1830,16 +1830,16 @@ Anche in questo caso vengono raffigurate le predizioni dell'algoritmo Random For
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel secondo esperimento.}
     \label{rf_exp2}
-\end{figure} 
+\end{figure}
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp2}). 
+Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp2}).
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.14 & 0.14 \\
  regressore random forest & \textbf{0.01} & \textbf{0.02}
@@ -1852,7 +1852,7 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
 \end{table}
 
 \paragraph{Confronto con $\bm{\omega}$}
-Nel caso della classificazione, si propone in Figura~\ref{classification_exp2} il confronto tra le etichette attese e le previsioni di $\omega$. 
+Nel caso della classificazione, si propone in Figura~\ref{classification_exp2} il confronto tra le etichette attese e le previsioni di $\omega$.
 In Figura~\ref{4cases_exp2} vengono mostrati i grafici inerenti alle quattro classi presenti nella matrice di confusione.
 \begin{figure}
 \centering
@@ -1894,15 +1894,15 @@ In Figura~\ref{rf_class_exp2} viene riportato il confronto tra le etichette atte
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel secondo esperimento.}
     \label{rf_class_exp2}
-\end{figure} 
+\end{figure}
 In Tabella~\ref{prf_exp2} vengono riportati i punteggi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.62, 0.77, 0.69 & 0.63, 0.77, 0.69 \\
  classificatore random forest & \textbf{0.99, 0.98, 0.98} & \textbf{0.98, 0.96, 0.97} \\
@@ -1919,10 +1919,10 @@ Il terzo caso parte da una distribuzione Beta con parametri $\alpha=\beta=0.5$ e
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 10 & 0.01 \\
  lineare & gaussiano & gurobi & 10 & 0.01 \\
@@ -1947,23 +1947,23 @@ Al fine di visualizzare il comportamento di $\lambda$, viene mostrato in Figura~
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel terzo esperimento.}
     \label{prediction_exp3}
-\end{figure} 
+\end{figure}
 
 In Figura~\ref{rf_exp3} è possibile osservare il comportamento dei modelli ottenuti tramite Random Forest; essi vengono elencati in Tabella~\ref{models_rf_exp3}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 10 & 300 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -1981,16 +1981,16 @@ In Figura~\ref{rf_exp3} è possibile osservare il comportamento dei modelli otte
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel terzo esperimento.}
     \label{rf_exp3}
-\end{figure} 
+\end{figure}
 I punteggi di RMSE per il training e il test error sono riportati in Tabella~\ref{rmse_exp3}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.14 & 0.14 \\
  regressore random forest & \textbf{0.01} & \textbf{0.02}
@@ -2003,7 +2003,7 @@ I punteggi di RMSE per il training e il test error sono riportati in Tabella~\re
 \end{table}
 
 \paragraph{Confronto con $\bm{\omega}$}
-Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp3} il confronto con le etichette attese. 
+Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp3} il confronto con le etichette attese.
 In Figura~\ref{4cases_exp3} vengono mostrati i grafici relativi ai veri negativi, veri positivi, falsi negativi e falsi positivi.
 \begin{figure}
 \centering
@@ -2045,15 +2045,15 @@ In Figura~\ref{rf_class_exp3} vengono visualizzate le predizioni di Random Fores
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel terzo esperimento.}
     \label{rf_class_exp3}
-\end{figure} 
+\end{figure}
 Si chiude questa prima parte di esperimenti con la Tabella~\ref{prf_exp3} relativa ai punteggi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.62, 0.77, 0.69 & 0.63, 0.77, 0.69 \\
  classificatore random forest & \textbf{1.0, 0.99, 1.0} & \textbf{0.99, 0.99, 0.99} \\
@@ -2074,10 +2074,10 @@ L'altra sequenza di esperimenti si basa su insiemi di parole di partenza con una
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 1000 & 100 \\
  lineare & gaussiano & gurobi & 1000 & 100 \\
@@ -2102,22 +2102,22 @@ In Figura~\ref{prediction_exp4} è raffigurato il comportamento di $\lambda$ nel
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel quarto esperimento.}
     \label{prediction_exp4}
-\end{figure} 
+\end{figure}
 Le predizioni dell'algoritmo Random Forest vengono mostrate in Figura~\ref{rf_exp4} e sono relative ai modelli riportati in Tabella~\ref{models_rf_exp4}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 10 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 4 & 10 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 100 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -2135,16 +2135,16 @@ Le predizioni dell'algoritmo Random Forest vengono mostrate in Figura~\ref{rf_ex
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel quarto esperimento.}
     \label{rf_exp4}
-\end{figure} 
+\end{figure}
 
-Successivamente, si mostrano in Tabella~\ref{rmse_exp4} i punteggi di RMSE per il training e il test error. 
+Successivamente, si mostrano in Tabella~\ref{rmse_exp4} i punteggi di RMSE per il training e il test error.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.20 & 0.21 \\
  regressore random forest & \textbf{0.02} & \textbf{0.03}
@@ -2198,15 +2198,15 @@ Per quanto riguarda le previsioni dell'algoritmo Random Forest, in Figura~\ref{r
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel quarto esperimento.}
     \label{rf_class_exp4}
-\end{figure} 
+\end{figure}
 Di conseguenza, si mostrano i relativi punteggi di Precision, Recall e F1 in Tabella~\ref{prf_exp4}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.73, 0.91, 0.81 & 0.75, 0.86, 0.80 \\
  classificatore random forest & \textbf{0.99, 0.99, 0.99} & \textbf{0.98, 0.98, 0.98} \\
@@ -2222,10 +2222,10 @@ Nel caso della distribuzione Beta con parametri $\alpha=\beta=5$ per insiemi sov
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 1000 & 1 \\
  lineare & gaussiano & gurobi & 1000 & 1 \\
@@ -2250,21 +2250,21 @@ In Figura~\ref{prediction_exp5} si visualizza i grafici della ground truth dei d
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel quinto esperimento.}
     \label{prediction_exp5}
-\end{figure} 
+\end{figure}
 La grid search è stata applicata anche all'algoritmo Random Forest, generando i modelli riassunti in Tabella~\ref{models_rf_exp5}; tali modelli hanno prodotto le previsioni mostrate in Figura~\ref{rf_exp5}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ Sì & 80 & 3 & 3 & 8 & 300 \\
+ Sì & 80 & 3 & 4 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 8 & 300 \\
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -2282,16 +2282,16 @@ La grid search è stata applicata anche all'algoritmo Random Forest, generando i
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel quinto esperimento.}
     \label{rf_exp5}
-\end{figure} 
+\end{figure}
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp5}). 
+Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp5}).
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.13 & 0.13 \\
  regressore random forest & \textbf{0.02} & \textbf{0.03}
@@ -2304,7 +2304,7 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
 \end{table}
 
 \paragraph{Confronto con $\bm{\omega}$}
-Nel caso della classificazione, si propone in Figura~\ref{classification_exp5} il confronto tra le etichette attese e le previsioni di $\omega$. 
+Nel caso della classificazione, si propone in Figura~\ref{classification_exp5} il confronto tra le etichette attese e le previsioni di $\omega$.
 In Figura~\ref{4cases_exp5} vengono mostrati i grafici inerenti alle quattro classi presenti nella matrice di confusione.
 \begin{figure}
 \centering
@@ -2346,15 +2346,15 @@ In Figura~\ref{rf_class_exp5} viene riportato il confronto tra le etichette atte
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel quinto esperimento.}
     \label{rf_class_exp5}
-\end{figure} 
+\end{figure}
 In Tabella~\ref{prf_exp5} vengono riportati i punteggi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.60, 0.81, 0.69 & 0.61, 0.78, 0.68 \\
  classificatore random forest & \textbf{0.96, 0.97, 0.97} & \textbf{0.94, 0.95, 0.95} \\
@@ -2370,10 +2370,10 @@ Per la distribuzione Beta con parametri $\alpha=\beta=0.5$ i modelli scelti sono
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 10 & 0.01 \\
  lineare & gaussiano & gurobi & 10 & 0.01 \\
@@ -2398,23 +2398,23 @@ In Figura~\ref{prediction_exp6} sono visualizzate graficamente le predizioni gen
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel sesto esperimento.}
     \label{prediction_exp6}
-\end{figure} 
+\end{figure}
 
 In Figura~\ref{rf_exp6} è possibile osservare il comportamento dei modelli ottenuti tramite Random Forest; essi vengono elencati in Tabella~\ref{models_rf_exp6}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 2 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
+ Sì & 80 & 2 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 300 \\
+ Sì & 80 & 3 & 3 & 8 & 100 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -2432,16 +2432,16 @@ In Figura~\ref{rf_exp6} è possibile osservare il comportamento dei modelli otte
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel sesto esperimento.}
     \label{rf_exp6}
-\end{figure} 
+\end{figure}
 
-Anche in questo caso i punteggi di RMSE per il training e il test error sono stati calcolati e vengono mostrati in Tabella~\ref{rmse_exp6}. 
+Anche in questo caso i punteggi di RMSE per il training e il test error sono stati calcolati e vengono mostrati in Tabella~\ref{rmse_exp6}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.19 & 0.19 \\
  regressore random forest & \textbf{0.02} & \textbf{0.03}
@@ -2454,7 +2454,7 @@ Anche in questo caso i punteggi di RMSE per il training e il test error sono sta
 \end{table}
 
 \paragraph{Confronto con $\bm{\omega}$}
-Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp6} il confronto con le etichette attese. 
+Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp6} il confronto con le etichette attese.
 In Figura~\ref{4cases_exp6} vengono mostrati i grafici relativi ai veri negativi, veri positivi, falsi negativi e falsi positivi.
 \begin{figure}
 \centering
@@ -2496,15 +2496,15 @@ In Figura~\ref{rf_class_exp6} vengono visualizzate le predizioni di Random Fores
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel sesto esperimento.}
     \label{rf_class_exp6}
-\end{figure} 
+\end{figure}
 In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.82, 0.98, 0.89 & 0.83, 0.97, 0.89 \\
  classificatore random forest & \textbf{1.0, 0.99, 0.99} & \textbf{0.99, 0.99, 0.99} \\
@@ -2515,7 +2515,7 @@ In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi di Precis
 \label{prf_exp6}
 \end{table}
 La serie di esperimenti relativa agli insiemi sovrapposti non influenza in maniera così determinante i risultati.
-È possibile che questo sia dovuto alla bassa percentuale di sovrapposizione prevista tra i due insiemi: in questo caso si è preferito fornire un punto di partenza contenuto ma, per eventuali sviluppi futuri, si potrebbe prendere in considerazione l'idea di usare percentuali più alte. 
+È possibile che questo sia dovuto alla bassa percentuale di sovrapposizione prevista tra i due insiemi: in questo caso si è preferito fornire un punto di partenza contenuto ma, per eventuali sviluppi futuri, si potrebbe prendere in considerazione l'idea di usare percentuali più alte.
 In generale, la lunga sequenza di esperimenti relativa ai dati generati non ha prodotto risultati ottimistici per il sistema basato sull'approccio fuzzy; al contrario, apparentemente risulta che un algoritmo come Random Forest possa essere sfruttato per generare predizioni attendibili.
 In realtà, gli esperimenti finora considerati trattano dataset di natura artificiale, generati tramite un processo stocastico. Tali dataset, inoltre, non presentano ragionamenti, opinioni o costruzioni di frasi con una semantica ma sono stati pensati per catturare una distinzione che formalmente esiste solo da un punto di vista sintattico.
 L'assunzione fondamentale fatta in questa tesi è che il problema delle fake news sia modellabile secondo la logica fuzzy, basandosi sul fatto che questo tipo di notizie, in realtà, presenti una componente di indecisione intrinsecamente complessa che dipende dalla sintassi, dalla semantica e dall'ambiguità del linguaggio umano e che oggi rappresentano il motivo per cui non risulta semplice rilevarle automaticamente.
@@ -2528,10 +2528,10 @@ In Tabella~\ref{models_exp7} vengono mostrate le configurazioni dei modelli sele
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|}
  \hline
 \textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  lineare & gaussiano & gurobi & 1000 & 100 \\
  lineare & gaussiano & gurobi & 100000 & 10 \\
@@ -2549,14 +2549,14 @@ In Figura~\ref{prediction_exp7} viene riportato un confronto tra la ground truth
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_memberships.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_memberships"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_memberships.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_memberships"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel settimo esperimento.}
     \label{prediction_exp7}
-\end{figure} 
+\end{figure}
 In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
 
 In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random Forest, per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono riportati in Tabella~\ref{models_rf_exp7}.
@@ -2564,16 +2564,16 @@ In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random For
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|c|}
  \hline
 \textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ Sì & 80 & 3 & 3 & 8 & 100 \\
+ Sì & 80 & 3 & 4 & 8 & 1000 \\
+ Sì & 80 & 3 & 4 & 8 & 1000 \\
+ Sì & 80 & 3 & 3 & 10 & 100 \\
+ Sì & 80 & 3 & 3 & 8 & 1000 \\
  \hline
 \end{tabular}
 \end{adjustbox}
@@ -2584,24 +2584,24 @@ In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random For
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_regression_rf.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_regression_rf"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel settimo esperimento.}
     \label{rf_exp7}
-\end{figure} 
+\end{figure}
 In questo caso, l'andamento dei valori è molto diverso rispetto a quello ricavato da $\mu$-learn: il risultato è una distribuzione piuttosto incerta il cui picco sembra essere influenzato dalla presenza di più occorrenze per il valore 0.
 
 Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp7}). Si specifica che, per via della natura del dataset, per entrambi i modelli persiste una buona componente d'errore dovuta alla forma binaria delle etichette. Da questo punto di vista i modelli si equivalgono, tuttavia, visivamente, mostrano un approccio diverso nel modellare l'andamento dei gradi di appartenenza.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \textbf{Training error} & \textbf{Test error}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\lambda$ & 0.30 & 0.37 \\
  regressore random forest & \textbf{0.25} & 0.37
@@ -2614,15 +2614,15 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
 \end{table}
 
 \paragraph{Confronto con $\bm{\omega}$}
-In Figura~\ref{classification_exp7}, invece, lo stesso confronto viene fatto considerando il classificatore $\omega$. 
+In Figura~\ref{classification_exp7}, invece, lo stesso confronto viene fatto considerando il classificatore $\omega$.
 In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro classi presenti nella matrice di confusione.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_classification"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel settimo esperimento.}
     \label{classification_exp7}
@@ -2630,16 +2630,16 @@ In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro cla
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-     \includegraphics[width=\linewidth]{images/experiment kaggle/tn.png}\label{tn_k}
+     \includegraphics[width=\linewidth]{"images/experiment kaggle/tn"}\label{tn_k}
    \end{minipage}
    \begin{minipage}{0.48\textwidth}
-     \includegraphics[width=\linewidth]{images/experiment kaggle/tp.png}\label{tp_k}
+     \includegraphics[width=\linewidth]{"images/experiment kaggle/tp"}\label{tp_k}
    \end{minipage}
    \begin{minipage}{0.48\textwidth}
-     \includegraphics[width=\linewidth]{images/experiment kaggle/fn.png}\label{fn_k}
+     \includegraphics[width=\linewidth]{"images/experiment kaggle/fn"}\label{fn_k}
    \end{minipage}
    \begin{minipage}{0.48\textwidth}
-     \includegraphics[width=\linewidth]{images/experiment kaggle/fp.png}\label{fp_k}
+     \includegraphics[width=\linewidth]{"images/experiment kaggle/fp"}\label{fp_k}
    \end{minipage}
    \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel settimo esperimento.}
    \label{4cases_exp7}
@@ -2649,55 +2649,55 @@ Tali grafici confermano la presenza di una componente di indecisione: i falsi ne
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_classification_rf.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_classification_rf"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel settimo esperimento.}
     \label{rf_class_exp7}
-\end{figure} 
+\end{figure}
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_classification_dectree.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_classification_dectree"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dall'albero decisionale nel settimo esperimento.}
     \label{dt_exp7}
-\end{figure} 
+\end{figure}
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_classification_nn.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_classification_nn"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dalla rete neurale nel settimo esperimento.}
     \label{nn_exp7}
-\end{figure} 
+\end{figure}
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/expected_classification.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/expected_classification"}
     \end{minipage}
     \begin{minipage}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{images/experiment kaggle/prediction_classification_svc.png}
+        \includegraphics[width=\linewidth]{"images/experiment kaggle/prediction_classification_svc"}
     \end{minipage}
     \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dal classificatore support vector nel settimo esperimento.}
     \label{svc_exp7}
-\end{figure} 
+\end{figure}
 In Tabella~\ref{prf_exp7} vengono riportati i punteggi di Precision, Recall e F1 per $\omega$ e per la baseline.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|} 
+ \begin{tabular}{|c|c|c|}
  \hline
 \textbf{Predittore} & \begin{tabular}{@{}c@{}}\textbf{Training} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular} & \begin{tabular}{@{}c@{}}\textbf{Test} \\ \textbf{Precision}, \textbf{Recall}, \textbf{F1} \end{tabular}
-\\ [0.5ex] 
+\\ [0.5ex]
  \thickhline
  $\omega$ & 0.82, 0.97, 0.89 & 0.78, 0.89, 0.83 \\
  classificatore random forest & 0.99, 0.98, 0.98 & 0.87, 0.72, 0.79 \\
@@ -2720,12 +2720,12 @@ In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
 \end{itemize}
 
 \subsubsection{Componente di indecisione}
-Gli esperimenti del Paragrafo~\ref{kaggleexperiment} hanno evidenziato la presenza di una componente di indecisione nelle predizioni effettuate dall'algoritmo $\mu$-learn, utilizzato nel sistema proposto in questa tesi. 
+Gli esperimenti del Paragrafo~\ref{kaggleexperiment} hanno evidenziato la presenza di una componente di indecisione nelle predizioni effettuate dall'algoritmo $\mu$-learn, utilizzato nel sistema proposto in questa tesi.
 
 In Figura~\ref{overlaypred} viene mostrata una visualizzazione alternativa delle predizioni che permette di distinguere queste ultime in fake e non fake secondo la ground truth e, soprattutto, mostra più esplicitamente tale componente di indecisione.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.48]{images/experiment kaggle/overlaypred.png}
+    \includegraphics[scale=0.48]{"images/experiment kaggle/overlaypred"}
     \caption{Predizioni dell'algoritmo $\mu$-learn. In rosso le predizioni etichettate come fake, in azzurro quelle vere.}
     \label{overlaypred}
 \end{figure}
@@ -2733,7 +2733,7 @@ In corrispondenza dei valori estremi, laddove è presente la sovrapposizione, si
 A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e una soglia $s$, al fine di individuare un intervallo di indecisione $[s-r,s+r]$.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.48]{images/experiment kaggle/indecisionrf.png}
+    \includegraphics[scale=0.48]{"images/experiment kaggle/indecisionrf"}
     \caption{Predizioni dell'algoritmo Random Forest. In rosso le predizioni etichettate come fake, in azzurro quelle vere.}
     \label{indecisionrf}
 \end{figure}
@@ -2742,7 +2742,7 @@ L'esito dell'esperimento, inoltre, pone come ipotesi il fatto che se l'assunzion
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
-\markboth{Conclusioni e sviluppi futuri}{} 
+\markboth{Conclusioni e sviluppi futuri}{}
 \onehalfspacing
 In questa tesi è stato proposto un sistema di rilevazione delle fake news basato sull'individuazione dell'insieme fuzzy associato, tramite il quale è stato possibile produrre dei punteggi di affidabilità delle notizie basandosi sul grado di appartenenza a tale insieme.
 Il sistema è comprensivo delle tipiche fasi che contraddistinguono la strategia di apprendimento automatico supervisionato nell'ambito dell'analisi testuale, includendo una parte di rielaborazione del testo, la generazione di modelli predittivi con configurazione ottimale degli iperparametri e la valutazione finale dei risultati.
@@ -2772,6 +2772,3 @@ Infine, il fatto che gli sviluppi possibili sono molteplici induce a pensare che
 \prefacesection{Ringraziamenti}
 
 \end{document}
-
-
-
