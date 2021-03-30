@@ -463,7 +463,7 @@ Tale soluzione consiste in un sistema di apprendimento supervisionato a partire 
 
 Segue nel Paragrafo~\ref{evaluation} l'illustrazione dei criteri di valutazione dei modelli e nel Paragrafo~\ref{generalization} la maniera con cui viene misurata la loro bontà di generalizzazione.
 
-Nel Paragrafo~\ref{sistema}, invece, si mostra l'utilizzo che è stato fatto dell'algoritmo sopracitato all'interno del sistema proposto in questo capitolo, delineando le fasi che si susseguono nel corso degli esperimenti. Infine nel Paragrafo~\ref{predictors} vengono mostrati i due tipi di predittore che sono stati proposti per tali esperimenti.
+Nel Paragrafo~\ref{sistema}, invece, si mostra l'utilizzo che è stato fatto dell'algoritmo sopracitato all'interno del sistema proposto in questo capitolo, delineando le fasi che si susseguono nel corso degli esperimenti. Infine, nel Paragrafo~\ref{predictors} vengono mostrati i due tipi di predittore che sono stati proposti per tali esperimenti.
 
 \section[\texorpdfstring{L'algoritmo $\mu$-learn}%
                         {mu-learn}]% % choose text-only material here
@@ -473,14 +473,14 @@ $\mu$-\textit{learn} è un algoritmo di Machine Learning supervisionato che util
 Essa si colloca nel gruppo di tecniche che lavora su insiemi fuzzy, trattando un problema di ottimizzazione non lineare.
 
 La diversità delle funzioni di appartenenza presenti in letteratura permette una vasta sperimentazione e i parametri associati a tali funzioni possono essere regolati in modo da ottenere forme differenti per gli insiemi fuzzy formati.
-Il nome di questo algoritmo suggerisce il suo obiettivo: apprendere $\mu$, la funzione di appartenenza a un determinato insieme fuzzy e generare l'associato modello predittivo.
+Il nome di questo algoritmo suggerisce il suo obiettivo: apprendere la funzione di appartenenza $\mu$ a un determinato insieme fuzzy e generare l'associato modello predittivo.
 
 \subsection{Support vector clustering modificato}\label{svcmodified}
 L'assunzione iniziale è quella di disporre di un dataset $S$ di $m$ osservazioni tale che
 \begin{equation}
     S = \{(\mathbf{x_i}, y_i), \; \forall\,i=1, ..., m\}
 \end{equation}
-in cui $\mathbf{x_i} \in \mathbb{R}^h$ è l'$i$-esimo vettore delle feature e $y_i$ è l'etichetta target che si vuole predire; tale etichetta può essere rappresentata da dei valori binari in $[0,1]$ o dai gradi di appartenenza $\mu_i$ a un insieme fuzzy sconosciuto $A$.
+in cui $\mathbf{x_i} \in \mathbb{R}^h$ è l'$i$-esimo vettore delle feature e $y_i$ è l'etichetta target che si vuole predire; tale etichetta può essere rappresentata da dei valori binari in $\{0,1\}$ o dai gradi di appartenenza $\mu_i$ a un insieme fuzzy sconosciuto $A$.
 L'obiettivo è proprio individuare tale insieme e determinare la funzione di appartenenza $\mu_A$ per approssimarne il grado.
 
 L'algoritmo descritto nel Paragrafo~\ref{mulearn} parte dalla tecnica di support vector clustering presente in letteratura~\cite{23} e la estende per l'individuazione di insiemi fuzzy. Si tratta di un algoritmo di clustering non parametrico che affronta il problema dell'identificazione del minimo raggio $R$ dell'ipersfera di centro $a$ che include le immagini della maggior parte di un insieme di punti; in particolare, i punti che si trovano sulla superficie di tale ipersfera sono chiamati \textit{support vector} e, nello spazio delle feature, essi dividono i dati in cluster.
@@ -500,7 +500,7 @@ Quelli che seguono sono i tre vincoli del problema e si distinguono dalla tecnic
 \end{equation}
 In~\ref{vincolo} il primo vincolo richiede che le immagini dei punti attraverso $\mathit{\Phi}$ abbiano una distanza dal centro minore o uguale di una quantità che è tanto più piccola quanto più è elevato il relativo $\mu_i$. Il secondo vincolo in~\ref{vincolo_2} richiede, invece, che al diminuire di $\mu_i$, le immagini si trovino a una distanza che tende ad aumentare. Infine, il vincolo~\ref{vincolo_3} impone dei valori non negativi per le variabili slack che rilassano il problema.
 
-Il problema di ottimizzazione originale viene, quindi, esteso minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro e si ricava la soluzione tramite un solver.
+Il problema di ottimizzazione originale viene, quindi, esteso minimizzando $R^2 + C\sum(\xi_i + \tau_i)$ tramite (\ref{vincolo}-\ref{vincolo_3}), dove $C$ è un iperparametro, e ricavando la soluzione tramite un solver.
 La fase successiva è quella di indurre il valore della funzione di appartenenza a tale insieme.
 
 \subsection{Fuzzificatore} \label{fuzzificatore}
@@ -535,10 +535,10 @@ in cui $l$ è una funzione lineare.
 In questo caso gli step della funzione sono definiti in funzione dei quartili delle distanze quadratiche tra le immagini dei punti e il centro della sfera appresa.
 
 \subsection{Induzione di insiemi fuzzy}
-Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno valore unitario per il grado di appartenenza a F. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core. 
+Se $F$ è l'insieme fuzzy analizzato, l'algoritmo descritto nel Paragrafo~\ref{mulearn} individua $K$, detto \textit{core}, ovvero l'insieme crisp di tutti i punti che hanno valore unitario per il grado di appartenenza a $F$. Sulla base del fuzzificatore impostato (Paragrafo~\ref{fuzzificatore}), poi, l'algoritmo fa decrescere il valore di appartenenza previsto man mano che i punti si allontanano dal core. 
 Al fine di visualizzare il comportamento descritto, si mostra in Figura~\ref{mulearnplot} un esempio di esecuzione dell'algoritmo e la conseguente rappresentazione del risultato ottenuto:
 si assuma che le fake news siano appartenenti a un determinato insieme fuzzy $F$ e si supponga di volerlo individuare tramite la procedura vista in precedenza.
-Con un campione di 400 notizie (228 vere e 172 fake) opportunamente preprocessato con le tecniche viste nel Paragrafo~\ref{nlp}, è stato eseguito $\mu$-learn con un kernel gaussiano e un fuzzificatore di tipo lineare; successivamente, i risultati sono stati rappresentati in uno spazio bidimensionale applicando la tecnica di PCA~\cite{30}.
+Con un campione di 400 notizie (228 vere e 172 fake), opportunamente preprocessato con le tecniche viste nel Paragrafo~\ref{nlp}, è stato eseguito $\mu$-learn con un kernel gaussiano e un fuzzificatore di tipo lineare; successivamente, i risultati sono stati rappresentati in uno spazio bidimensionale applicando la tecnica di PCA~\cite{30}.
 
 Considerando che i punti rossi fanno riferimento alle osservazioni etichettate come fake news e quelli blu alle notizie vere, si osserva la formazione di diverse \textit{curve di livello} che descrivono i gradi di appartenenza a $F$ in prossimità della zona in cui i punti rossi sono maggiormente concentrati.
 
@@ -601,9 +601,9 @@ In realtà, la stessa tecnica può essere utilizzata per ottenere anche i test s
 La cross validation annidata è un'estensione della versione riportata nel precedente capoverso e può essere usata per ricavare diversi test set. Quest'operazione viene fatta eseguendo un'ulteriore cross validation interna per ciascuna delle $k$ fold, ottenendo $l$ fold interne. A questo punto la validazione del modello viene spostata alle fold interne, in cui si opera la ricerca degli iperparametri ottimali, mentre quelle esterne consentono di testare il modello.
 
 \section{Valutazione dei modelli}\label{evaluation}
-La scelta dei modelli si basa sull'utilizzo di uno o più criteri di valutazione. Il range di possibilità esistenti in questo senso è molto ampio e la motivazione che porta a preferire una soluzione piuttosto che un'altra dipende strettamente dal tipo di problema considerato, così come dal tipo di dati a disposizione: nell'ambito della classificazione, ad esempio, si ragiona in termini di accuratezza, ossia la percentuali di predizioni corrette rispetto a quelle totali; in un contesto differente, come ad esempio quello della regressione, non è più possibile basare la bontà di un modello sull'accuratezza, poiché entra in gioco quella che è la quantificazione dell'errore. L'errore è una misura del discostamento che si verifica tra una predizione e la ground truth, ossia l'effettivo valore delle etichette nel dominio di conoscenza considerato.
+La scelta dei modelli si basa sull'utilizzo di uno o più criteri di valutazione. Il range di possibilità esistenti in questo senso è molto ampio e la motivazione che porta a preferire una soluzione piuttosto che un'altra dipende strettamente dal tipo di problema considerato, così come dal tipo di dati a disposizione: nell'ambito della classificazione, ad esempio, ha senso ragionare in termini di accuratezza, intesa come la percentuale di predizioni corrette rispetto a quelle totali; in un contesto differente, come ad esempio quello della regressione, non è più possibile basare la bontà di un modello sull'accuratezza, poiché entra in gioco quella che è la quantificazione dell'errore. L'errore è una misura del discostamento che si verifica tra una predizione e la ground truth, ossia l'effettivo valore delle etichette nel dominio di conoscenza considerato.
 La differenza è che, mentre un classificatore (binario) può commettere solo due tipi di errore\footnote{Generalizzando, un classificatore $n$-ario può commettere $n(n-1)$ diversi tipi di errore.}, denominati \textit{falsi positivi} e \textit{falsi negativi}, nel caso della regressione l'errore può essere un qualunque numero positivo.
-In generale, ricorrere a queste misure consente di descrivere quanto sia rilevante l'errore compiuto dal predittore e stabilire se sia numericamente accettabile per la scelta finale del modello.
+In generale, ricorrere a queste misure consente di descrivere quanto sia rilevante l'errore compiuto dal predittore e stabilire se sia tollerabile per la scelta finale del modello.
 
 \subsection{Matrice di confusione}
 Quando si mira ad ottenere un classificatore, uno strumento molto utilizzato per valutare la sua bontà è la matrice di confusione, una struttura dati che analizza le predizioni e le divide nei possibili esiti. 
@@ -629,7 +629,7 @@ Il valore di \textit{Precision} misura la frazione di predizioni positive corret
 \end{equation}
 
 \paragraph{Recall}
-La \textit{recall} quantifica il numero di predizioni positive corrette rispetto a tutte le osservazioni positive. Ricollegandosi alle fake news, la recall rappresenterebbe la percentuale di tutte le notizie fake del dataset che sono state individuate dal classificatore.
+La \textit{Recall} quantifica il numero di predizioni positive corrette rispetto a tutte le osservazioni positive. Ricollegandosi alle fake news, la Recall rappresenterebbe la percentuale di tutte le notizie fake del dataset che sono state individuate dal classificatore.
 \begin{equation}
 \frac{\text{Veri Positivi}}{\text{Veri Positivi} + \text{Falsi Negativi}}
 \end{equation}
