@@ -96,7 +96,7 @@ basata sull'induzione di insiemi fuzzy}
 %			DEDICA
 %
 \beforepreface
-        {\hfill \Large {\sl \begin{flushright} Dedica da inserire.         
+        {\hfill \Large {\sl \begin{flushright} Ai miei obiettivi, in attesa di essere raggiunti.         
 \end{flushright}         }}
 %
 %			PREFAZIONE
@@ -134,9 +134,9 @@ Con il passare degli anni, le tipologie di fake news sono aumentate e la loro qu
 Inoltre, nel rapporto 2020 dei servizi italiani di Intelligence viene segnalato come durante la pandemia di Covid-19 ci sia stato un forte aumento di fake news relativamente all'ambito sanitario.
 \\
 \\
-Alla luce delle considerazioni appena fatte, si propone un sistema di rilevazione delle fake news con l'obiettivo finale di ricavare dei punteggi di affidabilità per le stesse in modo da fornire agli utenti uno strumento di supporto alla valutazione delle notizie durante la loro lettura.
+Alla luce delle considerazioni appena fatte, si propone un sistema di rilevazione delle fake news con l'obiettivo finale di ricavare dei punteggi di \textit{fakeness} per le stesse in modo da fornire agli utenti uno strumento di supporto alla valutazione delle notizie durante la loro lettura.
 La motivazione di questa scelta risiede nel fatto di optare per una soluzione poco invasiva: un punteggio simile costituirebbe un modo per educare le persone ad essere critiche piuttosto che per censurare articoli. Il vantaggio di questa scelta risulta evidente nel momento in cui un sistema di questo tipo possa commettere degli errori.
-Il sistema si basa sulla logica fuzzy e sull'idea che le notizie siano riconducibili a un insieme fuzzy delle fake news, di cui si può calcolare il grado di appartenenza associato. Tale grado rappresenterebbe il valore di affidabilità ricercato per le notizie.
+Il sistema si basa sulla logica fuzzy e sull'idea che le notizie siano riconducibili a un insieme fuzzy delle fake news, di cui si può calcolare il grado di appartenenza associato. Tale grado rappresenterebbe il valore di \textit{fakeness} ricercato per le notizie.
 La soluzione proposta è stata, quindi, sviluppata nel lavoro di questa tesi magistrale nel Dipartimento di Informatica dell'Università degli Studi di Milano e si basa su un algoritmo di apprendimento supervisionato per l'induzione di insiemi fuzzy a partire da una tecnica di support vector clustering.
 
 \chapter{Stato dell'arte}
@@ -358,7 +358,7 @@ Rimanendo nell'esempio della Sentiment Analysis, la presenza di testi con emozio
 
 Alla luce di tutto ciò, questa tesi propone di modellare la rilevazione delle fake news come un problema fuzzy, assumendo che le notizie siano associate a insiemi di questo tipo.
 
-L'obiettivo è quello di ricavare un modello di apprendimento supervisionato in grado di produrre il grado di appartenenza a tale insieme a partire dal suo contenuto, con l'ambizione finale di ottenere un punteggio di affidabilità per ogni notizia;
+L'obiettivo è quello di ricavare un modello di apprendimento supervisionato in grado di produrre il grado di appartenenza a tale insieme a partire dal suo contenuto, con l'ambizione finale di ottenere un punteggio di \textit{fakeness} per ogni notizia;
 potenzialmente, tale punteggio rappresenta quanto la notizia sia fake. Da questo punto di vista è stato fatto un lavoro simile \cite{35} che si basa su un approccio fuzzy ma che ricava l'affidabilità del contenuto a partire dalla fonte dell'informazione.
 
 \section{Induzione di funzioni di appartenenza} \label{induzione}
@@ -816,33 +816,32 @@ Ne consegue che per $\lambda$ risultano più appropriate le misure di MSE e RMSE
 \onehalfspacing
 Questo capitolo tratta l'implementazione della soluzione proposta nel capitolo precedente. Nel Paragrafo~\ref{datasethandle} si descrive la parte inerente alle modalità con cui si gestiscono i vari scenari relativi al tipo di dataset che si ha a disposizione.
 
-All'interno del Paragrafo~\ref{pp} viene illustrata la pipeline di preprocessing, soffermandosi su ognuno degli step che la compongono; il Paragrafo~\ref{modelselection}, invece, descrive come è stata implementata la parte di model selection tramite la grid search.
+All'interno del Paragrafo~\ref{pp} viene illustrata la pipeline di preprocessing, soffermandosi su ognuno degli step che la compongono; il Paragrafo~\ref{modelselection}, invece, descrive come è stata implementata la parte di model selection.
 Infine, nel Paragrafo~\ref{datavisualizationimpl} viene descritta la fase di visualizzazione dei dati.
 
 \section{Gestione dei dataset}\label{datasethandle}
-Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: utilizzare un dataset acquisito da terzi e generarlo.
+Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: utilizzare un dataset acquisito da terzi e fornire un dataset generato.
 Nel primo caso servizi come \textit{Kaggle} hanno facilitato l'individuazione di dataset interessanti, mentre nel secondo è stato implementato un modulo adibito alla generazione artificiale di documenti testuali.
 
 \subsection{Adattatore di dataset}\label{adapter}
-Per gestire la diversità della forma dei dati, si è deciso di fissare un formato standard e, in base ad esso, adattare o meno il dataset a disposizione in modo che rispetti tale convenzione. L'obiettivo è facilitare l'esecuzione di tutto il sistema su nuovi dati.
-Il sistema descritto nel Paragrafo~\ref{sistema} assume, quindi, un dataframe di tre colonne: \textit{index}, \textit{text} e \textit{label}.
+Per gestire la diversità della forma dei dati, si è deciso di fissare un formato standard e, in base ad esso, adattare o meno il dataset a disposizione in modo che rispetti tale convenzione. L'obiettivo è facilitare l'esecuzione del sistema descritto nel Paragrafo~\ref{sistema} su nuovi dati; pertanto, tale sistema assume di lavorare con un dataframe contenente tre colonne: \textit{index}, \textit{text} e \textit{label}.
 
-L'indice ha la finalità di preservare l'identificatore di ogni osservazione, questo torna particolarmente utile i) quando si vogliono analizzare specifiche notizie durante la fase di data visualization; ii) per mantenere il riferimento alla posizione originale delle notizie rimescolate durante lo step di shuffling nel preprocessing.
+L'indice ha la finalità di preservare l'identificatore di ogni osservazione, questo torna particolarmente utile i) quando si vogliono analizzare specifiche notizie durante la fase di data visualization e ii) per mantenere il riferimento alla posizione originale delle notizie rimescolate durante lo step di shuffling nel preprocessing.
 
-Il testo riguarda delle possibili sequenze di parole che, nell'ambito delle fake news, possono essere il corpo delle notizie, i titoli o, a seconda del dataset considerato, dei possibili tweet o post sui social media.
+Il testo riguarda delle possibili sequenze di parole che, nell'ambito delle fake news, possono essere il corpo delle notizie, il titolo o, a seconda del dataset considerato, il contenuto di possibili tweet o post sui social media.
 
-L'etichetta ha due forme possibili: un valore binario o un valore compreso nell'intervallo $[0,1]$ per il caso di dataset generati.
+L'etichetta ha due forme possibili: un valore binario per i dataset recuperati da Kaggle o un valore compreso nell'intervallo $[0,1]$ per il caso di dataset generati.
 
 \subsection{Generatore di dataset}\label{generator}
-Oltre a poter trattare osservazioni con etichette categorici relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
-Si denoti, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso di $P_1 \cap P_2 = \emptyset$ e poi quello dell'intersezione non vuota.
+Oltre a poter trattare osservazioni con etichette categorici relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza all'insieme fuzzy delle fake news. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
+Si denoti, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso in cui $P_1  \cap P_2 = \emptyset$ in cui gli insiemi delle parole sono disgiunti, e poi quello in cui la loro intersezione non è vuota.
 
-La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic nel modo seguente: 
+La tecnica utilizzata prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic nel modo seguente: 
 \begin{itemize}
     \item si fissa l'insieme $P_2$, rappresentativo del topic $t_2$ delle fake news;
     \item si definisce, quindi, grado di appartenenza ``atteso'' dell'$i$-esimo documento la probabilità $\mu_i$ di successo di una distribuzione bernoulliana che una parola $p_j \in P_2$ venga inserita nel documento, con $i=1, ..., m$ e $j=1, ..., n$;
-    \item si indicano con $B$ e $Z$ due variabili casuali che seguono rispettivamente la distribuzione bernoulliana e la distribuzione di Zipf \cite{34};
-    \item si fissa un'arbitraria distribuzione di probabilità $d$;
+    \item si indicano con $B$ e $Z$ due variabili casuali che seguono rispettivamente la distribuzione bernoulliana con parametro uguale a $\mu_i$ e la distribuzione di Zipf \cite{34};
+    \item si fissa un'arbitraria distribuzione di probabilità $d$ con supporto $[0, 1]$, così da utilizzare le sue specificazioni come valori per $\mu_i$;
     \item si esegue l'Algoritmo~\ref{lda}.
 \end{itemize}  
 
@@ -871,25 +870,24 @@ La tecnica prevede la generazione di $m$ documenti composti da $n$ parole estrat
 \RETURN documents
 \end{algorithmic}
 \end{algorithm}
-In pratica, si tratta di un processo non deterministico di estrazione delle parole, in cui la variabile $Z$ indica la parola estratta e $B$ è la variabile casuale bernoulliana che determina il topic selezionato in base alla probabilità di successo $\mu_i$. Nel caso di due topic si hanno due valori possibili: 0 per il topic delle notizie vere e 1 per le fake news, allora si definisce di ``successo'' l'evento $B=1$ con probabilità $\mu_i$ e l'evento di ``insuccesso'' $B=0$ con probabilità $1-\mu_i$, o equivalentemente
+In pratica, si tratta di un processo non deterministico di estrazione delle parole, in cui la variabile $Z$ indica la parola estratta e $B$ è la variabile casuale bernoulliana che determina il topic selezionato in base alla probabilità di successo $\mu_i$. Nel caso di due topic si hanno due specificazioni possibili: 0 per il topic delle notizie vere e 1 per le fake news, allora si definisce di ``successo'' l'evento $B=1$ con probabilità $\mu_i$ e l'evento di ``insuccesso'' $B=0$ con probabilità $1-\mu_i$, o equivalentemente
 \begin{equation}
     \mathsf{P}(p_j \in P_2) = \mu_i,
 \end{equation}
 \begin{equation}
     \mathsf{P}(p_j \in P_1) = 1 - \mu_i.
 \end{equation}
-L'obiettivo del generatore è valutare la capacità predittiva di $\mu$-learn e capire la potenzialità di questo approccio nell'avvicinarsi al grado di appartenenza atteso.
+L'obiettivo del generatore è misurare la capacità predittiva dell'algoritmo $\mu$-learn e capire la potenzialità di questo approccio nell'avvicinarsi al grado di appartenenza atteso. Tramite questo approccio si valutano, quindi, le performance dell'algoritmo di apprendimento quando questo elabora un dataset con etichette non binarie.
 
 \section{Pipeline di preprocessing}\label{pp}
 Per la fase di preprocessing è stata predisposta una pipeline, ovvero un insieme di operazioni eseguite consecutivamente.
+La sequenza di operazioni viene specificata al momento dell'esecuzione tramite un'opportuna parametrizzazione degli step della pipeline.
 
-La sequenza di operazioni viene configurata al momento dell'esecuzione tramite un'opportuna parametrizzazione degli step della pipeline.
-
-Ogni operazione segue il pattern di implementazione della libreria \textit{scikit-learn} che prevede di separare le procedure di \textit{fit} e \textit{transform}: esse definiscono rispettivamente la parte di apprendimento dei dati, quando richiesta, e quella di effettiva trasformazione dell'input in un output elaborato.
-Adottare questa convenzione rappresenta un vantaggio per poter accedere alle funzioni della suddetta libreria parametrizzando le operazioni.
+In generale, l'interfaccia richiesta dalla libreria \textit{scikit-learn} per l'implementazione di nuovi stimatori prevede di separare le procedure di \textit{fit}, \textit{predict} e \textit{transform}: esse definiscono rispettivamente la parte di apprendimento dei dati, quella di predizione e quella di effettiva trasformazione dell'input in un output elaborato. Nel caso del preprocessing, la maggior parte delle operazioni della pipeline è caratterizzata da una procedura di transform, tuttavia alcune, come Word2Vec, implementano anche la funzione fit in quanto possono richiedere una fase di addestramento.
+Adottare questa convenzione rappresenta un vantaggio per poter comodamente accedere a funzioni di libreria ad alto livello per la model selection e per la valutazione dei modelli: la funzione \textit{GridSearchCV}, ad esempio, può essere utilizzata specificando direttamente come parametro lo stimatore derivato dall'algoritmo $\mu$-learn, in quanto quest'ultimo è stato definito nel modo visto sopra.
 Inoltre, il codice organizzato in questa maniera si presta bene a future estensioni e favorisce la sua manutenibilità poiché rispetta il criterio della \textit{Separation of Concerns}, concetto cardine nell'ambito dell'Ingegneria del software \cite{32}.
 
-Quella che segue è la lista dei parametri della pipeline che al momento della configurazione è possibile attivare a seconda delle esigenze:
+Quella che segue è la lista dei passi della pipeline che al momento della configurazione è possibile attivare a seconda delle esigenze:
 \begin{itemize}
     \item lowercase,
     \item rimozione dei duplicati,
@@ -902,24 +900,24 @@ Quella che segue è la lista dei parametri della pipeline che al momento della c
     \item aggregazione,
     \item doc2vec.
 \end{itemize}
-Addizionalmente si considera anche uno step di shuffling che fa una permutazione delle righe e uno finale di standardizzazione che porta i valori delle feature in un'unica scala.
+Addizionalmente si considera anche uno step di shuffling che applica una permutazione dei documenti e uno finale di standardizzazione dei valori delle feature.
 
-In generale, le operazioni della pipeline non sono tutte compatibili, al contrario, alcune sono tra di loro esclusive, come Word2Vec e Doc2Vec, oppure la lemmatizzazione e lo stemming.
+In generale, le operazioni della pipeline non sono tutte compatibili; al contrario, alcune sono tra di loro esclusive, come l'uso di Word2Vec e di Doc2Vec, oppure la lemmatizzazione e lo stemming.
 Inoltre, l'ordine con cui esse vengono applicate è determinante per la rielaborazione del testo: è più semplice rimuovere il rumore analizzando i token piuttosto che le stringhe di intere frasi, ecco perché la tokenizzazione avviene tipicamente nei primi step della pipeline. Un altro esempio è quello dell'aggregazione che, come visto nei Paragrafi~\ref{w2v} e~\ref{d2v}, è necessaria solo in caso di utilizzo di Word2Vec.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.4]{images/pipeline.png}
+    \includegraphics[scale=0.395]{images/pipeline.png}
     \caption{Esempio di configurazione di una pipeline di preprocessing.}
     \label{pipeline}
 \end{figure}
 In Figura~\ref{pipeline} viene mostrato un esempio di pipeline che è stata frequentemente utilizzata durante gli esperimenti. Si noti come in questo tipo di configurazione non sia necessario includere lo step di tokenizzazione in quanto la lemmatizzazione prevede una suddivisione in token che garantisce lo stesso risultato.
-Nei paragrafi successivi si descrivono brevemente i possibili passi della pipeline.
+Nei paragrafi successivi si descrivono brevemente i possibili passi della pipeline; per ciascuno di essi viene fornito un esempio mostrando un input semplificato e il corrispondente output.
 
 \paragraph{Lowercasing}
 Il \textit{lowercasing} è una tecnica che consiste nel trasformare una stringa di testo in una stringa composta unicamente da caratteri minuscoli.
 \\
 \\
-\textbf{Input}: dataframe di stringhe:
+\textbf{Input}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -930,7 +928,7 @@ Il \textit{lowercasing} è una tecnica che consiste nel trasformare una stringa 
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di stringhe:
+\textbf{Output}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -946,7 +944,7 @@ Il \textit{lowercasing} è una tecnica che consiste nel trasformare una stringa 
 In questo step vengono rimossi i duplicati presenti nel dataset, intesi come le osservazioni ripetute nel dataset.
 \\
 \\
-\textbf{Input}: dataframe di stringhe:
+\textbf{Input}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -958,7 +956,7 @@ In questo step vengono rimossi i duplicati presenti nel dataset, intesi come le 
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di stringhe:
+\textbf{Output}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -976,7 +974,7 @@ Questo step include implicitamente la divisione in token.
 Si osservi, inoltre, che nel caso di pronomi la lemmatizzazione produce una generica stringa \texttt{-PRON-} in quanto morfologicamente non esiste una base.
 \\
 \\
-\textbf{Input}: dataframe di stringhe:
+\textbf{Input}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -987,7 +985,7 @@ Si osservi, inoltre, che nel caso di pronomi la lemmatizzazione produce una gene
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di stringhe:
+\textbf{Output}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1000,10 +998,10 @@ Si osservi, inoltre, che nel caso di pronomi la lemmatizzazione produce una gene
 \end{center}
 
 \paragraph{Tokenizzazione}
-La \textit{tokenizzazione} consiste nella pura suddivisione delle frasi in token. Per token si intende un'istanza di una sequenza di caratteri raggruppati in modo da formare una semantica, tipicamente si tratta di parole.
+La \textit{tokenizzazione} consiste nella pura suddivisione delle frasi in token. Per token si intende una sequenza di caratteri raggruppati in modo da formare un significato, tipicamente si tratta di parole.
 \\
 \\
-\textbf{Input}: dataframe di stringhe:
+\textbf{Input}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1014,7 +1012,7 @@ La \textit{tokenizzazione} consiste nella pura suddivisione delle frasi in token
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di stringhe:
+\textbf{Output}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1027,11 +1025,11 @@ La \textit{tokenizzazione} consiste nella pura suddivisione delle frasi in token
 \end{center}
 
 \paragraph{Rimozione del rumore}
-La \textit{rimozione del rumore} è, a sua volta, scomponibile in molteplici passaggi, ciascuno delegato alla rimozione di uno specifico tipo di rumore.
+La \textit{rimozione del rumore} è, a sua volta, scomponibile in molteplici passaggi, ciascuno delegato alla gestione di una specifica categoria di rumore.
 In tal senso, sono stati implementate le rimozioni di URL, emoji, punteggiatura, numeri, parole contenenti numeri, parole duplicate, e osservazioni vuote nel dataset. 
 \\
 \\
-\textbf{Input}: dataframe di liste di stringhe:
+\textbf{Input}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1043,7 +1041,7 @@ In tal senso, sono stati implementate le rimozioni di URL, emoji, punteggiatura,
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di stringhe:
+\textbf{Output}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1059,7 +1057,7 @@ In tal senso, sono stati implementate le rimozioni di URL, emoji, punteggiatura,
 Lo \textit{stemming} ha l'obiettivo di rimuovere suffissi e prefissi per individuare la radice delle parole.
 \\
 \\
-\textbf{Input}: dataframe di liste di stringhe:
+\textbf{Input}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1070,7 +1068,7 @@ Lo \textit{stemming} ha l'obiettivo di rimuovere suffissi e prefissi per individ
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di stringhe:
+\textbf{Output}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1086,7 +1084,7 @@ Lo \textit{stemming} ha l'obiettivo di rimuovere suffissi e prefissi per individ
 Come accennato nel Capitolo~\ref{Capitolo 1}, si può scegliere di rimuovere le \textit{stop word}, parole molto frequenti all'interno di un documento ma che poco aggiungono alla semantica del testo.
 \\
 \\
-\textbf{Input}: dataframe di liste di stringhe:
+\textbf{Input}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1097,7 +1095,7 @@ Come accennato nel Capitolo~\ref{Capitolo 1}, si può scegliere di rimuovere le 
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di stringhe:
+\textbf{Output}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1110,10 +1108,10 @@ Come accennato nel Capitolo~\ref{Capitolo 1}, si può scegliere di rimuovere le 
 \end{center}
 
 \paragraph{Word2Vec}
-\textit{Word2Vec} è la prima delle due tecniche di embedding citate in questa tesi che converte ogni parola in un vettore di feature numeriche; l'esempio considera 96 feature.
+\textit{Word2Vec} è la prima delle due tecniche di embedding citate in questa tesi che converte ogni parola in un vettore di feature numeriche.
 \\
 \\
-\textbf{Input}: dataframe di liste di stringhe:
+\textbf{Input}: dataframe di liste di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1124,7 +1122,7 @@ Come accennato nel Capitolo~\ref{Capitolo 1}, si può scegliere di rimuovere le 
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di liste di valori float:
+\textbf{Output}: dataframe di liste di liste di valori float (l'esempio considera 96 feature).
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1137,10 +1135,10 @@ Come accennato nel Capitolo~\ref{Capitolo 1}, si può scegliere di rimuovere le 
 \end{center}
 
 \paragraph{Aggregazione}
-La fase di \textit{aggregazione} è necessaria nel caso si utilizzi Word2Vec, poiché l'obiettivo finale è ottenere nuovamente un dataframe di vettori. In questo esempio si mostra l'aggregazione tramite la media dei vettori.
+La fase di \textit{aggregazione} è necessaria nel caso si utilizzi Word2Vec, poiché l'obiettivo finale è ottenere nuovamente un dataframe di vettori. Tra le possibili tecniche di aggregazione presentate alla fine del Paragrafo~\ref{embedding}, in questo lavoro di tesi è stata implementata quella che utilizza la media dei vettori.
 \\
 \\
-\textbf{Input}: dataframe di liste di liste di valori float:
+\textbf{Input}: dataframe di liste di liste di valori float.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1151,7 +1149,7 @@ La fase di \textit{aggregazione} è necessaria nel caso si utilizzi Word2Vec, po
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di valori float:
+\textbf{Output}: dataframe di liste di valori float.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1165,10 +1163,9 @@ La fase di \textit{aggregazione} è necessaria nel caso si utilizzi Word2Vec, po
 
 \paragraph{Doc2Vec}
 \textit{Doc2Vec} è una soluzione alternativa di embedding per convertire direttamente le frasi in vettori; essa non necessita, infatti, di una fase di aggregazione ma richiede come input un dataframe di stringhe.
-L'esempio considera un modello di 20 feature 
 \\
 \\
-\textbf{Input}: dataframe di stringhe:
+\textbf{Input}: dataframe di stringhe.
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1179,7 +1176,7 @@ L'esempio considera un modello di 20 feature
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe di liste di float:
+\textbf{Output}: dataframe di liste di float (l'esempio considera un modello di 20 feature).
 \begin{center}
     \begin{tabular}{|c|c|}
     \hline
@@ -1190,10 +1187,10 @@ L'esempio considera un modello di 20 feature
 \end{center}
 
 \paragraph{Shuffling}
-Fare lo \textit{shuffling} dei dati significa effettuare una permutazione delle righe per assicurarsi che il dataset non segua uno specifico ordine. Quando questo accade, infatti, il partizionamento in training, validation e test set (o in generiche fold) rischia di essere fortemente influenzato dal modo in cui i dati sono collocati e di determinare degli insiemi poco rappresentativi del problema che si vuole modellare: si supponga, ad esempio, di voler generare un classificatore di un set di animali e che i dati siano organizzati in ordine alfabetico. Nel dataset, quindi, saranno presenti prima tutti i cani, poi tutti i gatti, poi i leoni, e via discorrendo. Nel contesto della cross validation, ad esempio, rimescolare i dati significa evitare che si creino fold composte interamente, o quasi, solo da cani, solo da gatti o leoni. Questo fenomeno da evitare prende il nome di \textit{bias dei dati}.
+Fare lo \textit{shuffling} dei dati significa applicare una permutazione delle osservazioni per assicurarsi che il dataset non segua uno specifico ordine. Quando questo accade, infatti, il partizionamento in training, validation e test set (o in generiche fold) rischia di essere fortemente influenzato dal modo in cui i dati sono collocati e di determinare degli insiemi poco rappresentativi del problema che si vuole modellare: si supponga, ad esempio, di voler generare un classificatore di un insieme di animali e che i dati siano organizzati in ordine alfabetico. Nel dataset, quindi, saranno presenti prima tutti i cani, poi tutti i gatti, poi i leoni, e via discorrendo. Nel contesto della cross validation, ad esempio, rimescolare i dati significa evitare che si creino fold composte interamente, o quasi, solo da cani, solo da gatti o leoni. Questo fenomeno prende il nome di \textit{bias dei dati}.
 \\
 \\
-\textbf{Input}: dataframe preprocessato:
+\textbf{Input}: dataframe preprocessato.
 \begin{center}
     \begin{tabular}{|c|c|c|}
     \hline
@@ -1206,7 +1203,7 @@ Fare lo \textit{shuffling} dei dati significa effettuare una permutazione delle 
     \hline
     \end{tabular}
 \end{center}
-\textbf{Output}: dataframe preprocessato e rimescolato:
+\textbf{Output}: dataframe preprocessato e rimescolato.
 \begin{center}
     \begin{tabular}{|c|c|c|}
     \hline
@@ -1221,21 +1218,21 @@ Fare lo \textit{shuffling} dei dati significa effettuare una permutazione delle 
 \end{center}
 
 \paragraph{Standardizzazione}\label{standardization}
-È presente, inoltre, un passaggio finale della pipeline che riguarda la standardizzazione dei dati. In letteratura sono presenti molteplici opzioni, ad esempio la trasformazione \textit{Min-Max} oppure quella basata sul \textit{range interquartile}. In questo caso è stata scelta la tecnica che mira a calcolare i punti \textit{z-score}: si applica ad ogni osservazione la seguente trasformazione:
+Un passaggio finale della pipeline riguarda un'eventuale standardizzazione dei dati. In letteratura sono presenti molteplici opzioni, ad esempio la trasformazione \textit{min-max} oppure quella basata sul \textit{range interquartile}. In questo caso è stata scelta la tecnica che mira a calcolare i punti \textit{z-score}: si applica ad ogni osservazione la seguente trasformazione:
 \begin{equation}
-    z_i = \frac{x_i - \mu}{\sigma}
+    z_i = \frac{x_i - \mu}{\sigma},
 \end{equation}
-con $x_i$ l'$i$-esima osservazione e $\mu$ e $\sigma$, rispettivamente la media e la deviazione standard della distribuzione delle feature; si ottiene, quindi, una distribuzione standardizzata centrata nell'origine e deviazione standard pari a 1.
+in cui $x_i$ indica l'$i$-esima osservazione e $\mu$ e $\sigma$, rispettivamente la media e la deviazione standard campionarie della distribuzione delle feature; si ottiene, quindi, una distribuzione standardizzata centrata nell'origine e con deviazione standard pari a 1.
 
 \section{Selezione dei modelli}\label{modelselection}
-Nel processo di apprendimento di un task predittivo vengono generati numerosi modelli; per questa ragione diventa cruciale utilizzare un criterio di selezione di tali modelli come la grid search per ricavare i migliori risultati possibili.
+Nel processo di apprendimento di un task predittivo è possibile generare numerosi modelli, ciascuno determinato da una specifica configurazione di iperparametri. L'utilizzo di un criterio, come la grid search, permette di individuare quei valori degli iperparametri che determinano la generazione dei modelli che ottengono le prestazioni migliori.
 
 \subsection{Grid search}\label{gs}
-La grid search è una tecnica di ricerca del modello migliore che, sostanzialmente, automatizza il processo di tuning.
+La grid search è una tecnica di ricerca del modello migliore che, sostanzialmente, automatizza il processo di tuning degli iperparametri.
 
-Il termine grid deriva dal fatto che si preimposta una griglia di valori per tutti gli iperparametri di cui si desidera fare il tuning.
+Il termine grid deriva dal fatto che per ogni iperparametro si considera un insieme di valori candidati e si forma la griglia relativa al prodotto cartesiano di tutti questi insiemi, definendo tutte le possibili configurazioni per il tuning.
 
-Un esempio di griglia viene mostrato in Tabella~\ref{grid}: in questo caso è stato fissato il tipo di fuzzificatore, il tipo di kernel e il tipo di solver, mentre è stato previsto un intervallo di dieci ordini di grandezza per $\sigma$, parametro del kernel gaussiano, e per $C$.
+Un esempio di griglia viene mostrato in Tabella~\ref{grid}: in questo caso è stato fissato il tipo di fuzzificatore, il tipo di kernel e il tipo di solver, mentre è stato previsto un intervallo di undici ordini di grandezza per $\sigma$, parametro del kernel gaussiano, e per $C$.
 \begin{table}
 \centering
  \begin{tabular}{|c|c|c|c|c|} 
@@ -1246,13 +1243,14 @@ Un esempio di griglia viene mostrato in Tabella~\ref{grid}: in questo caso è st
  lineare & gaussiano & gurobi & logspace(-5, 5, 11) & logspace(-5, 5, 11) \\ 
  \hline
 \end{tabular}
-\caption{Esempio di griglia di iperparametri.}
+\caption{Esempio di griglia di iperparametri per la grid search relativa ai modelli generati dall'algoritmo $\mu$-learn. La funzione \textit{logspace} permette di specificare l'intervallo di esponenti in base 10: in questo caso vengono ottenuti dei valori da $10^{-5}$ a $10^5$.}.
 \label{grid}
 \end{table}
-Chiaramente, più ampio è il set di valori da ottimizzare, più computazionalmente costosa diventa l'esecuzione dell'algoritmo, in quanto necessita di reiterare ulteriormente il processo. In questo senso, l'esempio mostra anche l'evenienza in cui alcuni valori vengono fissati per favorire la ricerca di quelli ottimali per altri parametri, alleggerendo, dunque, il carico computazionale.
+Chiaramente, più ampio è il set di iperparametri da ottimizzare, più computazionalmente costosa diventa l'esecuzione dell'algoritmo, in quanto causa un aumento della dimensione della griglia. In questo senso, l'esempio in Tabella~\ref{grid} mostra anche come si possono fissare i valori di alcuni iperparametri per favorire la ricerca di quelli ottimali per altri parametri, alleggerendo, dunque, il carico computazionale. 
 
 \paragraph{K-fold cross validation}
-Lo stratagemma utilizzato da questa tecnica consiste nel dividere il dataset $S$ in $k$ partizioni $S_1, S_2, ..., S_k$, dette fold, tali che:
+Uno dei modi possibili per valutare in maniera robusta i vari modelli considerati nella fase di tuning degli iperparametri è quello di utilizzare la cross validation. 
+Nella sua forma più basilare, lo stratagemma utilizzato da questa tecnica consiste nel dividere il dataset $S$ in $k$ partizioni $S_1, S_2, ..., S_k$, dette fold, tali che:
 \begin{equation}
      S = \bigcup\limits_{i=1}^{k} S_{i},
 \end{equation}
@@ -1260,7 +1258,8 @@ Lo stratagemma utilizzato da questa tecnica consiste nel dividere il dataset $S$
     S_i \cap S_j = \emptyset \ \ \forall i \neq j.
 \end{equation}
 Si denota con $S^{(i)} \equiv S \setminus S_i$ la parte per l'addestramento e $S_i$ la parte per la validazione, come illustrato in Figura~\ref{cv}.
-Per completezza, nell'Algoritmo~\ref{kfold} vengono delineati i passi chiave della procedura: si fa un partizionamento in $k$ fold\footnote{Il partizionamento tipicamente tiene conto della rappresentatività delle fold ottenute: in \textit{scikit-learn} esistono delle funzioni come \textit{StratifiedKFold} che permettono di operare una suddivisione tale che le fold abbiano un rapporto bilanciato delle occorrenze dei valori delle etichette.}, organizzandole in insiemi per il training e per il test, come visto sopra, e per ogni iterazione si genera un modello che viene valutato tramite delle metriche.
+Per completezza, nell'Algoritmo~\ref{kfold} vengono delineati i passi chiave della procedura: fissati gli iperparametri, si partiziona in $k$ fold\footnote{Il partizionamento tipicamente tiene conto della rappresentatività delle fold ottenute: in \textit{scikit-learn} esistono delle funzioni come \textit{StratifiedKFold} che permettono di operare una suddivisione tale che le fold abbiano un rapporto bilanciato delle occorrenze dei valori delle etichette. Naturalmente, questo approccio si basa su valori discreti e, dunque, si presta esclusivamente a problemi di classificazione. Nel caso della regressione è possibile applicare questa suddivisione solo discretizzando i valori delle etichette, ad esempio considerando per ciascuna l'intero più vicino.} e, per ogni iterazione, si genera un modello addestrato su $S^{(i)}$ e validato su $S_i$, con le relative predizioni valutate tramite le metriche definite nel Paragrafo~\ref{evaluation}. Infine, le misure di valutazione ottenute vengono aggregate tramite la media.
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.83]{images/cv.png}
@@ -1274,51 +1273,64 @@ Per completezza, nell'Algoritmo~\ref{kfold} vengono delineati i passi chiave del
 \newline
 \hspace*{\algorithmicindent} \textbf{Input}: $S$ è il dataset, $k$ il numero di fold
 \newline
-\hspace*{\algorithmicindent} \textbf{Output}: $k$ modelli
+\hspace*{\algorithmicindent} \textbf{Output}: $k$ modelli e la media delle loro valutazioni
 \begin{algorithmic}[1]
 \STATE $S_1, S_2, ..., S_k$ = partitioning($S$, $k$)
 \FOR{$S_i$ in $S_1, S_2, ..., S_k$}
-\STATE test = $S_i$
+\STATE validation = $S_i$
 \STATE train = $S \setminus S_i$
-\STATE model = mulearn.fit(train)
-\STATE predictions = model.predict(test)
-\STATE evaluation = model.evaluate(predictions)
+\STATE mulearn.configure(hyperparameters)
+\STATE model = mulearn.fit(train.x, train.y)
+\STATE predictions = model.predict(validation.x)
+\STATE evaluation = model.evaluate(predictions, validation.y)
 \STATE models.add(model)
 \STATE evaluations.add(evaluation)
 \ENDFOR
-\RETURN models, evaluations
+\STATE cv\_evaluation = mean(evaluations)
+\RETURN models, cv\_evaluation
 \end{algorithmic}
 \end{algorithm}
-Per combinare i vantaggi della cross validation con quelli della grid search è stata implementata quella che viene definita \textit{cross validation annidata}: si opera una cross validation esterna per prevenire l'overfitting e poi, per ciascuna fold, si fa una cross validation interna che ha l'obiettivo di testare tutte le combinazioni indicate nella griglia e selezionare i modelli che hanno ottenuto i risultati migliori.
-
-La procedura descritta nell'Algoritmo~\ref{kfold} viene, pertanto, estesa, come mostrato nell'Algoritmo~\ref{nested}.
+Al fine di valutare in modo robusto la bontà di generalizzazione del modello generato al termine della model selection, è stata implementata quella che viene definita \textit{cross validation annidata}: si specifica una griglia di valori per gli iperparametri, si opera una cross validation esterna su $k$ fold esterne e si partiziona la parte per il training in $l$ fold interne. Per ogni configurazione dei valori nella griglia degli iperparametri si ripete l'operazione di cross validation sulle fold interne e si aggregano i punteggi delle metriche ottenute sul validation set nelle varie iterazioni.
+In questo modo ogni configurazione è associata a un valore di performance, calcolato su dati non utilizzati per addestrare i modelli, ed è così possibile scegliere il modello migliore.
+La procedura appena descritta viene illustrata nell'Algoritmo~\ref{nested}.
 \begin{algorithm}
 \caption{\texttt{cross validation annidata}}
 \label{nested}
-\hspace*{\algorithmicindent} \textbf{Procedure} nested\_cv($S$, $k$, $l$, $gs$)
+\hspace*{\algorithmicindent} \textbf{Procedure} nested\_cv($S$, $k$, $l$, $grid$)
 \newline
-\hspace*{\algorithmicindent} \textbf{Input}: $S$ è il dataset, $k$ il numero di fold esterne, $l$ il numero di fold interne, $gs$ la griglia di valori
+\hspace*{\algorithmicindent} \textbf{Input}: $S$ è il dataset, $k$ il numero di fold esterne, $l$ il numero di fold interne, $grid$ la griglia di valori
 \newline
-\hspace*{\algorithmicindent} \textbf{Output}: $k$ modelli ottimizzati
+\hspace*{\algorithmicindent} \textbf{Output}: $k$ modelli ottimizzati e la relativa media delle misure di valutazione considerate
 \begin{algorithmic}[1]
 \STATE $S_1, S_2, ..., S_k$ = partitioning($S$, $k$)
 \FOR{$S_i$ in $S_1, S_2, ..., S_k$}
 \STATE test = $S_i$
 \STATE train = $S \setminus S_i$
-\STATE $D_1, D_2, ..., D_L$ = partitioning(train, $l$)
+\STATE $D_1, D_2, ..., D_l$ = partitioning(train, $l$)
+\FOR{\textbf{each} configuration in $grid$}
 \FOR{$D_j$ in $D_1, D_2, ..., D_l$}
 \STATE in\_validation = $D_j$
-\STATE in\_train = train $\setminus D_j$
-\STATE optimized\_model = $gs$.fit(in\_train)
-\STATE in\_predictions = optimized\_model.predict(in\_test)
+\STATE in\_train = train$\setminus D_j$
+
+\STATE mulearn.configure(configuration)
+\STATE in\_model = mulearn.fit(in\_train.x, in\_train.y)
+\STATE in\_predictions = in\_model.predict(in\_validation.x)
+\STATE in\_evaluation = in\_model.evaluate(in\_predictions, in\_test.y)
+\STATE in\_evaluations.add(in\_evaluation)
+\STATE mean\_in\_evaluation = mean(in\_evaluations)
 \ENDFOR
-\STATE optimized\_model = optimized\_model.fit(train)
+\STATE mean\_in\_evalutations.add(mean\_in\_evaluation)
+\ENDFOR
+\STATE best\_configuration = get\_best(mean\_in\_evaluations)
+\STATE mulearn.configure(best\_configuration)
+\STATE optimized\_model = optimized\_model.fit(train, train.x)
 \STATE predictions = optimized\_model.predict(test)
-\STATE evaluation = optimized\_model.evaluate(predictions) 
-\STATE optimized\_models.add(optimized\_model)
+\STATE evaluation = optimized\_model.evaluate(predictions, test.y)
 \STATE evaluations.add(evaluation)
+\STATE optimized\_models.add(optimized\_model)
 \ENDFOR
-\RETURN optimized\_models, evaluations
+\STATE nested\_cv\_evaluation = mean(evaluations)
+\RETURN optimized\_models, nested\_cv\_evaluation
 \end{algorithmic}
 \end{algorithm}
 
@@ -1330,7 +1342,7 @@ La parte di visualizzazione dei dati è fondamentale per rappresentare i risulta
     \item il confronto con una baseline,
     \item il riepilogo delle misure di errore o accuratezza.
 \end{itemize}
-Da tale modulo sono stati ricavati diversi report durante lo svolgimento di questa tesi ed essi hanno consentito di individuare la direzione in cui far proseguire gli esperimenti.
+Durante lo svolgimento di questa tesi sono stati ricavati diversi report che hanno consentito di individuare la direzione in cui far proseguire gli esperimenti.
 
 Nel prossimo capitolo verranno presentati gli esperimenti realizzati e gli esiti che tale analisi descrittiva ha permesso di riassumere.
 
@@ -1342,82 +1354,15 @@ In quest'ultimo capitolo si illustra nel dettaglio la consistente parte di esper
 Nel Paragrafo~\ref{dataset} vengono presentati i dataset che sono stati presi in considerazione per la sperimentazione del sistema descritto nel Capitolo~\ref{Capitolo 3}. Successivamente, all'interno del Paragrafo~\ref{esperimenti} vengono mostrati i risultati finali che sono stati prodotti.
 
 \section{Dataset}\label{dataset}
-All'interno del Paragrafo~\ref{datasethandle} sono stati definiti i possibili scenari per i dati tramite i quali il sistema di apprendimento è stato allenato. Per quanto riguarda i dataset raccolti da terzi, sono state identificate le seguenti possibilità:
-\begin{enumerate}
-    \item \texttt{Fake and real news dataset} - 44898 osservazioni - 111 MB,
-    \item \texttt{All the News 2.0} - 2.7 milioni di osservazioni - 9.2 GB,
-    \item \texttt{ProfNER} - 10000 osservazioni - 13.6 MB.
-\end{enumerate}
-Il primo comprende un misto di notizie pubblicate su testate giornalistiche negli Stati Uniti e di tweet, il secondo è ricco di notizie e di saggi su 27 diverse pubblicazioni americane mentre il terzo include dei tweet in lingua spagnola.
-
-Al fine di trovare un compromesso accettabile tra il numero di esperimenti e la capacità computazionale a disposizione è stato scelto il primo dataset.
-
-\subsection{Fake and real news dataset}\label{fakenewsdataset}
-\textit{Fake and real news dataset} è un dataset disponibile sulla piattaforma \textit{Kaggle} che raccoglie notizie e tweet, separandoli in ``fake'' e ``true'' news. Più precisamente sono presenti 23481 osservazioni per la parte di notizie false e 21417 per quelle annotate come vere, formando, quindi, un dataset approssimativamente bilanciato. 
-Le osservazioni sono composte da informazioni inerenti al titolo della notizia, al corpo, all'argomento in essa contenuto e alla data di pubblicazione. Nelle Figure~\ref{fake_sample} e~\ref{true_sample} viene mostrato un esempio per ciascun dataframe.
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.52]{images/fake_sample.png}
-    \caption{Campione delle notizie del dataset etichettate come ``fake''.}
-    \label{fake_sample}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{images/true_sample.png}
-    \caption{Campione delle notizie del dataset etichettate come ``vere''.}
-    \label{true_sample}
-\end{figure}
-Si osserva la presenza di un'informazione temporale relativa al giorno di pubblicazione della notizia: questo rimanda alle premesse descritte nel Paragrafo~\ref{pp} che forniscono una motivazione convincente del perché, in casi come questi, la fase di shuffling sia necessaria al fine di prevenire un sovradattamento dovuto a un tale ordinamento.
-
-La colonna relativa al titolo, per quanto rilevante, non è stata considerata ai fini dell'addestramento. La motivazione riguarda principalmente la presenza di tweet: in quel caso è difficile, infatti, parlare di ``titolo'', ed è tendenzialmente anche poco informativo (lo si evince facilmente dalla riga 8 del dataframe mostrato in Figura~\ref{true_sample}). Si presume, quindi, che tale informazione possa essere usata in congiunzione con altre come supporto.
-Anche la colonna relativa all'argomento non è stata utilizzata, in quanto è stata rilevata una sostanziale differenza nella ricchezza di informazioni contenute per la parte di notizie vere rispetto a quelle fake, oltre che un'evidente inconsistenza degli argomenti identificati. Si conferma questo aspetto nella Tabella~\ref{subject}.
-\begin{table}
-\centering
- \begin{tabular}{|c|c|c|} 
- \hline 
- \textbf{argomento} & \textbf{fake news} & \textbf{true news}
-\\ [0.5ex] 
- \thickhline
-\texttt{News} & 38.54 \% & - \\
-\texttt{politics} & 29.13 \% & -\\ 
-\texttt{left-news} & 18.99 \% & -\\
-\texttt{Government News} & 6.69 \% & -\\
-\texttt{US\_News} & 3.33 \% & -\\
-\texttt{Middle-east} & 3.31 \% & -\\
-\texttt{politicsNews} & - & 52.63 \% \\
-\texttt{worldnews} & - & 47.37 \% \\
- \hline
-\end{tabular}
-\caption{Frequenze relative degli argomenti.}
-\label{subject}
-\end{table}
-Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l'informazione riguardante il corpo della notizia. 
-
-Il suddetto dataset è stato elaborato tramite due pipeline di preprocessing: una per le fake news e una dedicata alle true news, ottenendo così dei vettori di feature a cui sono stati associati i valori binari delle etichette; infine, sono stati accorpati, rimescolati e standardizzati: un esempio di risultato è quello mostrato in Tabella~\ref{preprocesseddata}.
-\begin{table}
-\centering
- \begin{tabular}{|c|c|c|} 
- \hline 
- \textbf{index} & \textbf{text} & \textbf{label}
-\\ [0.5ex] 
- \thickhline
-22 & [0.34, 0.14, ..., 0.51] (96 elementi) & 1 \\
-6 & [-0.45, -0.10, ..., 0.55] (96 elementi) & 0 \\ 
-59 & [0.91, -0.92, ..., -1.14] (96 elementi) & 0\\
-21 & [-0.86, 0.54, ..., 0.51] (96 elementi) & 1\\
-12 & [0.11, 0.67, ..., -1.95] (96 elementi) & 0\\
-132 & [0.83, -0.37, ..., 0.85] (96 elementi) & 1\\
- \hline
-\end{tabular}
-\caption{Esempio di dataset preprocessato.}
-\label{preprocesseddata}
-\end{table}
+All'interno del Paragrafo~\ref{datasethandle} sono stati definiti i possibili scenari per i dati tramite i quali il sistema di apprendimento è stato allenato. 
+Dal momento che in letteratura il riconoscimento delle fake news è stato frequentemente modellato come un problema di classificazione, i dataset a disposizione sul Web in ambito di apprendimento supervisionato e inerenti alle notizie sono tipicamente etichettati con valori binari.
+Per questa ragione il primo tipo di dataset considerato durante il lavoro di questa tesi sono dei dataset generati che hanno l'obiettivo di ottenere per le etichette dei valori compresi nell'intervallo $[0,1]$.
 
 \subsection{Dataset generati}\label{generated_datasets}
-Un approccio proposto per gli esperimenti è quello di utilizzare dei dataset generati tramite la tecnica descritta nel Paragrafo~\ref{generator}. Tale tecnica si basa sulla scelta di una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di fornire una panoramica esaustiva sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione Beta.
+Un approccio proposto per gli esperimenti è quello di utilizzare dei dataset generati tramite la tecnica descritta nel Paragrafo~\ref{generator}. Tale tecnica si basa sulla scelta di una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di considerare un ampio spettro di scenari sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione Beta e da esse sono stati estratti dei campioni.
 
 \paragraph{Distribuzione uniforme}
-Nella teoria delle Probabilità e in Statistica una delle distribuzioni più conosciute è sicuramente quella uniforme continua (Figura~\ref{uniforme}). Genericamente definita su un intervallo $[a,b]$, essa ha una funzione densità di probabilità
+Nella teoria delle Probabilità una delle distribuzioni più conosciute è sicuramente quella uniforme continua. A partire da questa distribuzione è stato estratto il campione mostrato in Figura~\ref{uniforme}. Genericamente definita su un intervallo $[a,b]$, la distribuzione uniforme ha la seguente funzione densità di probabilità
 \begin{equation}
     f(x)= \begin{cases} \frac{1}{b-a} & \mbox{se } a\leq x \leq b, \\ 0 & \mbox{altrimenti.} \end{cases}
 \end{equation}
@@ -1425,19 +1370,19 @@ Dal momento che il grado di appartenenza è compreso nell'intervallo $[0,1]$, an
 \begin{figure}
     \centering
     \includegraphics[scale=0.4]{images/uniform.png}
-    \caption{Esempio di distribuzione approssimativamente uniforme.}
+    \caption{Campione estratto da una distribuzione uniforme.}
     \label{uniforme}
 \end{figure}
 \paragraph{Distribuzione Beta}
-L'altro tipo di distribuzione scelta è la distribuzione Beta: a differenza di quella uniforme essa è specificatamente definita nell'intervallo $[0,1]$ e, dunque, adatta al contesto di generazione del grado di appartenenza. I parametri che ne regolano l'andamento sono due: $\alpha$ e $\beta$. La funzione densità di probabilità è:
+L'altro tipo di distribuzione scelta è la distribuzione Beta: a differenza di quella uniforme essa è specificatamente definita nell'intervallo $[0,1]$ e, dunque, adatta al contesto di generazione del grado di appartenenza. I parametri che ne regolano l'andamento sono due: $\alpha$ e $\beta$. La funzione densità di probabilità è
 \begin{equation}
-    f(x)= \frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)}
+    f(x)= \frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)},
 \end{equation}
 dove $B$ è la funzione
 \begin{equation}
     B(\alpha, \beta) = \int_{0}^{1} x^{\alpha - 1}(1-x)^{\beta - 1} \,dx.
 \end{equation}
-Mediante questa distribuzione sono stati creati due scenari significativi:
+A partire da questa distribuzione sono stati estratti due campioni a partire dai seguenti casi:
 \begin{enumerate}
     \item $\alpha = \beta = 5$ (Figura~\ref{beta5}),
     \item $\alpha = \beta = 0.5$ (Figura~\ref{beta05}).
@@ -1445,7 +1390,7 @@ Mediante questa distribuzione sono stati creati due scenari significativi:
 \begin{figure}
     \centering
     \includegraphics[scale=0.4]{images/beta5.png}
-    \caption{Esempio di distribuzione approssimativamente Beta, con parametri $\alpha = \beta = 5$.}
+    \caption{Campione estratto da una distribuzione Beta con parametri $\alpha = \beta = 5$.}
     \label{beta5}
 \end{figure}
 \begin{figure}
@@ -1454,23 +1399,22 @@ Mediante questa distribuzione sono stati creati due scenari significativi:
     \caption{Esempio di distribuzione approssimativamente Beta, con parametri $\alpha = \beta = 0.5$.}
     \label{beta05}
 \end{figure}
-I tre scenari ottenuti consentono di testare la capacità dell'algoritmo di indurre la funzione di appartenenza fissando le distribuzioni viste finora. Il primo caso coinvolge gradi di appartenenza che hanno equa probabilità di occorrere, il secondo ha le sembianze di una distribuzione normale tagliata nell'intervallo $[0,1]$ e il terzo riproduce un fenomeno di polarizzazione delle occorrenze ai valori estremi dell'intervallo.
+Sono stati ottenuti, quindi, tre scenari: uno tramite l'estrazione di un campione a partire dalla distribuzione uniforme e due estratti dai due casi per la distribuzione Beta riportati sopra. Tali scenari consentono di testare la capacità dell'algoritmo di indurre la funzione di appartenenza in tre situazioni molto differenti. 
+Il primo caso coinvolge gradi di appartenenza che hanno equa probabilità di occorrere, il secondo ha le sembianze di una distribuzione normale troncata nell'intervallo $[0,1]$; in questo caso vengono generati gradi di appartenenza che tendono a concentrarsi attorno al valore 0.5 e quindi lo scenario è quello di un dataset con una forte incertezza. Infine, il terzo scenario riproduce un fenomeno di polarizzazione delle etichette ai valori estremi dell'intervallo.
 
 \subsubsection{Insiemi di parole} Il generatore di dataset, tramite le distribuzioni appena descritte, è in grado di creare dei documenti testuali sintetici a partire da insiemi di parole rappresentative di due topic.
 Da un punto di vista lessicale, il problema non è banale e andrebbe approfondito determinando con cura l'insieme delle parole che contraddistinguono una notizia vera piuttosto che una fake.
-Per questa parte di esperimenti sono state poste le basi per fare delle prove da una prospettiva puramente sintattica, con l'intenzione di fornire un punto di partenza per esperimenti futuri più accurati.
-
-Si definiscono gli insiemi
+Per questa parte di esperimenti sono state poste le basi per fare delle prove da una prospettiva puramente sintattica, con l'intenzione di fornire un punto di partenza per esperimenti futuri più accurati. Si definiscono, quindi, gli insiemi
 \begin{center}
     $P_1$ = \texttt{\{arrogant, uptight, toothpaste, bottle, grass, show, ..., religion\}} (156 elementi)
 \end{center}
 \begin{center}
     $P_2$ = \texttt{\{ARROGANT, UPTIGHT, TOOTHPASTE, BOTTLE, GRASS, SHOW, ..., RELIGION\}} (156 elementi)
 \end{center}
-composti da termini inglesi randomici la cui semantica non viene considerata per le rilevazione delle fake news. Senza perdita di generalità si considera $P_1$ l'insieme rappresentativo del topic delle notizie vere e $P_2$ l'insieme associato alle fake news.
+composti da termini inglesi randomici la cui semantica non viene considerata per le rilevazione delle fake news. Inoltre, il fatto di avere parole in maiuscolo o minuscolo aiuta a valutare visualmente l'appartenenza dei documenti prodotti, in senso fuzzy, alle due categorie di news. Senza perdita di generalità si considera $P_1$ l'insieme rappresentativo del topic delle notizie vere e $P_2$ l'insieme associato alle fake news.
 
 \paragraph{Insiemi disgiunti}
-Dal momento che $P_1$ è completamente lowercase e $P_2$ uppercase, allora sintatticamente si ha che $P_1$ $\cap$ $P_2 = \emptyset$. Si parla, quindi, di insiemi disgiunti e la generazione di dataset avviene a partire da questi due insiemi. In Tabella~\ref{generationexample} viene riportato un esempio di generazione di documenti testuali al variare del grado di appartenenza. In questo caso è stato fissato come evento di successo il fatto che la parola generata appartenga all'insieme $P_2$; di conseguenza, all'aumentare di $\mu_i$ si osserva una crescente componente di parole maiuscole all'interno del documento generato.
+Dal momento che $P_1$ contiene solo parole scritte in caratteri minuscoli e $P_2$ parole in maiuscolo, allora si ha che $P_1$ $\cap$ $P_2 = \emptyset$. Si parla, quindi, di insiemi disgiunti e la generazione di dataset avviene a partire da questi due insiemi. In Tabella~\ref{generationexample} viene riportato un esempio di generazione di documenti testuali al variare del grado di appartenenza. In questo caso è stato fissato come successo l'evento che si verifica quando la parola generata appartiene all'insieme $P_2$; di conseguenza, all'aumentare di $\mu_i$ si osserva una crescente componente di parole maiuscole all'interno del documento generato.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1492,13 +1436,13 @@ Dal momento che $P_1$ è completamente lowercase e $P_2$ uppercase, allora sinta
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Esempio di testi sintetici a partire da $P_1 \cap P_2 = \emptyset$, al variare di $\mu_i$.}
+\caption{Esempio di testi sintetici ottenuti a partire da $P_1 \cap P_2 = \emptyset$, al variare di $\mu_i$.}
 \label{generationexample}
 \end{table}
 
 \paragraph{Insiemi sovrapposti}
 Realisticamente parlando, l'insieme delle parole occorrenti nelle fake news non è disgiunto da quello delle parole presenti nelle notizie vere.
-Per questa ragione sono stati modificati gli insiemi di partenza, inserendo una componente di sovrapposizione tra i due del $17 \%$ e ottenendo, così,
+Per questa ragione sono stati modificati gli insiemi di partenza in modo che ciascuno dei due contenesse una frazione del $17 \%$ di elementi appartenenti all'altro insieme. In questa maniera sono stati ottenuti gli insiemi
 \begin{center}
     $P_{1}^{*}$ = \texttt{\{arrogant, UPTIGHT, toothpaste, bottle, grass, SHOW, ..., religion\}} (156 elementi)
 \end{center}
@@ -1532,9 +1476,10 @@ Il processo di generazione è stato ripetuto e sono stati ottenuti nuovi documen
 \caption{Esempio di testi sintetici a partire da $P_{1}^{*} \cap P_{2}^{*} \neq \emptyset$, al variare di $\mu_i$.}
 \label{generationexample2}
 \end{table}
+In generale, una volta generato un dataset in uno dei due modi visti in precedenza, esso viene elaborato dal modulo di preprocessing,
+ottenendo una rappresentazione simile a quella mostrata nella Tabella~\ref{uniformlda}.
+Nell'esempio appena indicato si mostra lo specifico caso dell'output della pipeline a partire da un dataset generato tramite la tecnica LDA, tuttavia occorre tenere presente che lo stesso procedimento vale per i dataset che sono stati raccolti da terzi e che contengono le notizie. Come si evince dalla didascalia della Tabella~\ref{uniformlda}, la scelta dei passi della pipeline di preprocessing possono variare, a seconda del tipo di dataset a disposizione.
 
-
-In generale, una volta generato un dataset in uno dei due modi visti in precedenza, esso viene elaborato dal modulo di preprocessing, un esempio di come appare al termine di questa fase viene mostrato in Tabella~\ref{uniformlda}.
 \begin{table}
 \centering
  \begin{tabular}{|c|c|c|} 
@@ -1550,35 +1495,113 @@ In generale, una volta generato un dataset in uno dei due modi visti in preceden
 29 & [0.92, -0.42, ..., -1.67] (96 elementi) & 0.83\\
  \hline
 \end{tabular}
-\caption{Esempio di dataset preprocessato generato tramite LDA basata su distribuzione uniforme e da insiemi disgiunti.}
+\caption{Campione del dataset generato tramite LDA basata su distribuzione uniforme e da insiemi disgiunti, una volta che è stato preprocessato. La pipeline di preprocessing scelta in questo caso conteneva soltanto i passi di embedding (word2vec) e la conseguente fase di aggregazione dei valori.}
 \label{uniformlda}
 \end{table}
 
-\paragraph{Altri potenziali dataset}
+\subsection{Dataset raccolti da terzi}
+Durante il lavoro di questa tesi, oltre ai dataset generati, sono state prese in considerazione delle raccolte di dati con etichette binarie. Normalmente, questo tipo di dati è destinato al task della classificazione; tuttavia, per la parte di esperimenti dati di questo tipo sono stati utilizzati anche per l'induzione del grado di appartenenza all'insieme fuzzy delle fake news. In generale, dopo una prima fase di ricerca sul Web, sono state individuate le seguenti possibilità:
+\begin{enumerate}
+    \item \texttt{Fake and real news\footnote{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}} - 44898 osservazioni - 111 MB,
+    \item \texttt{All the News 2.0\footnote{https://components.one/datasets/all-the-news-2-news-articles-dataset/}} - 2.7 milioni di osservazioni - 9.2 GB,
+    \item \texttt{ProfNER\footnote{https://temu.bsc.es/smm4h-spanish/}} - 10000 osservazioni - 13.6 MB.
+
+
+\end{enumerate}
+Il primo dataset comprende sia delle notizie pubblicate su testate giornalistiche negli Stati Uniti sia dei tweet, il secondo presenta un'ampia raccolta di notizie e di saggi su 27 diverse pubblicazioni americane mentre il terzo contiene dei tweet in lingua spagnola.
+
+Al fine di trovare un compromesso accettabile tra il numero di esperimenti e la capacità computazionale a disposizione è stato scelto il primo dataset.
+
+\subsubsection{\textit{Fake and real news}}\label{fakenewsdataset}
+\textit{Fake and real news} è un dataset, disponibile sulla piattaforma \textit{Kaggle}, che raccoglie notizie e tweet, separandoli in ``fake'' e ``true'' news. Più precisamente sono presenti 23481 osservazioni per la parte di notizie false e 21417 per quelle annotate come vere, formando, quindi, un dataset approssimativamente bilanciato. 
+Le osservazioni sono composte da informazioni inerenti al titolo della notizia, al corpo, all'argomento in essa contenuto e alla data di pubblicazione. Nelle Figure~\ref{fake_sample} e~\ref{true_sample} viene mostrato un campione del dataset per ciascuna categoria di notizie.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.52]{images/fake_sample.png}
+    \caption{Campione delle notizie del dataset etichettate come ``fake''.}
+    \label{fake_sample}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/true_sample.png}
+    \caption{Campione delle notizie del dataset etichettate come ``vere''.}
+    \label{true_sample}
+\end{figure}
+Si osserva la presenza di un'informazione temporale relativa al giorno di pubblicazione della notizia: questo rimanda alle premesse descritte nel Paragrafo~\ref{pp} che forniscono una motivazione convincente del perché, in casi come questi, la fase di shuffling sia necessaria al fine di prevenire un sovradattamento dovuto a un tale ordinamento.
+
+La colonna relativa al titolo, per quanto rilevante, non è stata considerata ai fini dell'addestramento. La motivazione riguarda principalmente la presenza di tweet: in quel caso è difficile, infatti, parlare di ``titolo'', ed è tendenzialmente anche poco informativo (lo si evince facilmente dalla riga 8 del campione mostrato in Figura~\ref{true_sample}). Si presume, quindi, che tale informazione possa essere usata in congiunzione con altre come supporto.
+Anche la colonna relativa all'argomento non è stata utilizzata, in quanto è stata rilevata una sostanziale differenza nella ricchezza di informazioni contenute per la parte di notizie vere rispetto a quelle fake. Inoltre, a true e fake news risultano associati insiemi di argomenti disgiunti. Si conferma questo aspetto nella Tabella~\ref{subject}.
+\begin{table}
+\centering
+ \begin{tabular}{|c|c|c|} 
+ \hline 
+ \textbf{argomento} & \textbf{fake news} & \textbf{true news}
+\\ [0.5ex] 
+ \thickhline
+\texttt{News} & 38.54 \% & - \\
+\texttt{politics} & 29.13 \% & -\\ 
+\texttt{left-news} & 18.99 \% & -\\
+\texttt{Government News} & 6.69 \% & -\\
+\texttt{US\_News} & 3.33 \% & -\\
+\texttt{Middle-east} & 3.31 \% & -\\
+\texttt{politicsNews} & - & 52.63 \% \\
+\texttt{worldnews} & - & 47.37 \% \\
+ \hline
+\end{tabular}
+\caption{Frequenze relative degli argomenti.}
+\label{subject}
+\end{table}
+Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l'informazione riguardante il corpo delle notizie. 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/pipeline_inst.png}
+    \caption{Pipeline di preprocessing utilizzata per i due tipi di notizie.}
+    \label{pipe}
+\end{figure}
+Dal momento che le notizie sono separate in due dataframe differenti, si è scelto di utilizzare due istanze della pipeline di preprocessing mostrata in Figura~\ref{pipe}: una per le fake news e una dedicata alle true news. In questo modo sono stati ottenuti dei vettori di feature a cui sono stati associati i valori binari delle etichette e, infine, sono stati accorpati, rimescolati e standardizzati: un esempio di risultato è quello mostrato in Tabella~\ref{preprocesseddata}.
+\begin{table}
+\centering
+ \begin{tabular}{|c|c|c|} 
+ \hline 
+ \textbf{index} & \textbf{text} & \textbf{label}
+\\ [0.5ex] 
+ \thickhline
+22 & [0.34, 0.14, ..., 0.51] (96 elementi) & 1 \\
+6 & [-0.45, -0.10, ..., 0.55] (96 elementi) & 0 \\ 
+59 & [0.91, -0.92, ..., -1.14] (96 elementi) & 0\\
+21 & [-0.86, 0.54, ..., 0.51] (96 elementi) & 1\\
+12 & [0.11, 0.67, ..., -1.95] (96 elementi) & 0\\
+132 & [0.83, -0.37, ..., 0.85] (96 elementi) & 1\\
+ \hline
+\end{tabular}
+\caption{Campione del dataset \textit{Fake and real news}, una volta preprocessato.}
+\label{preprocesseddata}
+\end{table}
+
+\subsubsection{Altri potenziali dataset}
 Gli altri due dataset citati nel Paragrafo~\ref{dataset} non sono ancora stati considerati per l'addestramento e per la conseguente generazione di modelli predittivi; tuttavia, si ritiene che il sistema sia effettivamente pronto per una loro futura elaborazione, in quanto presenta un modulo per l'adattamento del dataset (Paragrafo~\ref{adapter}) e, in generale, è stato predisposto per trattare documenti testuali in lingua italiana, inglese, francese e spagnola.
 
 \section{Esperimenti}\label{esperimenti}
-Durante il lavoro di questa tesi sono stati condotti circa 30 esperimenti, durante i quali è stato esplorato il maggior numero possibile di strade da percorrere. Si ritiene che gli esperimenti riportati in questo paragrafo siano i più rappresentativi dell'intero processo di test del sistema creato. Ciascuno di essi viene presentato in due varianti, mostrando il comportamento del predittore $\lambda$ e del classificatore $\omega$ (Paragrafo~\ref{predictors}); pertanto, si utilizzerà per il primo la misura di RMSE e per il secondo le metriche di Precision, Recall e F1, distinguendo in training e test error. 
+Durante il lavoro di questa tesi sono stati condotti circa 30 esperimenti che hanno permesso di valutare un'ampia gamma di scenari. Si ritiene che gli esperimenti riportati in questo paragrafo siano i più rappresentativi dell'intero processo di test del sistema creato. Ciascuno di essi viene presentato in due varianti, mostrando il comportamento del predittore $\lambda$ e del classificatore $\omega$ (Paragrafo~\ref{predictors}); pertanto, si utilizzerà per il primo la misura di RMSE e per il secondo le metriche di Precision, Recall e F1, distinguendo in training e test error. 
 
 Quella che segue è la lista degli esperimenti che sono stati pianificati.
 
-\paragraph{Prima parte:}
+\paragraph{Prima parte - documenti testuali generati:}
 \begin{itemize}
-    \item dataset generato da insiemi \textit{disgiunti} - distribuzione \textit{uniforme},
-    \item dataset generato da insiemi \textit{disgiunti} - distribuzione \textit{beta} con $\alpha=\beta=5$,
-    \item dataset generato da insiemi \textit{disgiunti} - distribuzione \textit{beta} con $\alpha=\beta=0.5$,
-    \item dataset generato da insiemi \textit{sovrapposti} - distribuzione \textit{uniforme},
-    \item dataset generato da insiemi \textit{sovrapposti} - distribuzione \textit{beta} con $\alpha=\beta=5$,
-    \item dataset generato da insiemi \textit{sovrapposti} - distribuzione \textit{beta} con $\alpha=\beta=0.5$.
+    \item \texttt{E1} - dataset generato da insiemi \textit{disgiunti} a partire da una distribuzione \textit{uniforme} nell'intervallo $[0,1]$,
+    \item \texttt{E2} - dataset generato da insiemi \textit{disgiunti} a partire da una distribuzione \textit{Beta} con $\alpha=\beta=5$,
+    \item \texttt{E3} - dataset generato da insiemi \textit{disgiunti} a partire da una distribuzione \textit{Beta} con $\alpha=\beta=0.5$,
+    \item \texttt{E4} - dataset generato da insiemi \textit{sovrapposti} a partire da una distribuzione \textit{uniforme} nell'intervallo $[0,1]$,
+    \item \texttt{E5} - dataset generato da insiemi \textit{sovrapposti} a partire da una distribuzione \textit{Beta} con $\alpha=\beta=5$,
+    \item \texttt{E6} - dataset generato da insiemi \textit{sovrapposti} a partire da una distribuzione \textit{Beta} con $\alpha=\beta=0.5$.
 \end{itemize}
-\paragraph{Seconda parte:}
+\paragraph{Seconda parte - notizie:}
 \begin{itemize}
-    \item \textit{fake and real news dataset} (Paragrafo~\ref{fakenewsdataset}).
+    \item \texttt{E7} - \textit{Fake and real news dataset} (Paragrafo~\ref{fakenewsdataset}).
 \end{itemize}
-La valutazione sperimentale prevede anche un paragone tra i predittori proposti e alcuni di quelli già presenti in letteratura; per questa ragione, è stato predisposto un confronto con l'algoritmo Random Forest per la regressione e per la classificazione contestualmente alla prima parte di esperimenti sui dati generati. Nella seconda parte relativa al dataset presente su Kaggle è stata prevista una baseline composta da un albero decisionale, una rete neurale multi-livello, un classificatore suppor vector e dall'algoritmo Random Forest per la regressione e per la classificazione.
-La pipeline di preprocessing utilizzata è la seguente: lowercasing, rimozione dei duplicati, lemmatizzazione, rimozione del rumore, rimozione delle stop word, word2vec, aggregazione, shuffling e standardizzazione.
+La valutazione sperimentale prevede anche un paragone tra i predittori proposti e alcuni di quelli già presenti in letteratura; per questa ragione, è stato predisposto un confronto con gli algoritmi Random Forest per la regressione e per la classificazione contestualmente alla prima parte di esperimenti sui dati generati. Nella seconda parte relativa al dataset presente su Kaggle è stata prevista una baseline composta da un albero di decisione, una rete neurale multi-livello, un classificatore suppor vector e due algoritmi Random Forest per la regressione e per la classificazione.
 
-In Tabella~\ref{gridtable} viene mostrata la griglia comune che è stata utilizzata per la ricerca degli iperparametri ottimali per tutti gli esperimenti; inoltre, la cross validation k-fold annidata utilizzata è stata impostata per eseguire 5 fold esterne e 4 interne: a conferma di ciò, ogni esperimento documentato riporta la selezione di 5 modelli ottimali, i cui training e test error sono stati ricavati facendo la media aritmetica.
+In Tabella~\ref{gridtable} viene mostrata la griglia comune che è stata utilizzata per la ricerca degli iperparametri ottimali per tutti gli esperimenti che riguardano $\mu$-learn; inoltre, la cross validation k-fold annidata utilizzata è stata impostata per eseguire 5 fold esterne e 4 interne: a conferma di ciò, ogni esperimento documentato riporta la selezione di 5 modelli ottimali, indicando la media aritmetica degli errori di train e di test ottenuti nelle varie fold.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1594,7 +1617,7 @@ In Tabella~\ref{gridtable} viene mostrata la griglia comune che è stata utilizz
 \caption{Griglia di parametri per l'algoritmo $\mu$-learn.}
 \label{gridtable}
 \end{table}
-Per quanto riguarda la baseline, in Tabella~\ref{gridtablebaseline} viene mostrata la griglia di valori per l'algoritmo Random Forest.
+Per quanto riguarda la baseline, invece, in Tabella~\ref{gridtablebaseline} viene mostrata la griglia di valori relativa alla model selection degli algoritmi Random Forest, mentre nel caso dell'albero di decisione, della rete neurale e del classificatore support vector non è stata fatta un'ulteriore selezione dei modelli a causa del limitato tempo a disposizione durante il lavoro documentato da questa tesi.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1607,39 +1630,39 @@ Per quanto riguarda la baseline, in Tabella~\ref{gridtablebaseline} viene mostra
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Griglia di parametri per l'algoritmo Random Forest.}
+\caption{Griglia di parametri per i due algoritmi di Random Forest considerati.}
 \label{gridtablebaseline}
 \end{table}
-Infine, si specifica che, per consentire un buon numero di esperimenti nel tempo a disposizione durante questo lavoro, essi sono stati effettuati su un campione di 1000 osservazioni, estratto casualmente da ciascun dataset.
+Infine, si specifica che, per consentire un buon numero di esperimenti, essi sono stati effettuati su un dataset di 1000 osservazioni\footnote{Si ritiene che questo sia un buon compromesso tra il tempo di esecuzione di un singolo esperimento di apprendimento e l'utilizzo di dataset sufficientemente grandi da essere informativi.} producendo tale numero di documenti testuali nel caso dei dataset generati ed estraendo casualmente un campione, invece, nel caso del dataset \textit{Fake and real news}.
 
 \subsection{Esperimenti con i dataset generati}
-In questo paragrafo si illustrano gli esperimenti effettuati sui dataset generati nel modo descritto nel Paragrafo~\ref{generated_datasets}. Sono stati creati sei casi di dataset sintetici: il primo livello di suddivisione riguarda gli insiemi di partenza, articolandosi in insiemi disgiunti e sovrapposti; il secondo livello differenzia ciascun esperimento per il tipo di distribuzione arbitraria scelta per la generazione dei dati. In particolare, è stata utilizzata una distribuzione uniforme nell'intervallo $[0,1]$, una distribuzione Beta con parametri $\alpha = \beta = 5$ e una con $\alpha = \beta = 0.5$. Ciò che caratterizza questi esperimenti è la presenza di etichette nella forma di valori continui compresi nell'intervallo $[0,1]$.
+In questo paragrafo si illustra la prima parte degli esperimenti effettuati sui dataset generati nel modo descritto nel Paragrafo~\ref{generated_datasets}. Come specificato nel Paragrafo~\ref{esperimenti}, sono stati creati sei casi di dataset sintetici tramite il generatore di dataset descritto nel Paragrafo~\ref{generator}. Successivamente, tramite il resto del sistema descritto nel Paragrafo~\ref{sistema}, sono stati selezionati i modelli generati dall'algoritmo $\mu$-learn e visualizzati i risultati.
+La documentazione degli esperimenti si compone in due livelli di analisi: il primo suddivide gli insiemi di partenza in insiemi disgiunti e parzialmente sovrapposti; il secondo livello differenzia ciascun esperimento per il tipo di distribuzione scelta per la generazione dei dati. In particolare, è stata utilizzata una distribuzione uniforme nell'intervallo $[0,1]$, una distribuzione Beta con parametri $\alpha = \beta = 5$ e una con $\alpha = \beta = 0.5$. Ciò che caratterizza questi esperimenti è la presenza di etichette nella forma di valori continui compresi nell'intervallo $[0,1]$.
 
 \subsubsection{Insiemi disgiunti}\label{insiemidisgiunti}
 Gli esperimenti relativi agli insiemi disgiunti sono basati su insiemi di parole di partenza che non si sovrappongono. Seguono i tre casi di distribuzione sopracitati.
 
-\paragraph{Distribuzione uniforme} Utilizzando una distribuzione uniforme continua nell'intervallo $[0,1]$, è stato eseguito il sistema descritto nel Paragrafo \ref{sistema} e sono stati selezionati i modelli indicati nella Tabella~\ref{models_exp1}.
+\paragraph{E1 - Distribuzione uniforme} Il primo esperimento considera un dataset generato da insiemi di parole disgiunti tramite una distribuzione uniforme continua nell'intervallo $[0,1]$. I modelli selezionati vengono indicati nella Tabella~\ref{models_exp1}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
- \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+ \begin{tabular}{|c|c|} 
+ \hline $\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 1000 & 10 \\
+ 1000 & 1 \\
+ 10 & 0.01 \\
+ 1000 & 1 \\
+ 10 & 0.01 \\
+ 1000 & 10 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel primo esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E1}.}
 \label{models_exp1}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
-In Figura~\ref{prediction_exp1} viene riportato un confronto tra la ground truth dei dati generati e i gradi di appartenenza predetti dai modelli con il predittore $\lambda$. In particolare, si osserva come l'andamento della predizioni non sia propriamente fedele alle etichette attese e come, inoltre, metta in evidenza un picco di valori nella fascia $[0.5, 0.75]$.
+\paragraph{E1 - Confronto con $\bm{\lambda}$}
+In Figura~\ref{prediction_exp1} viene riportato un confronto tra la ground truth dei dati generati e i gradi di appartenenza predetti dai modelli con il predittore $\lambda$. In particolare, si osserva come l'andamento della predizioni non sia propriamente fedele alle etichette attese e come, inoltre, sia evidente nella predizioni un picco di valori nella fascia $[0.5, 0.75]$.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -1648,29 +1671,29 @@ In Figura~\ref{prediction_exp1} viene riportato un confronto tra la ground truth
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_disgiunti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel primo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E1}.}
     \label{prediction_exp1}
 \end{figure} 
 
-Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$-learn, sono state calcolate le predizioni da parte dell'algoritmo Random Forest (Figura~\ref{rf_exp1}). Tali predizioni sono state generate a partire dai migliori modelli selezionati tramite la grid search; i valori ottimali degli iperparametri dei modelli sono riportati in Tabella~\ref{models_rf_exp1}.
+Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$-learn, sono state calcolate le predizioni da parte dell'algoritmo Random Forest (Figura~\ref{rf_exp1}). Anche in questo caso, tali predizioni sono state generate a partire dai migliori modelli selezionati tramite la grid search; i valori ottimali degli iperparametri dei modelli sono riportati in Tabella~\ref{models_rf_exp1}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 4 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 4 & 8 & 1000 \\ 
+ 80 & 3 & 4 & 8 & 100 \\ 
+ 80 & 3 & 4 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel primo esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E1}.}
 \label{models_rf_exp1}
 \end{table}
 
@@ -1682,11 +1705,11 @@ Al fine di paragonare il comportamento dei modelli generati dall'algoritmo $\mu$
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_disgiunti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel primo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E1}.}
     \label{rf_exp1}
 \end{figure} 
 Dai grafici si evince chiaramente una notevole capacità da parte di Random Forest nel replicare fedelmente la distribuzione impostata per la generazione.
-Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp1}). 
+Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i punteggi medi di RMSE per il training e il test error (Tabella~\ref{rmse_exp1}). 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1701,15 +1724,14 @@ Per questa serie di esperimenti relativa ai dati generati sono stati calcolati i
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel primo esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E1}.}
 \label{rmse_exp1}
 \end{table}
 I numeri confermano la superiorità da parte del regressore nell'individuare il grado di appartenenza originale dei documenti.
 
-\paragraph{Confronto con $\bm{\omega}$}
-Per quanto concerne la classificazione, in Figura~\ref{classification_exp1} viene fatto un primo confronto considerando il classificatore $\omega$. 
-Più precisamente, in Figura~\ref{4cases_exp1} vengono mostrati i grafici relativi alle quattro classi presenti nella matrice di confusione.
-Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il comportamento di $\omega$ che effettua la classificazione in base alla classe preponderante.
+\paragraph{E1 - Confronto con $\bm{\omega}$}
+Per quanto concerne la classificazione, in Figura~\ref{classification_exp1} viene fatta una valutazione del classificatore $\omega$. 
+Più precisamente, in Figura~\ref{4cases_exp1} vengono mostrati i grafici relativi alle quattro situazioni descritte nella matrice di confusione. Quest'ultima è stata ricavata tramite il comportamento di $\omega$ che effettua la classificazione tramite una funzione di soglia di 0.5 sulle predizioni di $\lambda$: per ognuna delle quattro categorie il grafico riporta l'istogramma dei gradi di appartenenza predetti da $\lambda$, permettendo di vedere in quali casi essi determinano una classificazione corretta oppure errata da parte di $\omega$.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -1718,7 +1740,7 @@ Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il co
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_disgiunti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel primo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E1}.}
     \label{classification_exp1}
 \end{figure}
 \begin{figure}
@@ -1735,11 +1757,10 @@ Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il co
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_uniform_disgiunti/fp.png}\label{fp_ud}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel primo esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E1}.}
    \label{4cases_exp1}
 \end{figure}
  In Figura~\ref{rf_class_exp1}, invece, viene riportato il confronto tra le etichette attese e il classificatore Random Forest.
-
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -1748,10 +1769,10 @@ Tali grafici mostrano l'andamento dei gradi di appartenenza ed esplicitano il co
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_disgiunti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel primo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E1}.}
     \label{rf_class_exp1}
 \end{figure} 
-Anche in questo caso, l'algoritmo Random Forest si rivela particolarmente efficace. Si conferma questo aspetto nella Tabella~\ref{prf_exp1}, in cui vengono riportati i punteggi di Precision, Recall e F1.
+Anche in questo caso, l'algoritmo Random Forest si rivela particolarmente efficace. Si conferma questo aspetto nella Tabella~\ref{prf_exp1}, in cui vengono riportati i punteggi medi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1765,33 +1786,33 @@ Anche in questo caso, l'algoritmo Random Forest si rivela particolarmente effica
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel primo esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E1}.}
 \label{prf_exp1}
 \end{table}
 
-\paragraph{Distribuzione Beta con $\bm{\alpha=\beta=5}$}
-Si prosegue utilizzando una distribuzione Beta con parametri $\alpha=\beta=5$; i modelli selezionati vengono riportati nella Tabella~\ref{models_exp2}.
+\paragraph{E2 - Distribuzione Beta con $\bm{\alpha=\beta=5}$}
+Nel secondo esperimento si considera i documenti testuali generati da una distribuzione Beta con parametri $\alpha=\beta=5$ con gli insiemi di parole disgiunti; i modelli selezionati tramite la grid search vengono riportati nella Tabella~\ref{models_exp2}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+$\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 100000 & 10 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
+ 10 & 0.01 \\
+ 100000 & 10 \\
+ 1000 & 1 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel secondo esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E2}.}
 \label{models_exp2}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
-Analogamente a quanto fatto nel primo esperimento, si riporta in Figura~\ref{prediction_exp2} il confronto tra la ground truth dei dati generati e i gradi di appartenenza indotti dai modelli con il predittore $\lambda$.
+\paragraph{E2 - Confronto con $\bm{\lambda}$}
+Analogamente a quanto fatto nell'esperimento \texttt{E1}, si riporta in Figura~\ref{prediction_exp2} il confronto tra la ground truth dei dati generati e i gradi di appartenenza indotti dai dati con il predittore $\lambda$.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -1800,7 +1821,7 @@ Analogamente a quanto fatto nel primo esperimento, si riporta in Figura~\ref{pre
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_disgiunti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel secondo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E2}.}
     \label{prediction_exp2}
 \end{figure} 
 
@@ -1811,18 +1832,18 @@ Anche in questo caso vengono raffigurate le predizioni dell'algoritmo Random For
 \begin{adjustbox}{max width=\textwidth}
  \begin{tabular}{|c|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 10 & 200 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 200 \\ 
- Sì & 80 & 3 & 3 & 12 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 10 & 200 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 10 & 200 \\ 
+ 80 & 3 & 3 & 12 & 300 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel secondo esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E2}.}
 \label{models_rf_exp2}
 \end{table}
 
@@ -1834,11 +1855,11 @@ Anche in questo caso vengono raffigurate le predizioni dell'algoritmo Random For
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_disgiunti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel secondo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E2}.}
     \label{rf_exp2}
 \end{figure} 
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp2}). 
+Sono stati, dunque, calcolati i punteggi medi di RMSE per il training e il test error (Tabella~\ref{rmse_exp2}). 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1853,13 +1874,13 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel secondo esperimento nel secondo esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E2} nell'esperimento \texttt{E2}.}
 \label{rmse_exp2}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
-Nel caso della classificazione, si propone in Figura~\ref{classification_exp2} il confronto tra le etichette attese e le previsioni di $\omega$. 
-In Figura~\ref{4cases_exp2} vengono mostrati i grafici inerenti alle quattro classi presenti nella matrice di confusione.
+\paragraph{E2 - Confronto con $\bm{\omega}$}
+Nel caso della classificazione, la Figura~\ref{classification_exp2} illustra il confronto tra le etichette attese e le previsioni di $\omega$. 
+In Figura~\ref{4cases_exp2} vengono mostrati i grafici inerenti alle quattro categorie presenti nella matrice di confusione.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -1868,7 +1889,7 @@ In Figura~\ref{4cases_exp2} vengono mostrati i grafici inerenti alle quattro cla
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_disgiunti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel secondo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E2}.}
     \label{classification_exp2}
 \end{figure}
 \begin{figure}
@@ -1885,10 +1906,10 @@ In Figura~\ref{4cases_exp2} vengono mostrati i grafici inerenti alle quattro cla
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_beta5_disgiunti/fp.png}\label{fp_b5d}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel secondo esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E2}.}
    \label{4cases_exp2}
 \end{figure}
-In Figura~\ref{rf_class_exp2} viene riportato il confronto tra le etichette attese e il classificatore Random Forest in arancione.
+In Figura~\ref{rf_class_exp2} viene riportato il confronto tra le etichette attese e le predizioni del classificatore Random Forest in arancione.
 
 \begin{figure}
 \centering
@@ -1898,10 +1919,10 @@ In Figura~\ref{rf_class_exp2} viene riportato il confronto tra le etichette atte
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_disgiunti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel secondo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E2}.}
     \label{rf_class_exp2}
 \end{figure} 
-In Tabella~\ref{prf_exp2} vengono riportati i punteggi di Precision, Recall e F1.
+In Tabella~\ref{prf_exp2} vengono riportati i punteggi medi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -1915,33 +1936,33 @@ In Tabella~\ref{prf_exp2} vengono riportati i punteggi di Precision, Recall e F1
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel secondo esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E2}.}
 \label{prf_exp2}
 \end{table}
-Da un punto di vista dell'efficacia dei due modelli, si confermano le considerazioni fatte per il primo esperimento.
+Da un punto di vista dell'efficacia dei due modelli, si confermano le considerazioni fatte per l'esperimento \texttt{E1}.
 
-\paragraph{Distribuzione Beta con $\bm{\alpha=\beta=0.5}$}
-Il terzo caso parte da una distribuzione Beta con parametri $\alpha=\beta=0.5$ e i modelli scelti vengono mostrati nella Tabella~\ref{models_exp3}.
+\paragraph{E3 - Distribuzione Beta con $\bm{\alpha=\beta=0.5}$}
+Il terzo esperimento considera il dataset generato da insiemi disgiunti con una distribuzione Beta di parametri $\alpha=\beta=0.5$; i modelli selezionati sono mostrati nella Tabella~\ref{models_exp3}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+$\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel terzo esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E3}.}
 \label{models_exp3}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
+\paragraph{E3 - Confronto con $\bm{\lambda}$}
 Al fine di visualizzare il comportamento di $\lambda$, viene mostrato in Figura~\ref{prediction_exp3} il confronto tra le predizioni generate da tale predittore e la ground truth.
 \begin{figure}
 \centering
@@ -1951,7 +1972,7 @@ Al fine di visualizzare il comportamento di $\lambda$, viene mostrato in Figura~
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_disgiunti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel terzo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E3}.}
     \label{prediction_exp3}
 \end{figure} 
 
@@ -1960,20 +1981,20 @@ In Figura~\ref{rf_exp3} è possibile osservare il comportamento dei modelli otte
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 10 & 300 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel terzo esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E3}.}
 \label{models_rf_exp3}
 \end{table}
 
@@ -1985,10 +2006,10 @@ In Figura~\ref{rf_exp3} è possibile osservare il comportamento dei modelli otte
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_disgiunti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel terzo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E3}.}
     \label{rf_exp3}
 \end{figure} 
-I punteggi di RMSE per il training e il test error sono riportati in Tabella~\ref{rmse_exp3}.
+I punteggi medi di RMSE per il training e il test error sono riportati in Tabella~\ref{rmse_exp3}.
 
 \begin{table}
 \centering
@@ -2004,11 +2025,11 @@ I punteggi di RMSE per il training e il test error sono riportati in Tabella~\re
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel secondo esperimento nel terzo esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E3}.}
 \label{rmse_exp3}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
+\paragraph{E3 - Confronto con $\bm{\omega}$}
 Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp3} il confronto con le etichette attese. 
 In Figura~\ref{4cases_exp3} vengono mostrati i grafici relativi ai veri negativi, veri positivi, falsi negativi e falsi positivi.
 \begin{figure}
@@ -2019,7 +2040,7 @@ In Figura~\ref{4cases_exp3} vengono mostrati i grafici relativi ai veri negativi
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_disgiunti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel terzo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E3}.}
     \label{classification_exp3}
 \end{figure}
 \begin{figure}
@@ -2036,10 +2057,10 @@ In Figura~\ref{4cases_exp3} vengono mostrati i grafici relativi ai veri negativi
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_beta05_disgiunti/fp.png}\label{fp_b05d}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel terzo esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E3}.}
    \label{4cases_exp3}
 \end{figure}
-In Figura~\ref{rf_class_exp3} vengono visualizzate le predizioni di Random Forest su questo tipo di distribuzione.
+In Figura~\ref{rf_class_exp3} vengono visualizzate le predizioni di Random Forest su questo tipo di dataset.
 
 \begin{figure}
 \centering
@@ -2049,10 +2070,10 @@ In Figura~\ref{rf_class_exp3} vengono visualizzate le predizioni di Random Fores
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_disgiunti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel terzo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E3}.}
     \label{rf_class_exp3}
 \end{figure} 
-Si chiude questa prima parte di esperimenti con la Tabella~\ref{prf_exp3} relativa ai punteggi di Precision, Recall e F1.
+Si chiude questa prima parte di esperimenti con la Tabella~\ref{prf_exp3}, relativa ai punteggi medi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2066,37 +2087,37 @@ Si chiude questa prima parte di esperimenti con la Tabella~\ref{prf_exp3} relati
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel terzo esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E3}.}
 \label{prf_exp3}
 \end{table}
-L'algoritmo Random Forest si rivela particolarmente efficace anche in questo caso, riuscendo a riprodurre fedelmente la distribuzione di partenza e compiendo un errore davvero contenuto.
-I modelli generati da $\mu$-learn rivelano dei punteggi accettabili sia nel caso della classificazione che dell'induzione del grado di appartenenza, tuttavia nel confronto con la baseline risultano fin qui inferiori.
+L'algoritmo Random Forest si rivela particolarmente efficace anche in questo caso, riuscendo a riprodurre in modo molto accurato la distribuzione di partenza e compiendo un errore davvero contenuto.
+I modelli generati da $\mu$-learn rivelano dei punteggi accettabili sia nel caso della classificazione che dell'induzione del grado di appartenenza, tuttavia nel confronto con la baseline tali punteggi risultano fin qui inferiori.
 
 
 \subsubsection{Insiemi sovrapposti}\label{insiemisovrapposti}
-L'altra sequenza di esperimenti si basa su insiemi di parole di partenza con una componente di sovrapposizione del $17\%$. Anche in questo caso gli esperimenti si articolano nelle tre distribuzioni utilizzate in precedenza. Lo scopo di questa parte di esperimenti è vedere come variano i risultati.
+L'altra sequenza di esperimenti si basa su insiemi di parole di partenza con una sovrapposizione del $17\%$. Anche in questo caso gli esperimenti si articolano nelle tre distribuzioni utilizzate in precedenza. Lo scopo di questa parte di esperimenti è vedere come variano i risultati.
 
-\paragraph{Distribuzione uniforme} Analogamente alla distribuzione uniforme continua nell'intervallo $[0,1]$ vista per gli insiemi disgiunti (Paragrafo~\ref{insiemidisgiunti}), si utilizza tale distribuzione per gli insiemi sovrapposti. In Tabella~\ref{models_exp4} vengono menzionati quali modelli siano stati reputati ottimali per questo tipo di dati.
+\paragraph{E4 - Distribuzione uniforme} Analogamente all'esperimento \texttt{E1} in cui si considera il dataset ricavato da una distribuzione uniforme continua per gli insiemi disgiunti (Paragrafo~\ref{insiemidisgiunti}), si utilizza in questo esperimento il dataset ottenuto dalla stessa distribuzione per il caso di insiemi parzialmente sovrapposti. In Tabella~\ref{models_exp4} vengono menzionati quali modelli siano stati reputati ottimali per questo tipo di dati.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+$\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 1000 & 100 \\
- lineare & gaussiano & gurobi & 1000 & 100 \\
- lineare & gaussiano & gurobi & 1000 & 10 \\
- lineare & gaussiano & gurobi & 1000 & 100 \\
- lineare & gaussiano & gurobi & 1000 & 100 \\
+ 1000 & 100 \\
+ 1000 & 100 \\
+ 1000 & 10 \\
+ 1000 & 100 \\
+ 1000 & 100 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel quarto esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E4}.}
 \label{models_exp4}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
+\paragraph{E4 - Confronto con $\bm{\lambda}$}
 In Figura~\ref{prediction_exp4} è raffigurato il comportamento di $\lambda$ nel generare le predizioni e il risultato è pressoché identico a quello ritrovato nel caso di insiemi disgiunti.
 \begin{figure}
 \centering
@@ -2106,7 +2127,7 @@ In Figura~\ref{prediction_exp4} è raffigurato il comportamento di $\lambda$ nel
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_sovrapposti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel quarto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E4}.}
     \label{prediction_exp4}
 \end{figure} 
 Le predizioni dell'algoritmo Random Forest vengono mostrate in Figura~\ref{rf_exp4} e sono relative ai modelli riportati in Tabella~\ref{models_rf_exp4}.
@@ -2114,20 +2135,20 @@ Le predizioni dell'algoritmo Random Forest vengono mostrate in Figura~\ref{rf_ex
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 10 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 4 & 10 & 100 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel quarto esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E4}.}
 \label{models_rf_exp4}
 \end{table}
 
@@ -2139,11 +2160,11 @@ Le predizioni dell'algoritmo Random Forest vengono mostrate in Figura~\ref{rf_ex
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_sovrapposti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel quarto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E4}.}
     \label{rf_exp4}
 \end{figure} 
 
-Successivamente, si mostrano in Tabella~\ref{rmse_exp4} i punteggi di RMSE per il training e il test error. 
+Successivamente, si mostrano in Tabella~\ref{rmse_exp4} i punteggi medi di RMSE per il training e il test error. 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2158,12 +2179,12 @@ Successivamente, si mostrano in Tabella~\ref{rmse_exp4} i punteggi di RMSE per i
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel quarto esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E4}.}
 \label{rmse_exp4}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
-In Figura~\ref{classification_exp4} si passa nuovamente al caso del classificatore $\omega$ per insiemi sovrapposti, approfondendo nel dettaglio in Figura~\ref{4cases_exp4} i grafici relativi alle quattro classi presenti nella matrice di confusione.
+\paragraph{E4 - Confronto con $\bm{\omega}$}
+In Figura~\ref{classification_exp4} si passa nuovamente al caso del classificatore $\omega$ per insiemi sovrapposti, approfondendo nel dettaglio in Figura~\ref{4cases_exp4} i grafici relativi alle quattro situazioni descritte dalla matrice di confusione.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2172,7 +2193,7 @@ In Figura~\ref{classification_exp4} si passa nuovamente al caso del classificato
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_sovrapposti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel quarto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E4}.}
     \label{classification_exp4}
 \end{figure}
 \begin{figure}
@@ -2189,7 +2210,7 @@ In Figura~\ref{classification_exp4} si passa nuovamente al caso del classificato
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_uniform_sovrapposti/fp.png}\label{fp_us}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel quarto esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E4}.}
    \label{4cases_exp4}
 \end{figure}
 Per quanto riguarda le previsioni dell'algoritmo Random Forest, in Figura~\ref{rf_class_exp4} viene riportato il confronto con la ground truth.
@@ -2202,10 +2223,10 @@ Per quanto riguarda le previsioni dell'algoritmo Random Forest, in Figura~\ref{r
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_uniform_sovrapposti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel quarto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E4}.}
     \label{rf_class_exp4}
 \end{figure} 
-Di conseguenza, si mostrano i relativi punteggi di Precision, Recall e F1 in Tabella~\ref{prf_exp4}.
+Di conseguenza, si mostrano i relativi punteggi medi di Precision, Recall e F1 in Tabella~\ref{prf_exp4}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2219,32 +2240,32 @@ Di conseguenza, si mostrano i relativi punteggi di Precision, Recall e F1 in Tab
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel quarto esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E4}.}
 \label{prf_exp4}
 \end{table}
 
-\paragraph{Distribuzione Beta con $\bm{\alpha=\beta=5}$}
-Nel caso della distribuzione Beta con parametri $\alpha=\beta=5$ per insiemi sovrapposti, i modelli scelti tramite la grid search vengono riportati nella Tabella~\ref{models_exp5}.
+\paragraph{E5 - Distribuzione Beta con $\bm{\alpha=\beta=5}$}
+Nel quinto esperimento si considera il caso di un dataset generato da una distribuzione Beta con parametri $\alpha=\beta=5$ a partire da insiemi parzialmente sovrapposti; i modelli scelti tramite la grid search vengono riportati nella Tabella~\ref{models_exp5}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+$\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
- lineare & gaussiano & gurobi & 1000 & 1 \\
+ 1000 & 1 \\
+ 1000 & 1 \\
+ 1000 & 1 \\
+ 1000 & 1 \\
+ 1000 & 1 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel quinto esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E5}.}
 \label{models_exp5}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
+\paragraph{E5 - Confronto con $\bm{\lambda}$}
 In Figura~\ref{prediction_exp5} si visualizza i grafici della ground truth dei dati generati e dei gradi di appartenenza trovati dai modelli con il predittore $\lambda$.
 \begin{figure}
 \centering
@@ -2254,27 +2275,27 @@ In Figura~\ref{prediction_exp5} si visualizza i grafici della ground truth dei d
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_sovrapposti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel quinto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E5}.}
     \label{prediction_exp5}
 \end{figure} 
 La grid search è stata applicata anche all'algoritmo Random Forest, generando i modelli riassunti in Tabella~\ref{models_rf_exp5}; tali modelli hanno prodotto le previsioni mostrate in Figura~\ref{rf_exp5}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 300 \\ 
+ 80 & 3 & 4 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 300 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel quinto esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E5}.}
 \label{models_rf_exp5}
 \end{table}
 
@@ -2286,11 +2307,11 @@ La grid search è stata applicata anche all'algoritmo Random Forest, generando i
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_sovrapposti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel quinto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E5}.}
     \label{rf_exp5}
 \end{figure} 
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp5}). 
+Sono stati, dunque, calcolati i punteggi medi di RMSE per il training e il test error (Tabella~\ref{rmse_exp5}). 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2305,13 +2326,13 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel quinto esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E5}.}
 \label{rmse_exp5}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
+\paragraph{E5 - Confronto con $\bm{\omega}$}
 Nel caso della classificazione, si propone in Figura~\ref{classification_exp5} il confronto tra le etichette attese e le previsioni di $\omega$. 
-In Figura~\ref{4cases_exp5} vengono mostrati i grafici inerenti alle quattro classi presenti nella matrice di confusione.
+In Figura~\ref{4cases_exp5} vengono mostrati i grafici inerenti alle quattro categorie presenti nella matrice di confusione.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2320,7 +2341,7 @@ In Figura~\ref{4cases_exp5} vengono mostrati i grafici inerenti alle quattro cla
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_sovrapposti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel quinto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E5}.}
     \label{classification_exp5}
 \end{figure}
 \begin{figure}
@@ -2337,7 +2358,7 @@ In Figura~\ref{4cases_exp5} vengono mostrati i grafici inerenti alle quattro cla
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_beta5_sovrapposti/fp.png}\label{fp_b5s}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel quinto esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E5}.}
    \label{4cases_exp5}
 \end{figure}
 In Figura~\ref{rf_class_exp5} viene riportato il confronto tra le etichette attese e il classificatore Random Forest in arancione.
@@ -2350,10 +2371,10 @@ In Figura~\ref{rf_class_exp5} viene riportato il confronto tra le etichette atte
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta5_sovrapposti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel quinto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E5}.}
     \label{rf_class_exp5}
 \end{figure} 
-In Tabella~\ref{prf_exp5} vengono riportati i punteggi di Precision, Recall e F1.
+In Tabella~\ref{prf_exp5} vengono riportati i punteggi medi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2367,32 +2388,32 @@ In Tabella~\ref{prf_exp5} vengono riportati i punteggi di Precision, Recall e F1
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel quinto esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E5}.}
 \label{prf_exp5}
 \end{table}
 
-\paragraph{Distribuzione Beta con $\bm{\alpha=\beta=0.5}$}
-Per la distribuzione Beta con parametri $\alpha=\beta=0.5$ i modelli scelti sono annotati nella Tabella~\ref{models_exp6}.
+\paragraph{E6 - Distribuzione Beta con $\bm{\alpha=\beta=0.5}$}
+Nel sesto esperimento è stato utilizzato il dataset generato dalla distribuzione Beta con parametri $\alpha=\beta=0.5$ a partire da insiemi parzialmente sovrapposti; i modelli scelti sono annotati nella Tabella~\ref{models_exp6}.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+ $\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 1000 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
- lineare & gaussiano & gurobi & 10 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
+ 1000 & 0.01 \\
+ 10 & 0.01 \\
+ 10 & 0.01 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel sesto esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E6}.}
 \label{models_exp6}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
+\paragraph{E6 - Confronto con $\bm{\lambda}$}
 In Figura~\ref{prediction_exp6} sono visualizzate graficamente le predizioni generate dal predittore $\lambda$ e la ground truth.
 \begin{figure}
 \centering
@@ -2402,7 +2423,7 @@ In Figura~\ref{prediction_exp6} sono visualizzate graficamente le predizioni gen
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_sovrapposti/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel sesto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E6}.}
     \label{prediction_exp6}
 \end{figure} 
 
@@ -2411,20 +2432,20 @@ In Figura~\ref{rf_exp6} è possibile osservare il comportamento dei modelli otte
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
- Sì & 80 & 2 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 300 \\ 
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 2 & 3 & 8 & 100 \\ 
+ 80 & 3 & 3 & 8 & 300 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel sesto esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E6}.}
 \label{models_rf_exp6}
 \end{table}
 
@@ -2436,11 +2457,11 @@ In Figura~\ref{rf_exp6} è possibile osservare il comportamento dei modelli otte
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_sovrapposti/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel sesto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E6}.}
     \label{rf_exp6}
 \end{figure} 
 
-Anche in questo caso i punteggi di RMSE per il training e il test error sono stati calcolati e vengono mostrati in Tabella~\ref{rmse_exp6}. 
+Anche in questo caso i punteggi medi di RMSE per il training e il test error sono stati calcolati e vengono mostrati in Tabella~\ref{rmse_exp6}. 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2455,11 +2476,11 @@ Anche in questo caso i punteggi di RMSE per il training e il test error sono sta
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest nel secondo esperimento nel sesto esperimento.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E6}.}
 \label{rmse_exp6}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
+\paragraph{E6 - Confronto con $\bm{\omega}$}
 Nel caso del classificatore $\omega$ si osserva in Figura~\ref{classification_exp6} il confronto con le etichette attese. 
 In Figura~\ref{4cases_exp6} vengono mostrati i grafici relativi ai veri negativi, veri positivi, falsi negativi e falsi positivi.
 \begin{figure}
@@ -2470,7 +2491,7 @@ In Figura~\ref{4cases_exp6} vengono mostrati i grafici relativi ai veri negativi
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_sovrapposti/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel sesto esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E6}.}
     \label{classification_exp6}
 \end{figure}
 \begin{figure}
@@ -2487,7 +2508,7 @@ In Figura~\ref{4cases_exp6} vengono mostrati i grafici relativi ai veri negativi
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_beta05_sovrapposti/fp.png}\label{fp_b05s}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel sesto esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E6}.}
    \label{4cases_exp6}
 \end{figure}
 In Figura~\ref{rf_class_exp6} vengono visualizzate le predizioni di Random Forest su questo tipo di distribuzione.
@@ -2500,10 +2521,10 @@ In Figura~\ref{rf_class_exp6} vengono visualizzate le predizioni di Random Fores
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_beta05_sovrapposti/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel sesto esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E6}.}
     \label{rf_class_exp6}
 \end{figure} 
-In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi di Precision, Recall e F1.
+In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi medi di Precision, Recall e F1.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2517,40 +2538,40 @@ In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi di Precis
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel sesto esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E6}.}
 \label{prf_exp6}
 \end{table}
 La serie di esperimenti relativa agli insiemi sovrapposti non influenza in maniera così determinante i risultati.
 È possibile che questo sia dovuto alla bassa percentuale di sovrapposizione prevista tra i due insiemi: in questo caso si è preferito fornire un punto di partenza contenuto ma, per eventuali sviluppi futuri, si potrebbe prendere in considerazione l'idea di usare percentuali più alte. 
 In generale, la lunga sequenza di esperimenti relativa ai dati generati non ha prodotto risultati ottimistici per il sistema basato sull'approccio fuzzy; al contrario, apparentemente risulta che un algoritmo come Random Forest possa essere sfruttato per generare predizioni attendibili.
 In realtà, gli esperimenti finora considerati trattano dataset di natura artificiale, generati tramite un processo stocastico. Tali dataset, inoltre, non presentano ragionamenti, opinioni o costruzioni di frasi con una semantica ma sono stati pensati per catturare una distinzione che formalmente esiste solo da un punto di vista sintattico.
-L'assunzione fondamentale fatta in questa tesi è che il problema delle fake news sia modellabile secondo la logica fuzzy, basandosi sul fatto che questo tipo di notizie, in realtà, presenti una componente di indecisione intrinsecamente complessa che dipende dalla sintassi, dalla semantica e dall'ambiguità del linguaggio umano e che oggi rappresentano il motivo per cui non risulta semplice rilevarle automaticamente.
+L'assunzione fondamentale fatta in questa tesi è che il problema delle fake news sia modellabile secondo la logica fuzzy, basandosi sul fatto che questo tipo di notizie, in realtà, presenti una componente di incertezza intrinsecamente complessa che dipende dalla sintassi, dalla semantica e dall'ambiguità del linguaggio umano e che oggi rappresentano il motivo per cui non risulta semplice rilevarle automaticamente.
 Alla luce delle considerazioni sin qui fatte, si pongono le basi per analizzare l'ultimo esperimento condotto, relativo ai dati reali compresi nel dataset presentato nel Paragrafo~\ref{fakenewsdataset}.
 
-\subsection{Esperimento con il dataset di Kaggle}\label{kaggleexperiment}
+\subsection{Esperimento con il dataset \textit{Fake and real news}}\label{kaggleexperiment}
 Questo esperimento coinvolge il dataset descritto nel Paragrafo~\ref{fakenewsdataset}, presente sulla piattaforma Kaggle. In questo tipo di esperimento l'apprendimento è avvenuto tramite delle etichette binarie e riguarda delle notizie che sono state raccolte mediante Web Scraping.
 Al fine di fornire un confronto con alcuni stimatori allo stato dell'arte, è stata formata una baseline di predittori in parte destinati alla classificazione e, dunque, a un paragone con $\omega$, in parte dedicati alla regressione per $\lambda$.
-In Tabella~\ref{models_exp7} vengono mostrate le configurazioni dei modelli selezionati durante la cross validation e, a partire da essi, sono stati ricavati $\lambda$ e $\omega$.
+Per quanto riguarda l'algoritmo $\mu$-learn, in Tabella~\ref{models_exp7} vengono mostrate le configurazioni dei modelli selezionati durante la model selection e, a partire da essi, sono stati ricavati $\lambda$ e $\omega$.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|} 
  \hline
-\textbf{fuzzificatore} & \textbf{kernel} & \textbf{solver} & $\bm{\sigma}$ & \textit{\textbf{C}}
+$\bm{\sigma}$ & \textit{\textbf{C}}
 \\ [0.5ex] 
  \thickhline
- lineare & gaussiano & gurobi & 1000 & 100 \\
- lineare & gaussiano & gurobi & 100000 & 10 \\
- lineare & gaussiano & gurobi & 1000 & 100 \\
- lineare & gaussiano & gurobi & 100000 & 100 \\
- lineare & gaussiano & gurobi & 100000 & 100 \\
+ 1000 & 100 \\
+ 100000 & 10 \\
+ 1000 & 100 \\
+ 100000 & 100 \\
+ 100000 & 100 \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da $\mu$-learn nel settimo esperimento.}
+\caption{Modelli migliori generati da $\mu$-learn nell'esperimento \texttt{E7}.}
 \label{models_exp7}
 \end{table}
-\paragraph{Confronto con $\bm{\lambda}$}
+\paragraph{E7 - Confronto con $\bm{\lambda}$}
 In Figura~\ref{prediction_exp7} viene riportato un confronto tra la ground truth e i gradi di appartenenza predetti dai modelli con il predittore $\lambda$.
 \begin{figure}
 \centering
@@ -2560,30 +2581,30 @@ In Figura~\ref{prediction_exp7} viene riportato un confronto tra la ground truth
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_memberships.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le predizioni effettuate da $\lambda$ nell'esperimento \texttt{E7}.}
     \label{prediction_exp7}
 \end{figure} 
-In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo.
+In questo caso si osserva la presenza di tre componenti: due in corrispondenza dei valori estremi a indicare notizie predette come completamente fake e completamente non fake, e una terza componente di valori che si distribuiscono uniformemente nell'intervallo $[0,1]$.
 
 In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random Forest, per cui è stata eseguita la grid search per la ricerca dei parametri ottimali; i valori di tali parametri sono riportati in Tabella~\ref{models_rf_exp7}.
 
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
- \begin{tabular}{|c|c|c|c|c|c|} 
+ \begin{tabular}{|c|c|c|c|c|} 
  \hline
-\textbf{bootstrap} & \textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
+\textbf{max profondità} & \textbf{max feature} & \textbf{min foglie campione} & \textbf{min partizioni campione} & \textbf{numero stimatori}
 \\ [0.5ex] 
  \thickhline
- Sì & 80 & 3 & 3 & 8 & 100 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 4 & 8 & 1000 \\ 
- Sì & 80 & 3 & 3 & 10 & 100 \\ 
- Sì & 80 & 3 & 3 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 8 & 100 \\ 
+ 80 & 3 & 4 & 8 & 1000 \\ 
+ 80 & 3 & 4 & 8 & 1000 \\ 
+ 80 & 3 & 3 & 10 & 100 \\ 
+ 80 & 3 & 3 & 8 & 1000 \\ 
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Modelli migliori generati da Random Forest nel settimo esperimento.}
+\caption{Modelli migliori generati da Random Forest nell'esperimento \texttt{E7}.}
 \label{models_rf_exp7}
 \end{table}
 
@@ -2595,12 +2616,12 @@ In Figura~\ref{rf_exp7} vengono mostrate le predizioni dell'algoritmo Random For
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_regression_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la regressione effettuata dall'algoritmo Random Forest nell'esperimento \texttt{E7}.}
     \label{rf_exp7}
 \end{figure} 
 In questo caso, l'andamento dei valori è molto diverso rispetto a quello ricavato da $\mu$-learn: il risultato è una distribuzione piuttosto incerta il cui picco sembra essere influenzato dalla presenza di più occorrenze per il valore 0.
 
-Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error (Tabella~\ref{rmse_exp7}). Si specifica che, per via della natura del dataset, per entrambi i modelli persiste una buona componente d'errore dovuta alla forma binaria delle etichette. Da questo punto di vista i modelli si equivalgono, tuttavia, visivamente, mostrano un approccio diverso nel modellare l'andamento dei gradi di appartenenza.
+Sono stati, dunque, calcolati i punteggi medi di RMSE per il training e il test error (Tabella~\ref{rmse_exp7}). Si specifica che, per via della natura del dataset, per entrambi i modelli persiste una buona componente d'errore dovuta alla forma binaria delle etichette. Da questo punto di vista gli errori dei modelli sul test set si equivalgono, tuttavia, visivamente, mostrano un approccio diverso nel modellare l'andamento dei gradi di appartenenza.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2615,13 +2636,13 @@ Sono stati, dunque, calcolati i punteggi di RMSE per il training e il test error
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di RMSE per il predittore $\lambda$ e Random Forest.}
+\caption{valori medi di RMSE per il predittore $\lambda$ e Random Forest nell'esperimento \texttt{E7}.}
 \label{rmse_exp7}
 \end{table}
 
-\paragraph{Confronto con $\bm{\omega}$}
-In Figura~\ref{classification_exp7}, invece, lo stesso confronto viene fatto considerando il classificatore $\omega$. 
-In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro classi presenti nella matrice di confusione.
+\paragraph{E7 - Confronto con $\bm{\omega}$}
+La Figura~\ref{classification_exp7} illustra un confronto analogo a quello del paragrafo precedente, considerando ora il classificatore $\omega$.
+In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro casistiche della matrice di confusione.
 \begin{figure}
 \centering
     \begin{minipage}{0.48\textwidth}
@@ -2630,7 +2651,7 @@ In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro cla
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_classification.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate da $\omega$ nell'esperimento \texttt{E7}.}
     \label{classification_exp7}
 \end{figure}
 \begin{figure}
@@ -2647,10 +2668,10 @@ In Figura~\ref{4cases_exp7} vengono mostrati i grafici relativi alle quattro cla
    \begin{minipage}{0.48\textwidth}
      \includegraphics[width=\linewidth]{images/experiment_kaggle/fp.png}\label{fp_k}
    \end{minipage}
-   \caption{In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nel settimo esperimento.}
+   \caption{Gradi di appartenenza predetti da $\lambda$ e usati da $\omega$ per effettuare la classificazione. In alto a sinistra i veri negativi, a destra i veri positivi; in basso a sinistra i falsi negativi e a destra i falsi positivi nell'esperimento \texttt{E7}.}
    \label{4cases_exp7}
 \end{figure}
-Tali grafici confermano la presenza di una componente di indecisione: i falsi negativi e i falsi positivi mostrano una distribuzione ben più omogenea rispetto ai veri negativi e ai veri positivi e questo dimostra che il sistema proposto in questa tesi è più drastico quando predice correttamente l'etichetta mentre si mostra più indeciso quando commette un errore. Nelle Figure~\ref{rf_class_exp7},~\ref{dt_exp7},~\ref{nn_exp7} e~\ref{svc_exp7} vengono riportati i confronti tra le etichette attese e i classificatori della baseline: in ordine un classificatore Random Forest (in arancione), l'albero decisionale (in verde), la rete neurale (in giallo) e il classificatore support vector (in rosso).
+Tali grafici confermano la presenza di una componente di incertezza: i falsi negativi e i falsi positivi mostrano una distribuzione ben più omogenea rispetto ai veri negativi e ai veri positivi e questo dimostra che il sistema proposto in questa tesi è più drastico quando predice correttamente l'etichetta mentre si mostra più indeciso quando commette un errore. Nelle Figure~\ref{rf_class_exp7}-\ref{svc_exp7} vengono riportati i confronti tra le etichette attese e i classificatori della baseline: in ordine un classificatore Random Forest (in arancione), un albero di decisione (in verde), una rete neurale (in giallo) e un classificatore support vector (in rosso).
 
 \begin{figure}
 \centering
@@ -2660,7 +2681,7 @@ Tali grafici confermano la presenza di una componente di indecisione: i falsi ne
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_classification_rf.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra la classificazione effettuata da Random Forest nell'esperimento \texttt{E7}.}
     \label{rf_class_exp7}
 \end{figure} 
 \begin{figure}
@@ -2671,7 +2692,7 @@ Tali grafici confermano la presenza di una componente di indecisione: i falsi ne
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_classification_dectree.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dall'albero decisionale nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dall'albero di decisione nell'esperimento \texttt{E7}.}
     \label{dt_exp7}
 \end{figure} 
 \begin{figure}
@@ -2682,7 +2703,7 @@ Tali grafici confermano la presenza di una componente di indecisione: i falsi ne
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_classification_nn.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dalla rete neurale nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dalla rete neurale nell'esperimento \texttt{E7}.}
     \label{nn_exp7}
 \end{figure} 
 \begin{figure}
@@ -2693,10 +2714,10 @@ Tali grafici confermano la presenza di una componente di indecisione: i falsi ne
     \begin{minipage}{0.48\textwidth}
         \includegraphics[width=\linewidth]{images/experiment_kaggle/prediction_classification_svc.png}
     \end{minipage}
-    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dal classificatore support vector nel settimo esperimento.}
+    \caption{A sinistra le etichette attese, a destra le classificazioni effettuate dal classificatore support vector nell'esperimento \texttt{E7}.}
     \label{svc_exp7}
 \end{figure} 
-In Tabella~\ref{prf_exp7} vengono riportati i punteggi di Precision, Recall e F1 per $\omega$ e per la baseline.
+In Tabella~\ref{prf_exp7} vengono riportati i punteggi medi di Precision, Recall e F1 per $\omega$ e per la baseline.
 \begin{table}
 \centering
 \begin{adjustbox}{max width=\textwidth}
@@ -2707,36 +2728,36 @@ In Tabella~\ref{prf_exp7} vengono riportati i punteggi di Precision, Recall e F1
  \thickhline
  $\omega$ & 0.82, 0.97, 0.89 & 0.78, 0.89, 0.83 \\
  classificatore random forest & 0.99, 0.98, 0.98 & 0.87, 0.72, 0.79 \\
- albero decisionale & \textbf{1.0, 1.0, 1.0} & 0.70, 0.66, 0.68 \\
+ albero di decisione & \textbf{1.0, 1.0, 1.0} & 0.70, 0.66, 0.68 \\
  rete neurale & 0.93, 0.92, 0.93 & 0.86, 0.86, 0.86 \\
  classificatore support vector & 0.93, 0.91, 0.92 & \textbf{0.90, 0.86, 0.88} \\
  \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Valori di Precision, Recall e F1 per il predittore $\omega$ e la baseline nel settimo esperimento.}
+\caption{Valori medi di Precision, Recall e F1 per il predittore $\omega$ e la baseline nell'esperimento \texttt{E7}.}
 \label{prf_exp7}
 \end{table}
 Nel caso della classificazione, modelli basati su support vector si rivelano superiori nel produrre predizioni accurate.
 In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
 \begin{itemize}
     \item l'algoritmo $\mu$-learn può rappresentare un'alternativa ai modelli per la classificazione ma, oltre a non essere il più efficace, non si tratta della sua funzione originaria;
-    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico, come la Latent Dirichlet Allocation, l'algoritmo Random Forest ottiene notevoli risultati, riproducendo fedelmente le etichette attese;
+    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico, come la Latent Dirichlet Allocation, l'algoritmo Random Forest ottiene notevoli risultati, riproducendo in modo relativamente accurato le etichette attese;
     \item la componente semantica di un documento testuale influisce pesantemente sul riconoscimento;
-    \item l'algoritmo $\mu$-learn potrebbe avere la potenzialità di individuare una componente di indecisione nelle notizie.
+    \item l'algoritmo $\mu$-learn potrebbe avere la potenzialità di individuare una componente di incertezza delle notizie ad appartenere all'insieme delle fake news.
 \end{itemize}
 
-\subsubsection{Componente di indecisione}
-Gli esperimenti del Paragrafo~\ref{kaggleexperiment} hanno evidenziato la presenza di una componente di indecisione nelle predizioni effettuate dall'algoritmo $\mu$-learn, utilizzato nel sistema proposto in questa tesi. 
+\subsubsection{Componente di incertezza}
+Gli esperimenti del Paragrafo~\ref{kaggleexperiment} hanno evidenziato la presenza di una componente di incertezza nelle predizioni effettuate dall'algoritmo $\mu$-learn, utilizzato nel sistema proposto in questa tesi. 
 
-In Figura~\ref{overlaypred} viene mostrata una visualizzazione alternativa delle predizioni che permette di distinguere queste ultime in fake e non fake secondo la ground truth e, soprattutto, mostra più esplicitamente tale componente di indecisione.
+In Figura~\ref{overlaypred} viene mostrata una visualizzazione alternativa delle predizioni che permette di distinguere queste ultime in fake e non fake secondo la ground truth e, soprattutto, mostra più esplicitamente tale componente di incertezza.
 \begin{figure}
     \centering
     \includegraphics[scale=0.48]{images/experiment_kaggle/overlaypred.png}
     \caption{Predizioni dell'algoritmo $\mu$-learn. In rosso le predizioni etichettate come fake, in azzurro quelle vere.}
     \label{overlaypred}
 \end{figure}
-In corrispondenza dei valori estremi, laddove è presente la sovrapposizione, si parla rispettivamente di falsi negativi e falsi positivi. Nella parte centrale del grafico, invece, si nota una fascia progressivamente mista delle due componenti, evidenziando un aspetto di indecisione da parte del predittore ad assegnare dei gradi di appartenenza a un tipo di notizia piuttosto che all'altro.
-A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e una soglia $s$, al fine di individuare un intervallo di indecisione $[s-r,s+r]$.
+In corrispondenza dei valori estremi, laddove è presente la sovrapposizione, si parla rispettivamente di falsi negativi e falsi positivi. Nella parte centrale del grafico, invece, si nota una fascia progressivamente mista delle due componenti, evidenziando un aspetto di incertezza da parte del predittore ad assegnare dei gradi di appartenenza a un tipo di notizia piuttosto che all'altro.
+A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e una soglia $s$, al fine di individuare un intervallo di incertezza $[s-r,s+r]$.
 \begin{figure}
     \centering
     \includegraphics[scale=0.48]{images/experiment_kaggle/indecisionrf.png}
@@ -2744,29 +2765,30 @@ A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e un
     \label{indecisionrf}
 \end{figure}
 In Figura~\ref{indecisionrf} lo stesso tipo di visualizzazione viene fatta per le predizioni ottenute tramite l'algoritmo Random Forest. Anche qui si distinguono tre componenti, tuttavia l'intersezione è più ampia e si osserva un comportamento meno drastico da parte del regressore.
-L'esito dell'esperimento, inoltre, pone come ipotesi il fatto che se l'assunzione delle fake news come problema fuzzy fosse corretta allora si otterrebbe il passaggio da dei valori binari per le etichette a dei valori ternari. Questo significa che alle risposte ``fake'' e ``non fake'' si aggiungerebbe una terza classe di notizie la cui natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
+L'esito dell'esperimento, inoltre, suggerisce che, qualora l'assunzione che il problema di classificazione delle fake news fosse di natura fuzzy, possa essere interessante considerare un problema di classificazione multiclasse, e in particolare delle etichette a valori ternari. Questo significa che, oltre a `fake'' e ``non fake'', si aggiungerebbe una terza classe di notizie la cui natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
 \markboth{Conclusioni e sviluppi futuri}{} 
 \onehalfspacing
-In questa tesi è stato proposto un sistema di rilevazione delle fake news basato sull'individuazione dell'insieme fuzzy associato, tramite il quale è stato possibile produrre dei punteggi di affidabilità delle notizie basandosi sul grado di appartenenza a tale insieme.
+In questa tesi è stato proposto un sistema di rilevazione delle fake news basato sull'individuazione dell'insieme fuzzy associato, tramite il quale è stato possibile produrre dei punteggi di \textit{fakeness} delle notizie basandosi sul grado di appartenenza a tale insieme.
 Il sistema è comprensivo delle tipiche fasi che contraddistinguono la strategia di apprendimento automatico supervisionato nell'ambito dell'analisi testuale, includendo una parte di rielaborazione del testo, la generazione di modelli predittivi con configurazione ottimale degli iperparametri e la valutazione finale dei risultati.
 
-Il sistema è stato testato su due tipi di dataset: quelli generati artificialmente tramite la tecnica LDA in cui le variabili target sono valori continui in $[0,1]$ e un dataset annotato con etichette binarie.
-Nel lavoro svolto da questa tesi sono stati proposti, per entrambi i tipi di dataset, due task: la classificazione binaria e l'induzione del grado di appartenenza. Dai risultati ottenuti negli esperimenti è emerso che il sistema non eccelle particolarmente nelle predizioni dei dati sintetici ma, al contrario, esprime il suo potenziale sulle notizie raccolte dal Web. In particolare, i gradi di appartenenza prodotti su queste ultime mostrano un andamento riconducibile a una classificazione binaria abbastanza efficace, con l'aggiunta di una terza componente di indecisione che si ritiene il caso di investigare ulteriormente in futuro.
+Il sistema è stato testato su due tipi di dataset: alcuni sono stati generati artificialmente tramite la tecnica LDA, in cui le variabili target sono valori continui in $[0,1]$, oltre a un dataset aggiuntivo, scaricato da Kaggle, in cui sono presenti delle etichette binarie.
+Nel lavoro svolto in questa tesi sono stati proposti, per entrambi i tipi di dataset, due task: la classificazione binaria e l'induzione del grado di appartenenza. Dai risultati ottenuti negli esperimenti è emerso che il sistema non eccelle particolarmente nelle predizioni dei dati sintetici ma, al contrario, esprime il suo potenziale sulle notizie raccolte dal Web. In particolare, i gradi di appartenenza prodotti su queste ultime mostrano un andamento riconducibile a una classificazione binaria abbastanza efficace, con l'aggiunta di una terza componente di incertezza che si ritiene il caso di investigare ulteriormente in futuro.
 In generale, l'intervallo di indagine considerato per gli esperimenti è ampio e, in questo senso, si auspica che la tesi possa rappresentare un punto di partenza per sviluppi futuri; in tal senso, segue un elenco di alcune strade percorribili:
 \begin{itemize}
     \item ripetere gli esperimenti con un campione di dati più grande;
     \item integrare l'analisi delle fake news con tecniche di image e video processing per modellare il problema più complesso in cui anche immagini e video svolgono un ruolo centrale nelle fake news; ad esempio immagini vecchie riusate per notizie nuove o video che non corrispondono ai fatti riportati;
     \item considerare tecniche più sofisticate come le reti neurali convoluzionali per generare testi per l'addestramento del sistema;
+    \item variare la grandezza dell'intersezione tra i topic durante il processo di generazione dei documenti testuali;
     \item ricavare un dataset di notizie reali con un grado di appartenenza associato;
     \item testare nuove grid search che coinvolgano diversi tipi di fuzzificatori e di kernel;
     \item provare diverse combinazioni della pipeline di preprocessing;
     \item osservare come variano i risultati con nuove tecniche di embedding di recente sviluppo, ad esempio GloVe, Elmo e BERT.
 \end{itemize}
 
-Si ritiene, quindi, che gli obiettivi iniziali della tesi siano stati raggiunti, ottenendo un sistema in grado di produrre per le notizie i punteggi di affidabilità desiderati.
+Si ritiene, quindi, che gli obiettivi iniziali della tesi siano stati raggiunti, ottenendo un sistema in grado di produrre per le notizie i punteggi di \textit{fakeness} desiderati.
 Infine, il fatto che gli sviluppi possibili sono molteplici induce a pensare che, potenzialmente, il suddetto sistema abbia ampi margini di miglioramento.
 
 
@@ -2776,6 +2798,17 @@ Infine, il fatto che gli sviluppi possibili sono molteplici induce a pensare che
 %			RINGRAZIAMENTI
 %
 \prefacesection{Ringraziamenti}
+Nonostante io faccia ancora fatica a crederci, mi rendo conto solo adesso di essere giunto alla fine del mio percorso universitario. Si conclude il capitolo più importante della mia vita, quello che mi ha consentito maggiormente di crescere, imparare, maturare e formare la persona che sono oggi.
+Non posso che ringraziare i miei storici compagni di studio, tramutati poi in solidi amici: Punta, Alex, Bobe, Fil, Carmine, J, nonostante la maggior parte di loro abbia preso una strada diversa dopo la laurea triennale, il merito va anche a loro.
+Ringrazio le splendide persone che ho incontrato durante l'Erasmus: Noemi, Egon, Leo, Roberto, che mi hanno accompagnato in una delle esperienze più entusiasmanti che ho potuto vivere prima della pandemia.
+Ringrazio i miei amici fuori dal contesto universitario, fondamentali per offrirmi nuove lezioni da imparare e per aver riposto fiducia nella mia amicizia: Della, Samu, Roch, Jaco, Tenu, Ale, e fortunatamente, la lista è ancora lunga.
+Ringrazio il Professor Malchiodi e il Professor Ferrara per avermi guidato in questo stimolante lavoro durante un periodo storico così complicato e che, paradossalmente, mi ha dato l'ispirazione per analizzare il tema delle fake news.
+Infine, voglio ringraziare la mia famiglia, assolutamente determinante per il supporto che mi danno e per essere sempre i primi a credere in me.
+
+Mi rendo conto che nominare tutti quanti non sia possibile e allora vorrei concludere i miei ringraziamenti con una metafora. Durante il lavoro di questa tesi ho avuto modo di conoscere l'esistenza della Legge di Zipf che, tra i vari campi di applicazione, descrive una curiosa caratteristica di tutti i testi di tutte le lingue oggi conosciute: 
+
+poche parole compaiono spesso mentre la maggior parte dei termini appare raramente. Tali termini sono, quindi, ugualmente fondamentali per formare il significato delle frasi; in questo senso, non posso che ringraziare anche tutti gli altri per avermi permesso di sancire la fine di questo percorso e far spazio a un nuovo inizio.
+
 
 \end{document}
 
