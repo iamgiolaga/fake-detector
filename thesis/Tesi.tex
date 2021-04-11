@@ -47,7 +47,7 @@
 \renewcommand{\ALG@name}{Algoritmo}
 \makeatother
 
-
+\interfootnotelinepenalty=10000 %% Completely prevent breaking of footnotes
 %
 \newtheorem{myteor}{Teorema}[section]
 %
@@ -123,14 +123,14 @@ basata sull'induzione di insiemi fuzzy}
 \chapter*{Introduzione}
 \addcontentsline{toc}{chapter}{Introduzione} \markboth{Introduzione}{} 
 \onehalfspacing
-Con l'avvento della digitalizzazione il settore del giornalismo ha goduto di una forte espansione, causata dalla creazione e diffusione di nuovi mezzi di comunicazione. In particolare, l'informazione è diventata più accessibile alle persone e in tempi sempre più rapidi, soprattutto grazie agli strumenti di condivisione nati con i social network.
-Da una parte, il progresso tecnologico ha consentito di migliorare la fruizione delle notizie, velocizzandone la propagazione tramite i cosiddetti fenomeni virali; inoltre, la presenza di motori di ricerca e, in generale, l'ampio spazio sul Web, hanno consentito la creazione di nuove testate giornalistiche e fonti di informazione, alcune di natura puramente online.
+Con l'avvento della digitalizzazione il settore del giornalismo ha goduto di una forte espansione, causata dalla creazione e diffusione di nuovi mezzi di comunicazione. Di conseguenza, le informazioni diventano sempre più accessibili alle persone in tempi sempre più rapidi, soprattutto grazie agli strumenti di condivisione nati con i social network.
+Da una parte, il progresso tecnologico ha consentito di migliorare la fruizione delle notizie, velocizzandone la propagazione tramite i cosiddetti fenomeni virali; inoltre, la presenza di motori di ricerca e, in generale, l'ampio spazio sul Web, hanno consentito la creazione di nuove testate giornalistiche e fonti di informazione, alcune di natura puramente digitale.
 L'altra faccia della medaglia è che una tale facilitazione dei processi sopra menzionati ha contribuito alla crescita del fenomeno della \textit{disinformazione}.
-Tale fenomeno prende forma in uno specifico contesto: l'era digitale è contraddistinta dalla presenza di un mondo costituito da una crescente quantità di dati, pertanto gli utenti che utilizzano Internet si ritrovano esposti a un numero di informazioni sempre più grande.
-In un contesto simile è facile intuire come il livello di attenzione cali sensibilmente; inoltre, verificare le fonti di una notizia è un processo che richiede sempre più attenzione e, ovviamente, uno sforzo attivo da parte dell'utente.
+Tale fenomeno prende forma in uno scenario caratterizzato da una crescente quantità di dati, in cui gli utenti che utilizzano Internet si ritrovano esposti a un numero di informazioni sempre più grande.
+In un contesto simile è facile intuire come il livello di distrazione aumenti sensibilmente; inoltre, verificare le fonti delle notizie è un processo che richiede sempre più attenzione e, ovviamente, uno sforzo attivo da parte di chi le legge.
 
-L'aspetto problematico della disinformazione è che si tratta di un fenomeno, spesso, intenzionale e guidato da interessi che coinvolgono principalmente il mondo della politica, dal momento che la veicolazione delle \textit{fake news} mira in qualche modo all'alterazione dell'opinione pubblica. 
-Con il passare degli anni, le tipologie di fake news sono aumentate e la loro qualità, a volte, risulta paragonabile a quella di notizie affidabili. Il problema considerato, dunque, è complesso in quanto gli elementi in questione sono costruiti per essere ingannevoli per gli utenti.
+L'aspetto problematico della disinformazione è che costituisce un fenomeno, spesso, intenzionale e guidato da interessi che coinvolgono principalmente il mondo della politica, dal momento che la veicolazione delle \textit{fake news} può mirare all'alterazione dell'opinione pubblica. 
+Con il passare degli anni, le tipologie di fake news sono aumentate e la loro qualità, a volte, risulta paragonabile a quella delle notizie affidabili. Il problema considerato, dunque, è complesso, in quanto gli elementi in questione sono costruiti per essere ingannevoli per gli utenti.
 Inoltre, nel rapporto 2020 dei servizi italiani di Intelligence viene segnalato come durante la pandemia di Covid-19 ci sia stato un forte aumento di fake news relativamente all'ambito sanitario.
 \\
 \\
@@ -185,8 +185,9 @@ Come nella stragrande maggioranza dei dataset, anche in quelli testuali è prese
 Possono essere molte le motivazioni che portano un dataset a presentare errori, anomalie o rumore al suo interno: 
 nel caso di osservazioni raccolte manualmente può verificarsi una componente di errore umano; dualmente, dataset generati automaticamente (ad esempio tramite dati raccolti da sensori) possono presentare delle anomalie e produrre risultati imprevisti.
 
-Nel caso dei dati trattati in questa tesi, inoltre, si ha a che fare con informazioni provenienti dal Web, tipicamente ricavate tramite Web Scraping, dunque, esiste una maggior probabilità di incontrare osservazioni di natura digitale ricavate da pagine HTML o, addirittura, influenzate dal tipo di codifica scelto per rappresentare caratteri speciali.
-In tal senso esistono numerose tecniche per gestire il rumore e, seguendo la distinzione fatta all'inizio di questo paragrafo, è possibile elencare alcune di esse.
+Nel caso dei dati trattati in questa tesi, inoltre, si ha a che fare con informazioni provenienti dal Web, tipicamente ricavate tramite Web Scraping\footnote{Si tratta di una tecnica eseguita automaticamente da un programma software che estrae e memorizza i dati dalle pagine Web.}. Per questa ragione esiste una maggior probabilità di incontrare osservazioni di natura digitale ricavate da pagine HTML o, addirittura, influenzate dal tipo di codifica scelto per rappresentare caratteri speciali.
+
+In letteratura sono presenti numerose tecniche per gestire il rumore; seguendo la distinzione fatta all'inizio di questo paragrafo relativamente alle diverse tipologie di rumore, è possibile fare un elenco.
 \\
 \\
 Ad \textit{alto livello} si gestisce la presenza di:
@@ -204,7 +205,7 @@ mentre a \textit{basso livello}, tipicamente, si riscontrano:
     \item punteggiatura,
 \end{itemize}
 
-e altri numerosi casi che potrebbero essere aggiunti a questo elenco.
+e altri numerosi casi che potrebbero essere inseriti nella lista.
 \subsection{Tecniche per rielaborare il testo}
 Esistono delle procedure per riadattare il testo in una forma più conveniente per la sua successiva elaborazione da parte di algoritmi di Machine Learning.
 
@@ -260,7 +261,7 @@ Due famose tecniche di embedding sono \textit{Word2Vec} e \textit{Doc2Vec}, il c
 Word2Vec è un algoritmo che ha l'obiettivo di trasformare le parole in vettori numerici all'interno di uno spazio  di dimensione prefissata \cite{3}.
 Un corpus è composto da documenti e ogni documento è composto da parole; ciascuna di queste parole, tramite Word2Vec, viene trasformata in un vettore di lunghezza $h$, dove $h$ indica il numero di feature numeriche che vengono considerate. 
 
-Word2Vec si basa sull'utilizzo di reti neurali, dei modelli computazionali basati su neuroni artificiali che emulano in maniera semplificata il comportamento dei neuroni biologici \cite{38}, ed è principalmente implementato tramite due modelli: \textit{Skip-Gram} e \textit{CBOW} (Continuous Bag of Words), che vengono descritti qui di seguito.
+Word2Vec si basa sull'utilizzo di reti neurali, dei modelli computazionali composti da neuroni artificiali che emulano in maniera semplificata il comportamento dei neuroni biologici \cite{38}, ed è principalmente implementato tramite due modelli: \textit{Skip-Gram} e \textit{CBOW} (Continuous Bag of Words), che vengono descritti qui di seguito.
 
 Per entrambi i modelli l'input è un corpus di documenti, le cui parole vengono distinte in \textit{token}; ciascun token viene codificato con una rappresentazione one-hot\footnote{La codifica one-hot è un processo che viene applicato ai dati categorici per convertirli in stringhe binarie da utilizzare negli algoritmi di apprendimento automatico. In questo caso i dati categorici sono le parole e ciascuna di esse può essere rappresentata come il vettore binario di tutti i termini presenti nel documento. Se $n$ è il numero di parole, allora il vettore sarà composto da $n-1$ zeri e da un uno, a indicare quale token venga effettivamente rappresentato.}.
 
@@ -375,7 +376,7 @@ Fissando l'insieme $A$ e lo spazio $X$, la sua funzione di appartenenza $\mu_A$ 
 \end{equation}
 Secondo la teoria classica degli insiemi, infatti, un insieme è definito come qualunque aggregato (o collezione) di oggetti per il quale sia sempre possibile decidere se un generico oggetto appartiene oppure no all'aggregato stesso\footnote{In realtà, questa definizione è stata dimostrata come fallace verso la fine del XIX secolo con quella che venne definita la \textit{crisi dei fondamenti della matematica}. Tale crisi produsse una serie di paradossi, tra cui il famoso \textit{paradosso di Russell} da cui venne derivato il \textit{paradosso del barbiere}. Per rigorosità, sarebbe più opportuno usare una definizione assiomatica degli insiemi, tuttavia, al fine di non rendere prolisso il richiamo alla notazione insiemistica classica, è stata preferita una definizione informale.}.
 
-Quando la funzione di appartenenza è booleana, perché si basa su due soli possibili valori (0 o 1), si parla di insieme \textit{crisp}. Nell'ambito delle notizie, questo corrisponderebbe a classificare ogni notizia come completamente fake o no, a seconda del fatto che appartenga all'insieme delle notizie false.
+Quando la funzione di appartenenza è booleana, perché si basa su due soli possibili valori (0 o 1), si parla di insieme \textit{crisp}. Nell'ambito delle notizie, questo corrisponderebbe a classificare ogni notizia come completamente fake o no, a seconda del fatto che appartenga o meno all'insieme delle notizie false.
 
 Lo scopo di questo lavoro, invece, è di rappresentare lo stesso concetto ma in maniera sfumata, producendo informazioni su \textit{quanto} una notizia sia falsa.
 Tale rappresentazione ha il vantaggio di poter indicare se una notizia sia più o meno fake di un'altra.
@@ -470,7 +471,7 @@ Nel Paragrafo~\ref{sistema}, invece, si mostra l'utilizzo che è stato fatto del
         {L'algoritmo $\bm{\mu}$-learn}  % note use of \bm ("bold math")
 \label{mulearn}
 $\mu$-\textit{learn} è un algoritmo di Machine Learning supervisionato che utilizza una procedura originariamente nata nel contesto del support vector clustering~\cite{23}.
-Essa si colloca nel gruppo di tecniche che lavora su insiemi fuzzy, trattando un problema di ottimizzazione non lineare.
+Esso si colloca nel gruppo di tecniche che lavora su insiemi fuzzy, trattando un problema di ottimizzazione non lineare.
 
 La diversità delle funzioni di appartenenza presenti in letteratura permette una vasta sperimentazione e i parametri associati a tali funzioni possono essere regolati in modo da ottenere forme differenti per gli insiemi fuzzy formati.
 Il nome di questo algoritmo suggerisce il suo obiettivo: apprendere la funzione di appartenenza $\mu$ a un determinato insieme fuzzy e generare l'associato modello predittivo.
@@ -528,7 +529,7 @@ Il fuzzificatore crisp usa una funzione basata su soglia $r_{crisp}$ che viene t
 \paragraph{Fuzzificatore lineare}
 In questo tipo di fuzzificatore, il grado di appartenenza decresce linearmente, per cui
 \begin{equation}
-    p(r)= \begin{cases} 1 & \mbox{se } r \leq r_1, \\l(r) & \mbox{se } r_1 \leq r \leq r_0 \\ 0 & \mbox{altrimenti.} \end{cases}
+    p(r)= \begin{cases} 1 & \mbox{se } r \leq r_1, \\l(r) & \mbox{se } r_1 \leq r \leq r_0, \\ 0 & \mbox{altrimenti.} \end{cases}
 \end{equation}
 in cui $l$ è una funzione lineare.
 
@@ -571,7 +572,7 @@ Nel contesto considerato da questa tesi si distinguono i seguenti iperparametri:
     \item il tipo di fuzzificatore,
     \item eventuali parametri legati al tipo di fuzzificatore.
 \end{enumerate}
-Nella soluzione proposta in questa tesi, tra le svariate possibilità esistenti, è prevista la scelta tra due solver: \textit{tensorflow} e \textit{gurobi}, che usano strategie differenti per il problema di ottimizzazione non lineare. Il secondo e il terzo iperparametro condizionano indirettamente la forma dell'insieme indotto.
+Nella soluzione proposta in questa tesi, fra le svariate possibilità esistenti, è prevista la scelta tra due solver: \textit{tensorflow} e \textit{gurobi}, che usano strategie differenti per il problema di ottimizzazione non lineare. Il secondo e il terzo iperparametro condizionano indirettamente la forma dell'insieme indotto.
 
 Il parametro $C$ impatta sulla dimensione del core dell'insieme:
 all'aumentare di $C$, il core si dilata e incrementa il numero di elementi in esso inclusi.
@@ -790,7 +791,7 @@ In Figura~\ref{cycle} viene raffigurato il flusso di comunicazione all'interno d
     \item tramite il registro, il sistema è in grado di risalire al dataset utilizzato per ottenere i relativi modelli e, dunque, completare l'analisi;
     \item il modulo per la visualizzazione dei dati fornisce un report che viene aggiunto a quelli associati agli altri esperimenti;
     \item il report permette di analizzare il comportamento dei modelli e individuare delle possibili configurazioni da testare per i nuovi esperimenti;
-    \item se si desira fare nuovi esperimenti
+    \item se si desidera fare nuovi esperimenti
     
     a) ripartendo dal preprocessing dei dati, è necessario ricominciare l'esperimento dall'inizio, andando a modificare i parametri in questione;
     
@@ -820,26 +821,17 @@ All'interno del Paragrafo~\ref{pp} viene illustrata la pipeline di preprocessing
 Infine, nel Paragrafo~\ref{datavisualizationimpl} viene descritta la fase di visualizzazione dei dati.
 
 \section{Gestione dei dataset}\label{datasethandle}
-Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: utilizzare un dataset acquisito da terzi e fornire un dataset generato.
-Nel primo caso servizi come \textit{Kaggle} hanno facilitato l'individuazione di dataset interessanti, mentre nel secondo è stato implementato un modulo adibito alla generazione artificiale di documenti testuali.
-
-\subsection{Adattatore di dataset}\label{adapter}
-Per gestire la diversità della forma dei dati, si è deciso di fissare un formato standard e, in base ad esso, adattare o meno il dataset a disposizione in modo che rispetti tale convenzione. L'obiettivo è facilitare l'esecuzione del sistema descritto nel Paragrafo~\ref{sistema} su nuovi dati; pertanto, tale sistema assume di lavorare con un dataframe contenente tre colonne: \textit{index}, \textit{text} e \textit{label}.
-
-L'indice ha la finalità di preservare l'identificatore di ogni osservazione, questo torna particolarmente utile i) quando si vogliono analizzare specifiche notizie durante la fase di data visualization e ii) per mantenere il riferimento alla posizione originale delle notizie rimescolate durante lo step di shuffling nel preprocessing.
-
-Il testo riguarda delle possibili sequenze di parole che, nell'ambito delle fake news, possono essere il corpo delle notizie, il titolo o, a seconda del dataset considerato, il contenuto di possibili tweet o post sui social media.
-
-L'etichetta ha due forme possibili: un valore binario per i dataset recuperati da Kaggle o un valore compreso nell'intervallo $[0,1]$ per il caso di dataset generati.
+Il sistema di apprendimento supervisionato proposto in questa tesi ha bisogno di molti esempi per affinare le predizioni, pertanto sono stati previsti più scenari al fine di massimizzare la mole di dati destinata all'addestramento. Principalmente, le vie percorse sono state due: generare dei dataset e utilizzare dei dataset acquisiti da terzi.
+Nel primo caso è stato implementato un modulo adibito alla generazione artificiale di documenti testuali, mentre nel secondo servizi come \textit{Kaggle} hanno facilitato l'individuazione di dataset interessanti. Difficilmente, però, essi sono strutturati nello stesso modo; per questo motivo, come accennato nel Paragrafo~\ref{sistema}, il sistema definisce un formato standard su cui lavorare e, nel caso in cui il dataset considerato non lo rispetti, è possibile eseguire un apposito modulo di adattamento del dataset.
 
 \subsection{Generatore di dataset}\label{generator}
-Oltre a poter trattare osservazioni con etichette categorici relative a notizie che sono fake o meno, è possibile considerare anche dei dati etichettati con il grado di appartenenza all'insieme fuzzy delle fake news. Un tipo di dataset così organizzato è più difficile da reperire; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
-Si denoti, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso in cui $P_1  \cap P_2 = \emptyset$ in cui gli insiemi delle parole sono disgiunti, e poi quello in cui la loro intersezione non è vuota.
+Idealmente, per il problema di apprendimento supervisionato proposto in questa tesi sarebbe necessario considerare dei dati etichettati con il grado di appartenenza all'insieme fuzzy delle fake news. Un tipo di dataset così organizzato è sostanzialmente difficile da reperire, in quanto in letteratura il fenomeno delle fake news viene tipicamente modellato come un problema di classificazione; di conseguenza, al fine di produrre degli esperimenti più esaustivi, si è deciso di implementare un modulo per la generazione di dataset con il grado di appartenenza. Il modulo in questione si basa sulla tecnica di \textit{Latent Dirichlet Allocation} (\textit{LDA} \cite{20}) per la creazione di documenti testuali come misture di parole appartenenti a topic diversi. 
+Si denoti, quindi, $t_1$ il topic delle notizie vere e $t_2$ quello delle notizie fake; ciascun topic è rappresentato da un insieme di parole $P_i$ che lo caratterizza. Per semplicità, è stato considerato prima il caso di $P_1  \cap P_2 = \emptyset$ in cui gli insiemi delle parole sono disgiunti, e poi quello dove la loro intersezione non è vuota.
 
 La tecnica utilizzata prevede la generazione di $m$ documenti composti da $n$ parole estratte dai topic nel modo seguente: 
 \begin{itemize}
     \item si fissa l'insieme $P_2$, rappresentativo del topic $t_2$ delle fake news;
-    \item si definisce, quindi, grado di appartenenza ``atteso'' dell'$i$-esimo documento la probabilità $\mu_i$ di successo di una distribuzione bernoulliana che una parola $p_j \in P_2$ venga inserita nel documento, con $i=1, ..., m$ e $j=1, ..., n$;
+    \item si definisce grado di appartenenza ``atteso'' dell'$i$-esimo documento la probabilità di successo $\mu_i$ di una distribuzione bernoulliana che una parola $p_j \in P_2$ venga inserita nel documento, con $i=1, ..., m$ e $j=1, ..., n$;
     \item si indicano con $B$ e $Z$ due variabili casuali che seguono rispettivamente la distribuzione bernoulliana con parametro uguale a $\mu_i$ e la distribuzione di Zipf \cite{34};
     \item si fissa un'arbitraria distribuzione di probabilità $d$ con supporto $[0, 1]$, così da utilizzare le sue specificazioni come valori per $\mu_i$;
     \item si esegue l'Algoritmo~\ref{lda}.
@@ -878,6 +870,15 @@ In pratica, si tratta di un processo non deterministico di estrazione delle paro
     \mathsf{P}(p_j \in P_1) = 1 - \mu_i.
 \end{equation}
 L'obiettivo del generatore è misurare la capacità predittiva dell'algoritmo $\mu$-learn e capire la potenzialità di questo approccio nell'avvicinarsi al grado di appartenenza atteso. Tramite questo approccio si valutano, quindi, le performance dell'algoritmo di apprendimento quando questo elabora un dataset con etichette non binarie.
+
+\subsection{Adattatore di dataset}\label{adapter}
+Per gestire la diversità della forma dei dati acquisiti da terzi, si è deciso di fissare un formato standard e, in base ad esso, adattare o meno il dataset a disposizione in modo che rispetti tale convenzione. L'obiettivo è facilitare l'esecuzione del sistema descritto nel Paragrafo~\ref{sistema} su nuovi dati; pertanto, tale sistema assume di lavorare con un dataframe contenente tre colonne: \textit{index}, \textit{text} e \textit{label}.
+
+L'indice ha la finalità di preservare l'identificatore di ogni osservazione, questo torna particolarmente utile i) quando si vogliono analizzare specifiche notizie durante la fase di data visualization e ii) per mantenere il riferimento alla posizione originale delle notizie rimescolate durante lo step di shuffling nel preprocessing.
+
+Il testo riguarda delle possibili sequenze di parole che, nell'ambito delle fake news, possono essere il corpo delle notizie, il titolo o, a seconda del dataset considerato, il contenuto di possibili tweet o post sui social media.
+
+L'etichetta ha due forme possibili: un valore binario per i dataset recuperati da Kaggle o un valore compreso nell'intervallo $[0,1]$ per il caso di dataset generati.
 
 \section{Pipeline di preprocessing}\label{pp}
 Per la fase di preprocessing è stata predisposta una pipeline, ovvero un insieme di operazioni eseguite consecutivamente.
@@ -1315,7 +1316,7 @@ La procedura appena descritta viene illustrata nell'Algoritmo~\ref{nested}.
 \STATE mulearn.configure(configuration)
 \STATE in\_model = mulearn.fit(in\_train.x, in\_train.y)
 \STATE in\_predictions = in\_model.predict(in\_validation.x)
-\STATE in\_evaluation = in\_model.evaluate(in\_predictions, in\_test.y)
+\STATE in\_evaluation = in\_model.evaluate(in\_predictions, in\_validation.y)
 \STATE in\_evaluations.add(in\_evaluation)
 \STATE mean\_in\_evaluation = mean(in\_evaluations)
 \ENDFOR
@@ -1323,8 +1324,8 @@ La procedura appena descritta viene illustrata nell'Algoritmo~\ref{nested}.
 \ENDFOR
 \STATE best\_configuration = get\_best(mean\_in\_evaluations)
 \STATE mulearn.configure(best\_configuration)
-\STATE optimized\_model = optimized\_model.fit(train, train.x)
-\STATE predictions = optimized\_model.predict(test)
+\STATE optimized\_model = optimized\_model.fit(train.x, train.y)
+\STATE predictions = optimized\_model.predict(test.x)
 \STATE evaluation = optimized\_model.evaluate(predictions, test.y)
 \STATE evaluations.add(evaluation)
 \STATE optimized\_models.add(optimized\_model)
@@ -1359,7 +1360,7 @@ Dal momento che in letteratura il riconoscimento delle fake news è stato freque
 Per questa ragione il primo tipo di dataset considerato durante il lavoro di questa tesi sono dei dataset generati che hanno l'obiettivo di ottenere per le etichette dei valori compresi nell'intervallo $[0,1]$.
 
 \subsection{Dataset generati}\label{generated_datasets}
-Un approccio proposto per gli esperimenti è quello di utilizzare dei dataset generati tramite la tecnica descritta nel Paragrafo~\ref{generator}. Tale tecnica si basa sulla scelta di una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di considerare un ampio spettro di scenari sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione Beta e da esse sono stati estratti dei campioni.
+Un approccio proposto per gli esperimenti è quello di utilizzare dei dataset generati tramite la tecnica descritta nel Paragrafo~\ref{generator}. Tale tecnica si basa sulla scelta di una distribuzione arbitraria $d$ che determina l'andamento dei valori del grado di appartenenza in funzione delle estrazioni di una variabile casuale. Al fine di considerare un ampio spettro di scenari sono state scelte due distribuzioni: la distribuzione uniforme e la distribuzione Beta, e da esse sono stati estratti dei campioni.
 
 \paragraph{Distribuzione uniforme}
 Nella teoria delle Probabilità una delle distribuzioni più conosciute è sicuramente quella uniforme continua. A partire da questa distribuzione è stato estratto il campione mostrato in Figura~\ref{uniforme}. Genericamente definita su un intervallo $[a,b]$, la distribuzione uniforme ha la seguente funzione densità di probabilità
@@ -1374,7 +1375,7 @@ Dal momento che il grado di appartenenza è compreso nell'intervallo $[0,1]$, an
     \label{uniforme}
 \end{figure}
 \paragraph{Distribuzione Beta}
-L'altro tipo di distribuzione scelta è la distribuzione Beta: a differenza di quella uniforme essa è specificatamente definita nell'intervallo $[0,1]$ e, dunque, adatta al contesto di generazione del grado di appartenenza. I parametri che ne regolano l'andamento sono due: $\alpha$ e $\beta$. La funzione densità di probabilità è
+L'altro tipo di distribuzione scelta è la distribuzione Beta: a differenza di quella uniforme essa è specificatamente definita nell'intervallo $[0,1]$ e, dunque, naturalmente adatta al contesto di generazione del grado di appartenenza. I parametri che ne regolano l'andamento sono due: $\alpha$ e $\beta$. La funzione densità di probabilità è
 \begin{equation}
     f(x)= \frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)},
 \end{equation}
@@ -1500,7 +1501,7 @@ Nell'esempio appena indicato si mostra lo specifico caso dell'output della pipel
 \end{table}
 
 \subsection{Dataset raccolti da terzi}
-Durante il lavoro di questa tesi, oltre ai dataset generati, sono state prese in considerazione delle raccolte di dati con etichette binarie. Normalmente, questo tipo di dati è destinato al task della classificazione; tuttavia, per la parte di esperimenti dati di questo tipo sono stati utilizzati anche per l'induzione del grado di appartenenza all'insieme fuzzy delle fake news. In generale, dopo una prima fase di ricerca sul Web, sono state individuate le seguenti possibilità:
+Durante il lavoro di questa tesi, oltre ai dataset generati, sono state prese in considerazione delle raccolte di dati con etichette binarie. Normalmente, questo tipo di dati è destinato al task della classificazione; tuttavia, per la parte di esperimenti, dati di questo tipo sono stati utilizzati anche per l'induzione del grado di appartenenza all'insieme fuzzy delle fake news. In generale, dopo una prima fase di ricerca sul Web, sono state individuate le seguenti possibilità:
 \begin{enumerate}
     \item \texttt{Fake and real news\footnote{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}} - 44898 osservazioni - 111 MB,
     \item \texttt{All the News 2.0\footnote{https://components.one/datasets/all-the-news-2-news-articles-dataset/}} - 2.7 milioni di osservazioni - 9.2 GB,
@@ -1558,7 +1559,7 @@ Per questa parte di esperimenti si è deciso, quindi, di utilizzare unicamente l
     \caption{Pipeline di preprocessing utilizzata per i due tipi di notizie.}
     \label{pipe}
 \end{figure}
-Dal momento che le notizie sono separate in due dataframe differenti, si è scelto di utilizzare due istanze della pipeline di preprocessing mostrata in Figura~\ref{pipe}: una per le fake news e una dedicata alle true news. In questo modo sono stati ottenuti dei vettori di feature a cui sono stati associati i valori binari delle etichette e, infine, sono stati accorpati, rimescolati e standardizzati: un esempio di risultato è quello mostrato in Tabella~\ref{preprocesseddata}.
+Dal momento che le notizie sono separate in due dataframe differenti, si è scelto di utilizzare due istanze della pipeline di preprocessing mostrata in Figura~\ref{pipe}: una per le fake news e una dedicata alle true news. In questo modo sono stati ottenuti dei vettori di feature a cui sono stati associati i valori binari delle etichette e, infine, sono stati accorpati, rimescolati e standardizzati, formando un unico dataset: un esempio di risultato è quello mostrato in Tabella~\ref{preprocesseddata}.
 \begin{table}
 \centering
  \begin{tabular}{|c|c|c|} 
@@ -2543,7 +2544,7 @@ In conclusione, in Tabella~\ref{prf_exp6} vengono riassunti i punteggi medi di P
 \end{table}
 La serie di esperimenti relativa agli insiemi sovrapposti non influenza in maniera così determinante i risultati.
 È possibile che questo sia dovuto alla bassa percentuale di sovrapposizione prevista tra i due insiemi: in questo caso si è preferito fornire un punto di partenza contenuto ma, per eventuali sviluppi futuri, si potrebbe prendere in considerazione l'idea di usare percentuali più alte. 
-In generale, la lunga sequenza di esperimenti relativa ai dati generati non ha prodotto risultati ottimistici per il sistema basato sull'approccio fuzzy; al contrario, apparentemente risulta che un algoritmo come Random Forest possa essere sfruttato per generare predizioni attendibili.
+In generale, la lunga sequenza di esperimenti relativa ai dati generati non ha prodotto risultati a favore del sistema basato sull'approccio fuzzy; al contrario, apparentemente risulta che un algoritmo come Random Forest possa essere sfruttato per generare predizioni attendibili.
 In realtà, gli esperimenti finora considerati trattano dataset di natura artificiale, generati tramite un processo stocastico. Tali dataset, inoltre, non presentano ragionamenti, opinioni o costruzioni di frasi con una semantica ma sono stati pensati per catturare una distinzione che formalmente esiste solo da un punto di vista sintattico.
 L'assunzione fondamentale fatta in questa tesi è che il problema delle fake news sia modellabile secondo la logica fuzzy, basandosi sul fatto che questo tipo di notizie, in realtà, presenti una componente di incertezza intrinsecamente complessa che dipende dalla sintassi, dalla semantica e dall'ambiguità del linguaggio umano e che oggi rappresentano il motivo per cui non risulta semplice rilevarle automaticamente.
 Alla luce delle considerazioni sin qui fatte, si pongono le basi per analizzare l'ultimo esperimento condotto, relativo ai dati reali compresi nel dataset presentato nel Paragrafo~\ref{fakenewsdataset}.
@@ -2741,7 +2742,7 @@ Nel caso della classificazione, modelli basati su support vector si rivelano sup
 In conclusione, gli esperimenti hanno evidenziato i seguenti fatti:
 \begin{itemize}
     \item l'algoritmo $\mu$-learn può rappresentare un'alternativa ai modelli per la classificazione ma, oltre a non essere il più efficace, non si tratta della sua funzione originaria;
-    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico, come la Latent Dirichlet Allocation, l'algoritmo Random Forest ottiene notevoli risultati, riproducendo in modo relativamente accurato le etichette attese;
+    \item se si generano misture di parole appartenenti a topic differenti tramite un processo stocastico, come la Latent Dirichlet Allocation, l'algoritmo Random Forest ottiene notevoli risultati, riproducendo in modo molto accurato le etichette attese;
     \item la componente semantica di un documento testuale influisce pesantemente sul riconoscimento;
     \item l'algoritmo $\mu$-learn potrebbe avere la potenzialità di individuare una componente di incertezza delle notizie ad appartenere all'insieme delle fake news.
 \end{itemize}
@@ -2765,7 +2766,7 @@ A tal proposito, un possibile approccio consiste nel definire un raggio $r$ e un
     \label{indecisionrf}
 \end{figure}
 In Figura~\ref{indecisionrf} lo stesso tipo di visualizzazione viene fatta per le predizioni ottenute tramite l'algoritmo Random Forest. Anche qui si distinguono tre componenti, tuttavia l'intersezione è più ampia e si osserva un comportamento meno drastico da parte del regressore.
-L'esito dell'esperimento, inoltre, suggerisce che, qualora l'assunzione che il problema di classificazione delle fake news fosse di natura fuzzy, possa essere interessante considerare un problema di classificazione multiclasse, e in particolare delle etichette a valori ternari. Questo significa che, oltre a `fake'' e ``non fake'', si aggiungerebbe una terza classe di notizie la cui natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
+L'esito dell'esperimento, inoltre, suggerisce che, qualora l'assunzione che il problema di classificazione delle fake news fosse di natura fuzzy, possa essere interessante considerare un problema di classificazione multi-classe, e in particolare delle etichette a valori ternari. Questo significa che, oltre a `fake'' e ``non fake'', si aggiungerebbe una terza classe di notizie la cui natura è più incerta e la cui affidabilità potrebbe dover richiedere maggior attenzione da parte dell'utente durante la loro lettura.
 
 \chapter*{Conclusioni e sviluppi futuri}
 \addcontentsline{toc}{chapter}{Conclusioni e sviluppi futuri}
@@ -2780,6 +2781,7 @@ In generale, l'intervallo di indagine considerato per gli esperimenti è ampio e
 \begin{itemize}
     \item ripetere gli esperimenti con un campione di dati più grande;
     \item integrare l'analisi delle fake news con tecniche di image e video processing per modellare il problema più complesso in cui anche immagini e video svolgono un ruolo centrale nelle fake news; ad esempio immagini vecchie riusate per notizie nuove o video che non corrispondono ai fatti riportati;
+    \item considerare non solo il corpo delle notizie ma anche il titolo;
     \item considerare tecniche più sofisticate come le reti neurali convoluzionali per generare testi per l'addestramento del sistema;
     \item variare la grandezza dell'intersezione tra i topic durante il processo di generazione dei documenti testuali;
     \item ricavare un dataset di notizie reali con un grado di appartenenza associato;
@@ -2789,9 +2791,7 @@ In generale, l'intervallo di indagine considerato per gli esperimenti è ampio e
 \end{itemize}
 
 Si ritiene, quindi, che gli obiettivi iniziali della tesi siano stati raggiunti, ottenendo un sistema in grado di produrre per le notizie i punteggi di \textit{fakeness} desiderati.
-Infine, il fatto che gli sviluppi possibili sono molteplici induce a pensare che, potenzialmente, il suddetto sistema abbia ampi margini di miglioramento.
-
-
+Infine, il fatto che gli sviluppi possibili sono molteplici induce a pensare che, potenzialmente, il sistema proposto abbia ampi margini di miglioramento.
 
 \printbibliography
 
