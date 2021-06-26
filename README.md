@@ -6,7 +6,7 @@ This repository is structured as follows:
 - <i>modules</i>:
     * ```main_generative.py```: the module which generates syntetic texts through LDA
     * ```main_kaggle.py```: the module which downloads a specified dataset from Kaggle
-    * ```main_dataset_preparation``` the module that converts raw datasets into a standard format for this system
+    * ```main_dataset_preparation.py``` the module that converts raw datasets into a standard format for this system
     * ```main_preprocessing.py```: the module that runs a complete preprocessing pipeline from scratch
     * ```main_use_preprocessed.py```: the module that lets you run a preprocessing pipeline in a second moment
     * ```main_model_selection.py```: the module that selects the best model by doing a grid search on a set of parameters for Fuzzy Inductors ([mulearn](https://github.com/dariomalchiodi/mulearn) package).
@@ -18,7 +18,7 @@ This repository is structured as follows:
 
 - <i>classes</i>:
     <!-- * ```experiment.py```: the class responsible for creating, fitting and using a predicitive model through the [mulearn](https://github.com/dariomalchiodi/mulearn) package -->
-    * ```classes/generation```: the class that defines how the generative model works and its setup
+    * ```classes/generation.py```: the class that defines how the generative model works and its setup
     * ```classes/model.py```: the class for the models that we want to build and use
     * ```classes/ppsteps.py```: the class that implements the preprocessing operations with fit and transform functions, according to scikit-learn's [convention](https://scikit-learn.org/stable/developers/develop.html)
     * ```classes/preprocessing.py```: the class to configure the preprocessing pipeline with the operations that we want 
@@ -42,7 +42,7 @@ This repository is structured as follows:
 ![flow](repository_images/cycle.png)
 
 # Datasets (updated on 20/02/2021)
-Currently, two main interesting datasets about web news have been found.
+Currently, three main interesting datasets about web news have been found.
 1. [Fake and real news dataset](https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv), 111 MB
 2. [All the News 2.0](https://components.one/datasets/all-the-news-2-news-articles-dataset/), 9.2 GB 
 3. [ProfNER](https://temu.bsc.es/smm4h-spanish/), 13.6 MB
